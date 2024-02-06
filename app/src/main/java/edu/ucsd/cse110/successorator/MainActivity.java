@@ -29,18 +29,20 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //Defines functionality for when menu item "item" is pressed
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var itemId = item.getItemId();
 
+        //if item is the add task button, run initiateAddTask()
         if (itemId == R.id.header_bar_add_task) {
-            addTask();
+            initiateAddTask();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void addTask() {
+    private void initiateAddTask() {
         System.out.println("add task");
     }
 }
