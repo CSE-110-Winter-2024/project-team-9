@@ -2,4 +2,7 @@
     <string name="app_name">Successorator</string>
     <string name="placeholder">Placeholder</string>
     <string name="hello_world">Hello, World!</string>
+    <string name="add_button_text">Add Task</string>
+    <string name="input_text">Task Name</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
