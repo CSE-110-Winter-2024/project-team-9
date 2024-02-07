@@ -41,6 +41,6 @@ public class TaskListFragment extends Fragment {
     }
 
     private void setupMvp() {
-        view.placeholderText.setText(R.string.hello_world);
+//        view.placeholderText.setText(R.string.hello_world);
     }
 }
