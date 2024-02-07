@@ -11,10 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.ui.addtask.AddTaskFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding view;
+    private boolean isShowingList = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,13 +41,30 @@ public class MainActivity extends AppCompatActivity {
 
         //if item is the add task button, run initiateAddTask()
         if (itemId == R.id.header_bar_add_task) {
-            initiateAddTask();
+            swapFragments();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void initiateAddTask() {
-        System.out.println("add task");
+    private void swapFragments() {
+        if (isShowingList) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, AddTaskFragment.newInstance())
+                    .commit();
+        } else {
+            addTask("new title");
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, TaskListFragment.newInstance())
+                    .commit();
+        }
+
+        isShowingList = !isShowingList;
+    }
+
+    private void addTask(String input) {
+        System.out.println("add task: " + input);
     }
 }
