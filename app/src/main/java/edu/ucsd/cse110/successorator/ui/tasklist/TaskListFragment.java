@@ -37,6 +37,7 @@ public class TaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = FragmentTaskListBinding.inflate(inflater, container, false);
         setupMvp();
+
         return view.getRoot();
     }
 
