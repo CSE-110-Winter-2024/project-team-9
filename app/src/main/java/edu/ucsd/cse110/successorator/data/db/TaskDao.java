@@ -17,7 +17,7 @@ public interface TaskDao {
     Long insert(TaskEntity task);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    List<Long> insert(List<TaskEntity> flashcards);
+    List<Long> insert(List<TaskEntity> tasks);
 
     @Query("SELECT * FROM tasks WHERE id = :id")
     TaskEntity find(int id);
