@@ -1,27 +1,18 @@
 package edu.ucsd.cse110.successorator;
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
-import edu.ucsd.cse110.successorator.ui.addtask.AddTaskFragment;
-import edu.ucsd.cse110.successorator.ui.tasklist.AddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,23 +51,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void swapFragments() {
-        if (isShowingList) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, AddTaskFragment.newInstance())
-                    .commit();
-        } else {
-            addTask("new title");
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, TaskListFragment.newInstance())
-                    .commit();
-        }
-
-        isShowingList = !isShowingList;
-    }
 
     private void addTask(String input) {
         System.out.println("add task: " + input);

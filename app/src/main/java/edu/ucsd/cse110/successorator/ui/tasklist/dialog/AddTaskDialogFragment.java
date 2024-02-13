@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.successorator.ui.tasklist;
+package edu.ucsd.cse110.successorator.ui.tasklist.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
