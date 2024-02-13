@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment;
 
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentAddTaskBinding;
-import edu.ucsd.cse110.successorator.ui.addtask.dialog.AddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.databinding.FragmentTaskListBinding;
+import edu.ucsd.cse110.successorator.ui.tasklist.AddTaskDialogFragment;
 
 public class AddTaskFragment extends Fragment {
 
-    private FragmentAddTaskBinding view;
+    private FragmentTaskListBinding view;
 
     //private TaskListAdapter adapter;
 
@@ -38,20 +39,10 @@ public class AddTaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = FragmentAddTaskBinding.inflate(inflater, container, false);
-
-
-        view.addTaskButton.setOnClickListener(v -> {
-            var dialogFragment = AddTaskDialogFragment.newInstance();
-            dialogFragment.show(getParentFragmentManager(), "AddTaskDialogFragment");
-        });
-
-        setupMvp();
+        view = FragmentTaskListBinding.inflate(inflater, container, false);
 
         return view.getRoot();
     }
 
-    private void setupMvp() {
-        view.newTaskTitle.setHint(R.string.input_text);
-    }
+
 }
