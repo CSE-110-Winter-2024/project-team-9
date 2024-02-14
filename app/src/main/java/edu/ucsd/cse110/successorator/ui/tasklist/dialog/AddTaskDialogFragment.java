@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -67,11 +68,13 @@ public class AddTaskDialogFragment extends DialogFragment {
 
     private void onPositiveButtonClick() {
         // variable that stores the text inputted when check icon is pressed
-        String taskText = editTextTask.getText().toString();
+        @NonNull String taskText = editTextTask.getText().toString();
+        Log.d("onPositiveButtonClick", taskText);
         dismiss();
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
+        Log.d("onNegativeButtonClick", "cancel");
         dialog.cancel();
     }
 }
