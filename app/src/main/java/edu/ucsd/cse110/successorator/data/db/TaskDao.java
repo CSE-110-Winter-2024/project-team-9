@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.domain.Task;
@@ -47,7 +48,7 @@ public interface TaskDao {
     default int append(TaskEntity task) {
         var maxSortOrder = getMaxSortOrder();
         var newTask = new TaskEntity(
-                task.text, maxSortOrder + 1
+                task.text, maxSortOrder + 1, false, LocalDate.now()
         );
         return Math.toIntExact(insert(newTask));
     }
@@ -56,7 +57,7 @@ public interface TaskDao {
     default int prepend(TaskEntity task) {
         shiftSortOrders(getMinSortOrder(), getMaxSortOrder(), 1);
         var newTask = new TaskEntity(
-                task.text, getMinSortOrder() - 1
+                task.text, getMinSortOrder() - 1, false, LocalDate.now()
         );
 
         return Math.toIntExact(insert(newTask));
