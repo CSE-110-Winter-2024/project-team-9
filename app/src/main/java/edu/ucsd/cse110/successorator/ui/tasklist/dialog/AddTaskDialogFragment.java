@@ -18,11 +18,13 @@ import androidx.lifecycle.ViewModelProvider;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.data.db.LocalDateConverter;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
+import edu.ucsd.cse110.successorator.lib.util.Subject;
 
 public class AddTaskDialogFragment extends DialogFragment {
 
@@ -76,18 +78,10 @@ public class AddTaskDialogFragment extends DialogFragment {
         // variable that stores the text inputted when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
-
-        Log.d("startDateConversion", "Start creating date");
-        LocalDate date = LocalDate.of(2000, 4, 20);
-        Log.d("dateConversionSuccess", "Created date " + date.toString());
-
-        Log.d("startTaskCreation", "Start creating task");
+        // in final product, change date to LocalDate.now()
+        LocalDate date = LocalDate.of(2004, 2, 5);
         Task newTask = new Task(null, taskText, -1, false, date);
-        Log.d("taskCreationSuccess", "Created task " + newTask.text());
-
-        Log.d("startAppendTask", "Start appending task to list");
         activityModel.append(newTask);
-        Log.d("appendTaskSuccess", "Successfully appended task " + newTask.text());
 
         dismiss();
     }
