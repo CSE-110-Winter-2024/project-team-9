@@ -86,7 +86,7 @@ public class AddTaskDialogFragment extends DialogFragment {
         Log.d("taskCreationSuccess", "Created task " + newTask.text());
 
         Log.d("startAppendTask", "Start appending task to list");
-        activityModel.prepend(newTask);
+        activityModel.append(newTask);
         Log.d("appendTaskSuccess", "Successfully appended task " + newTask.text());
 
         dismiss();

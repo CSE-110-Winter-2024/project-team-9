@@ -41,9 +41,6 @@ public interface TaskDao {
     @Query("SELECT MAX(sort_order) FROM tasks")
     int getMaxSortOrder();
 
-    @Query("SELECT min(sort_order) FROM tasks WHERE is_finished = true")
-    int getMinFinishedSortOrder();
-
     @Query("UPDATE tasks SET sort_order = sort_order + :by " + "WHERE sort_order >= :from AND sort_order <= :to")
     void shiftSortOrders(int from, int to, int by);
 
@@ -60,9 +57,6 @@ public interface TaskDao {
     default int prepend(TaskEntity task) {
         shiftSortOrders(getMinSortOrder(), getMaxSortOrder(), 1);
         var sortOrder = getMinSortOrder() - 1;
-        if (task.isFinished) {
-            sortOrder = getMinFinishedSortOrder() - 1;
-        }
         var newTask = new TaskEntity(
                 task.text, sortOrder, task.isFinished, LocalDate.now()
         );
