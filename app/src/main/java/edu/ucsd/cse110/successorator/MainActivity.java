@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isShowingList = true;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setTitle(R.string.app_name);
 
