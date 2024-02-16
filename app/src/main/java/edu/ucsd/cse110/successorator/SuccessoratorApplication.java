@@ -21,7 +21,7 @@ public class SuccessoratorApplication extends Application {
         var database = Room.databaseBuilder(
             getApplicationContext(),
             SuccessoratorDatabase.class,
-            "successerator-database"
+            "successorator-database"
         )
         .allowMainThreadQueries()
         .build();

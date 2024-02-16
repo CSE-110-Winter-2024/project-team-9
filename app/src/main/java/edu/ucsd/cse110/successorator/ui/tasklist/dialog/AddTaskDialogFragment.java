@@ -15,8 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
+import edu.ucsd.cse110.successorator.data.db.LocalDateConverter;
+import edu.ucsd.cse110.successorator.lib.domain.Task;
 
 public class AddTaskDialogFragment extends DialogFragment {
 
@@ -69,7 +75,20 @@ public class AddTaskDialogFragment extends DialogFragment {
     private void onPositiveButtonClick() {
         // variable that stores the text inputted when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
-        Log.d("onPositiveButtonClick", taskText);
+        Log.d("onPositiveButtonClick", "Button Pressed");
+
+        Log.d("startDateConversion", "Start creating date");
+        LocalDate date = LocalDate.of(2000, 4, 20);
+        Log.d("dateConversionSuccess", "Created date " + date.toString());
+
+        Log.d("startTaskCreation", "Start creating task");
+        Task newTask = new Task(null, taskText, -1, false, date);
+        Log.d("taskCreationSuccess", "Created task " + newTask.text());
+
+        Log.d("startAppendTask", "Start appending task to list");
+        activityModel.append(newTask);
+        Log.d("appendTaskSuccess", "Successfully appended task " + newTask.text());
+
         dismiss();
     }
 
