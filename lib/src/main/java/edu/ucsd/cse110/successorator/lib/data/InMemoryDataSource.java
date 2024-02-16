@@ -33,12 +33,6 @@ public class InMemoryDataSource {
     }
 
     public final static List<Task> DEFAULT_TASKS = List.of(
-            new Task(0, "SRP", 0, false, LocalDate.of(2024, 02, 14)),
-            new Task(1, "OCP", 1, false, LocalDate.of(2024, 02, 14)),
-            new Task(2, "LSP", 2, false, LocalDate.of(2024, 02, 14)),
-            new Task(3, "ISP", 3, false, LocalDate.of(2024, 02, 14)),
-            new Task(4, "DIP", 4, false, LocalDate.of(2024, 02, 14)),
-            new Task(5, "LKP", 5, false, LocalDate.of(2024, 02, 14))
     );
 
     public static InMemoryDataSource fromDefault() {
