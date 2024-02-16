@@ -48,7 +48,7 @@ public interface TaskDao {
     default int append(TaskEntity task) {
         var maxSortOrder = getMaxSortOrder();
         var newTask = new TaskEntity(
-                task.text, maxSortOrder + 1, false, LocalDate.now()
+                task.text, maxSortOrder + 1, false, task.dateCreated
         );
         return Math.toIntExact(insert(newTask));
     }
