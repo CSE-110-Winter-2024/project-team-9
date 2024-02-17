@@ -19,6 +19,8 @@ public class DateTracker {
     }
     public DateTracker() {
         this.date = LocalDate.now();
+        this.dateSubject = new SimpleSubject<LocalDate>();
+        dateSubject.setValue(date);
     }
 
     public void setDate(LocalDate newDate) {

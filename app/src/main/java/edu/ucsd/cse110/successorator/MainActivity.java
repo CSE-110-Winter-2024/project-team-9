@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         setTitle(DateManager.getFormattedDate());
 
         DateManager.getLocalDateSubject().observe(localDate -> {
-            Log.d("main", "observer oflocal date changed");
+            //Log.d("main", "observer oflocal date changed");
             if (localDate == null) return;
-            setTitle(localDate.toString());
+            setTitle(DateManager.getFormattedDate());
         });
 
         this.view = ActivityMainBinding.inflate(getLayoutInflater());

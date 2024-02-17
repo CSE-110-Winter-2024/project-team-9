@@ -20,9 +20,9 @@ public class DateManager {
     }
 
     public static void incrementDate() {
-        Log.d("beforeIncrement", getLocalDateSubject().getValue().toString());
+        //Log.d("beforeIncrement", getLocalDateSubject().getValue().toString());
         globalDate.incrementDate();
-        Log.d("afterIncrement", getLocalDateSubject().getValue().toString());
+        //Log.d("afterIncrement", getLocalDateSubject().getValue().toString());
 
     }
 
