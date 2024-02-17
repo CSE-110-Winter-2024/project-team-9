@@ -2,6 +2,7 @@ package edu.ucsd.cse110.successorator;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,27 +12,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
-import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
+import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding view;
-    private Calendar currCalendar;
+//    private Calendar currCalendar;
     private boolean isShowingList = true;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        currCalendar = Calendar.getInstance();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE M/dd");
-        String formattedDate = dateFormatter.format(currCalendar.getTime());
-        setTitle(formattedDate);
+
+
+        DateManager.initializeGlobalDate(this);
+        setTitle(DateManager.getFormattedDate());
+
+        DateManager.getLocalDateSubject().observe(localDate -> {
+            Log.d("main", "observer oflocal date changed");
+            if (localDate == null) return;
+            setTitle(localDate.toString());
+        });
 
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());

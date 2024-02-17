@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,15 @@ import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 
 import edu.ucsd.cse110.successorator.databinding.FragmentTaskListBinding;
+import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TaskListFragment extends Fragment {
 
     private MainViewModel activityModel;
     private FragmentTaskListBinding view;
     private TaskListAdapter adapter;
+
+    private DateManager globalDate;
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -66,6 +70,19 @@ public class TaskListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = FragmentTaskListBinding.inflate(inflater, container, false);
+
+
+        view.moveDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("onClick", "Button Clicked");
+                DateManager.incrementDate();
+                Log.d("onClick", "Date Incremented");
+            }
+        });
+
+
+
 
         // Set the adapter on the ListView
         view.cardList.setAdapter(adapter);
