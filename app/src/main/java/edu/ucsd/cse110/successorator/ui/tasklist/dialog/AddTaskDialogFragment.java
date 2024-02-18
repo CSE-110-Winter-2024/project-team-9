@@ -75,7 +75,7 @@ public class AddTaskDialogFragment extends DialogFragment {
     }
 
     private void onPositiveButtonClick() {
-        // variable that stores the text inputted when check icon is pressed
+        // variable that stores the text input when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
         // in final product, change date to LocalDate.now()
