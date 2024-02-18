@@ -54,7 +54,7 @@ public class TaskListFragment extends Fragment {
 
         // Initialize the Adapter (with an empty list for now)
         this.adapter = new TaskListAdapter(requireContext(), List.of(), task -> {
-            activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), LocalDate.now()));
+            activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), task.activeDate()));
             activityModel.remove(task.id());
         });
         activityModel.getTaskList().observe(tasks -> {
@@ -83,6 +83,7 @@ public class TaskListFragment extends Fragment {
                 DateManager.incrementDate();
                 Log.d("onClick", "Date Incremented");
                 activityModel.updateTasks();
+                activityModel.updateActiveTasks();
 
             }
         });

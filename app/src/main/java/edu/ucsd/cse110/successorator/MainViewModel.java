@@ -7,8 +7,6 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
-import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +15,6 @@ import edu.ucsd.cse110.successorator.lib.domain.TaskRepository;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 
-import edu.ucsd.cse110.successorator.SuccessoratorApplication;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.util.DateManager;
@@ -49,6 +46,7 @@ public class MainViewModel extends ViewModel {
         this.taskList = new SimpleSubject<>();
 
         updateTasks();
+        resetFutureTasks();
 
     }
 
@@ -80,6 +78,15 @@ public class MainViewModel extends ViewModel {
             taskList.setValue(newTasks);
         });
     }
+
+    public void updateActiveTasks() {
+        taskRepository.updateActiveTasks();
+    }
+
+    public void resetFutureTasks() {
+        taskRepository.resetFutureTasks();
+    }
+
 
 }
 

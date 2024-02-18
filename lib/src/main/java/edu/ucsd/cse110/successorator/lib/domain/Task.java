@@ -65,5 +65,4 @@ public class Task implements Serializable {
         return Objects.hash(id, text, sortOrder, isFinished);
     }
 
-    public void incrementActiveDate(){this.activeDate.plusDays(1);}
 }

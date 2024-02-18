@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import edu.ucsd.cse110.successorator.data.db.SuccessoratorDatabase;
+import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
@@ -21,8 +23,10 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding view;
-//    private Calendar currCalendar;
+
     private boolean isShowingList = true;
+
+    private TaskDao taskDao;
 
 
     @Override
@@ -33,14 +37,13 @@ public class MainActivity extends AppCompatActivity {
         DateManager.initializeGlobalDate(this);
         setTitle(DateManager.getFormattedDate());
 
+
         DateManager.getLocalDateSubject().observe(localDate -> {
             //Log.d("main", "observer of local date changed");
+            //Log.d("date manager date", DateManager.getFormattedDate());
             if (localDate == null) return;
             setTitle(DateManager.getFormattedDate());
         });
-
-
-
 
 
         this.view = ActivityMainBinding.inflate(getLayoutInflater());

@@ -24,14 +24,14 @@ public class TaskEntity {
     @ColumnInfo(name = "is_finished")
     public boolean isFinished;
 
-    @ColumnInfo(name = "date_created")
-    public LocalDate dateCreated;
+    @ColumnInfo(name = "active_date")
+    public LocalDate activeDate;
 
-    TaskEntity(@NonNull String text, int sortOrder, boolean isFinished, LocalDate dateCreated) {
+    TaskEntity(@NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate) {
         this.text = text;
         this.sortOrder = sortOrder;
         this.isFinished = isFinished;
-        this.dateCreated = dateCreated;
+        this.activeDate = activeDate;
     }
 
     public static TaskEntity fromTask(@NonNull Task task) {
@@ -41,6 +41,6 @@ public class TaskEntity {
     }
 
     public @NonNull Task toTask() {
-        return new Task(id, text, sortOrder, isFinished, dateCreated);
+        return new Task(id, text, sortOrder, isFinished, activeDate);
     }
 }

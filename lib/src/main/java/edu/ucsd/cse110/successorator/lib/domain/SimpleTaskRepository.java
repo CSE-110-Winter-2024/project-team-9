@@ -56,4 +56,12 @@ public class SimpleTaskRepository implements TaskRepository {
                 task.withSortOrder(dataSource.getMinSortOrder() - 1)
         );
     }
+
+    @Override
+    public void updateActiveTasks(){
+        return;
+    }
+
+    @Override
+    public void resetFutureTasks() {return;}
 }

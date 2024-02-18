@@ -18,4 +18,9 @@ public interface TaskRepository {
     void append(Task task);
 
     void prepend(Task task);
+
+    void updateActiveTasks();
+
+    void resetFutureTasks();
+
 }

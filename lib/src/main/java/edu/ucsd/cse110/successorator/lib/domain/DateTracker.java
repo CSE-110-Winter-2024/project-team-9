@@ -31,15 +31,14 @@ public class DateTracker {
         return this.date;
     }
 
-    public MutableSubject<LocalDate> getDateSubject() {;
+    public MutableSubject<LocalDate> getDateSubject() {
         dateSubject.setValue(getDate());
         return dateSubject;
     }
 
     public void incrementDate() {
         LocalDate newDate = date.plusDays(1);
-        getDateSubject().setValue(newDate);
         this.date = newDate;
-
+        getDateSubject().setValue(newDate);
     }
 }
