@@ -82,6 +82,8 @@ public class TaskListFragment extends Fragment {
                 Log.d("onClick", "Button Clicked");
                 DateManager.incrementDate();
                 Log.d("onClick", "Date Incremented");
+                activityModel.updateTasks();
+
             }
         });
 

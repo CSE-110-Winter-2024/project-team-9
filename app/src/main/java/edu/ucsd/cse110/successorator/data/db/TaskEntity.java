@@ -35,7 +35,7 @@ public class TaskEntity {
     }
 
     public static TaskEntity fromTask(@NonNull Task task) {
-        var card = new TaskEntity(task.text(), task.sortOrder(), task.isFinished(), task.dateCreated());
+        var card = new TaskEntity(task.text(), task.sortOrder(), task.isFinished(), task.activeDate());
         card.id = task.id();
         return card;
     }

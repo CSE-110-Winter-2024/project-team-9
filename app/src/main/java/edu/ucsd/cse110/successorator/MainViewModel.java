@@ -2,6 +2,8 @@ package edu.ucsd.cse110.successorator;
 
 import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
@@ -18,12 +20,15 @@ import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
 import edu.ucsd.cse110.successorator.SuccessoratorApplication;
 import edu.ucsd.cse110.successorator.lib.util.SimpleSubject;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
+import edu.ucsd.cse110.successorator.util.DateManager;
 
 
 public class MainViewModel extends ViewModel {
 
     private final TaskRepository taskRepository;
     private final DateTracker dateTracker = new DateTracker();
+
+    private final DateManager dateManager = new DateManager();
 
 
     private final MutableSubject<List<Task>> taskList;
@@ -43,14 +48,7 @@ public class MainViewModel extends ViewModel {
 
         this.taskList = new SimpleSubject<>();
 
-        taskRepository.findAll().observe(tasks -> {
-            if (tasks == null) return;
-
-            var newTasks = tasks.stream().collect(Collectors.toList());
-
-            taskList.setValue(newTasks);
-        });
-
+        updateTasks();
 
     }
 
@@ -68,6 +66,19 @@ public class MainViewModel extends ViewModel {
 
     public void remove(int id) {
         taskRepository.remove(id);
+    }
+
+    public void updateTasks() {
+        taskRepository.findAll().observe(tasks -> {
+            if (tasks == null) return;
+
+            var newTasks = tasks.stream()
+                    .filter(task -> task.activeDate().equals(dateManager.getGlobalDate().getDate()))
+                    .collect(Collectors.toList());
+
+            Log.d("dateManager.getGlobalDate().getDate()", dateManager.getGlobalDate().getDate().toString());
+            taskList.setValue(newTasks);
+        });
     }
 
 }
