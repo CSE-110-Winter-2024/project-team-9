@@ -11,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
@@ -18,12 +22,16 @@ import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding view;
+    private Calendar currCalendar;
     private boolean isShowingList = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.app_name);
+        currCalendar = Calendar.getInstance();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEEE M/dd");
+        String formattedDate = dateFormatter.format(currCalendar.getTime());
+        setTitle(formattedDate);
 
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());
