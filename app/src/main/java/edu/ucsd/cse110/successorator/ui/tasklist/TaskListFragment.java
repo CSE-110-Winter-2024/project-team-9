@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 
 import edu.ucsd.cse110.successorator.databinding.FragmentTaskListBinding;
+import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TaskListFragment extends Fragment {
@@ -51,7 +53,9 @@ public class TaskListFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
         // Initialize the Adapter (with an empty list for now)
-        this.adapter = new TaskListAdapter(requireContext(), List.of(), id -> {
+        this.adapter = new TaskListAdapter(requireContext(), List.of(), task -> {
+            activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), LocalDate.now()));
+            activityModel.remove(task.id());
         });
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;

@@ -58,6 +58,10 @@ public class MainViewModel extends ViewModel {
         return taskList;
     }
 
+    public void prepend(Task task) {
+        taskRepository.prepend(task);
+    }
+
     public void append(Task task) {
         taskRepository.append(task);
     }

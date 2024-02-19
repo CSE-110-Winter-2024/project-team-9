@@ -29,7 +29,7 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     LiveData<TaskEntity> findAsLiveData(int id);
 
-    @Query("SELECT * FROM tasks ORDER BY sort_order")
+    @Query("SELECT * FROM tasks ORDER BY is_finished,sort_order")
     LiveData<List<TaskEntity>> findAllAsLiveData();
 
     @Query("SELECT COUNT(*) FROM tasks")
@@ -46,9 +46,9 @@ public interface TaskDao {
 
     @Transaction
     default int append(TaskEntity task) {
-        var maxSortOrder = getMaxSortOrder();
+        var sortOrder = getMaxSortOrder() + 1;
         var newTask = new TaskEntity(
-                task.text, maxSortOrder + 1, false, task.dateCreated
+                task.text, sortOrder, task.isFinished, task.dateCreated
         );
         return Math.toIntExact(insert(newTask));
     }
@@ -56,8 +56,9 @@ public interface TaskDao {
     @Transaction
     default int prepend(TaskEntity task) {
         shiftSortOrders(getMinSortOrder(), getMaxSortOrder(), 1);
+        var sortOrder = getMinSortOrder() - 1;
         var newTask = new TaskEntity(
-                task.text, getMinSortOrder() - 1, false, LocalDate.now()
+                task.text, sortOrder, task.isFinished, task.dateCreated
         );
 
         return Math.toIntExact(insert(newTask));
