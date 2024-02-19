@@ -13,13 +13,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
+
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.lib.domain.TaskRepository;
 import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.util.DateManager;
+
 
 public class DisplayTaskListTest {
 
@@ -30,6 +31,7 @@ public class DisplayTaskListTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+
 
         // Initialize the mock date tracker and date manager
         LocalDate date = LocalDate.of(2004, 2, 5);

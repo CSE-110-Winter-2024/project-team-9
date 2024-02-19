@@ -55,6 +55,9 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             onDeleteClick.accept(task);
         });
 
+        /*
+        Sets strikethrough if the task is finished: https://stackoverflow.com/questions/9786544/creating-a-strikethrough-text
+         */
         if (task.isFinished()) {
             binding.taskText.setPaintFlags(binding.taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
