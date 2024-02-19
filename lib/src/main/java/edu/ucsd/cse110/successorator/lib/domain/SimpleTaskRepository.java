@@ -66,5 +66,5 @@ public class SimpleTaskRepository implements TaskRepository {
     public void resetFutureTasks() {return;}
 
     @Override
-    public void deletePrevUnfinished() {return;}
+    public void deletePrevFinished() {return;}
 }

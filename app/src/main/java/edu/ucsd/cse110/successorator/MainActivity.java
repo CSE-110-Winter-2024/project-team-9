@@ -15,9 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalTime;
 
-import edu.ucsd.cse110.successorator.data.db.SuccessoratorDatabase;
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
@@ -122,15 +121,21 @@ public class MainActivity extends AppCompatActivity {
 
         MainViewModel mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
+        // Calculate the rollover deadline for the current day
         LocalDateTime rolloverDeadline = lastOpened.toLocalDate().plusDays(1).atTime(2, 0);
-        if (currentTime.isAfter(rolloverDeadline)){
-            mainActivityViewModel.updateTasks();
-            mainActivityViewModel.updateActiveTasks();
-            mainActivityViewModel.deletePrevUnfinished();
+        if (lastOpened.toLocalTime().isBefore(LocalTime.of(2, 0))) {
+            // If lastOpened is between 12 am and 2 am, rollover should occur at 2 am of the same day
+            rolloverDeadline = rolloverDeadline.minusDays(1);
         }
 
-
+        if (currentTime.isAfter(rolloverDeadline)){
+            Log.d("MainActivity", "Rollover initiated");
+            mainActivityViewModel.updateTasks();
+            mainActivityViewModel.updateActiveTasks();
+            mainActivityViewModel.deletePrevFinished();
+        }
     }
+
 
 
 }

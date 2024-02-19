@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.Transformations;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,10 +56,6 @@ public class RoomTaskRepository implements TaskRepository {
     @Override
     public void append(Task task) {
         taskDao.append(TaskEntity.fromTask(task));
-//        List<TaskEntity> activeTasks = taskDao.getActiveTasks();
-//        for (int i = 0; i < activeTasks.size(); i++){
-//            Log.d("Active Task: ", activeTasks.get(i).text);
-//        }
     }
 
     @Override
@@ -80,8 +77,10 @@ public class RoomTaskRepository implements TaskRepository {
         List<TaskEntity> activeTasks = taskDao.getActiveTasks();
         for (int i = 0; i < activeTasks.size(); i++){
             TaskEntity currTask = activeTasks.get(i);
-            taskDao.setActiveDate(currTask.id, currTask.activeDate.plusDays(1));
-            Log.d("Active Task: ", activeTasks.get(i).text + " " + activeTasks.get(i).activeDate.toString());
+            if (!currTask.activeDate.equals(DateManager.getGlobalDate().getDate())) {
+                taskDao.setActiveDate(currTask.id, DateManager.getGlobalDate().getDate());
+            }
+            Log.d("Active Task: ", activeTasks.get(i).text + " " + activeTasks.get(i).activeDate.toString() + " " + DateManager.getGlobalDate());
         }
     }
 
@@ -98,7 +97,7 @@ public class RoomTaskRepository implements TaskRepository {
         }
     }
 
-    public void deletePrevUnfinished() {
+    public void deletePrevFinished() {
         List<TaskEntity> allTasks = taskDao.findAll();
         LocalDate dateManagerGlobalDate = DateManager.getGlobalDate().getDate();
 

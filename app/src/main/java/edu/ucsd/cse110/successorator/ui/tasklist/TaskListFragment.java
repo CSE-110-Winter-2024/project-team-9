@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +82,7 @@ public class TaskListFragment extends Fragment {
                 Log.d("onClick", "Date Incremented");
                 activityModel.updateTasks();
                 activityModel.updateActiveTasks();
-                activityModel.deletePrevUnfinished();
+                activityModel.deletePrevFinished();
             }
         });
 
