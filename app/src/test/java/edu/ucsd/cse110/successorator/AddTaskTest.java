@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.lib.domain.TaskRepository;
@@ -50,7 +51,6 @@ public class AddTaskTest {
         ((SimpleSubject<List<Task>>) subjectFromRepository).setValue(tasksFromRepository);
 
         when(mockTaskRep.findAll()).thenReturn(subjectFromRepository);
-
 
         // Initialize MainViewModel with the mock repository
         mainViewModel = new MainViewModel(mockTaskRep);
