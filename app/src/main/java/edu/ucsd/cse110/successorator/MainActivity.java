@@ -14,11 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
@@ -39,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
 
-
-        DateManager.initializeGlobalDate(this);
+        DateTracker dateTracker = new DateTracker(LocalDate.now());
+        DateManager.initializeGlobalDate(dateTracker);
         setTitle(DateManager.getFormattedDate());
 
 
