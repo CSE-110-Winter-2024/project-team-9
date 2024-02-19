@@ -15,7 +15,7 @@ public class TaskTest {
         assertEquals("Task Title", task.text());
         assertEquals(0, task.sortOrder());
         assertFalse(task.isFinished());
-        assertEquals(LocalDate.now(), task.dateCreated());
+        assertEquals(LocalDate.now(), task.activeDate());
     }
 
     @Test

@@ -15,14 +15,14 @@ public class Task implements Serializable {
 
     private final boolean isFinished;
 
-    private final LocalDate dateCreated;
+    private final LocalDate activeDate;
 
-    public Task(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isFinished, LocalDate dateCreated) {
+    public Task(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate) {
         this.id = id;
         this.text = text;
         this.sortOrder = sortOrder;
         this.isFinished = isFinished;
-        this.dateCreated = dateCreated;
+        this.activeDate = activeDate;
     }
 
     public @Nullable Integer id() {
@@ -39,14 +39,14 @@ public class Task implements Serializable {
 
     public boolean isFinished() {return isFinished;}
 
-    public LocalDate dateCreated() {return dateCreated;}
+    public LocalDate activeDate() {return activeDate;}
 
     public Task withId(int id) {
-        return new Task(id, text, this.sortOrder, isFinished, dateCreated);
+        return new Task(id, text, this.sortOrder, isFinished, activeDate);
     }
 
     public Task withSortOrder(int sortOrder) {
-        return new Task(this.id, text, sortOrder, isFinished, dateCreated);
+        return new Task(this.id, text, sortOrder, isFinished, activeDate);
     }
 
     @Override
@@ -57,11 +57,12 @@ public class Task implements Serializable {
         return Objects.equals(id, task.id) && Objects.equals(text, task.text)
                 && Objects.equals(sortOrder, task.sortOrder)
                 && Objects.equals(isFinished, task.isFinished)
-                && Objects.equals(dateCreated, task.dateCreated);
+                && Objects.equals(activeDate, task.activeDate);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, text, sortOrder, isFinished);
     }
+
 }
