@@ -14,9 +14,12 @@ import edu.ucsd.cse110.successorator.lib.util.Subject;
 public class DateManager {
 
     private static DateTracker globalDate;
+    private static DateTracker lastOpenedDate;
 
     public static void initializeGlobalDate(Context context) {
+        lastOpenedDate = globalDate!=null ? new DateTracker(globalDate.getDate()) : null;
         globalDate = new DateTracker(LocalDate.now());
+        Log.d("Last, New", lastOpenedDate + " " + globalDate.getDate().toString());
     }
 
     public static void incrementDate() {

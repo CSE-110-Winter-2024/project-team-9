@@ -98,4 +98,17 @@ public class RoomTaskRepository implements TaskRepository {
         }
     }
 
+    public void deletePrevUnfinished() {
+        List<TaskEntity> allTasks = taskDao.findAll();
+        LocalDate dateManagerGlobalDate = DateManager.getGlobalDate().getDate();
+
+        for (int i = 0; i< allTasks.size(); i++){
+            TaskEntity currTask = allTasks.get(i);
+
+            if(currTask.isFinished && currTask.activeDate.isBefore(dateManagerGlobalDate)){
+                taskDao.delete(currTask.id);
+            }
+        }
+    }
+
 }

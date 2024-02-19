@@ -23,10 +23,8 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 public class MainViewModel extends ViewModel {
 
     private final TaskRepository taskRepository;
-    private final DateTracker dateTracker = new DateTracker();
 
     private final DateManager dateManager = new DateManager();
-
 
     private final MutableSubject<List<Task>> taskList;
 
@@ -44,6 +42,7 @@ public class MainViewModel extends ViewModel {
         this.taskRepository = taskRepository;
 
         this.taskList = new SimpleSubject<>();
+
 
         updateTasks();
         resetFutureTasks();
@@ -85,6 +84,10 @@ public class MainViewModel extends ViewModel {
 
     public void resetFutureTasks() {
         taskRepository.resetFutureTasks();
+    }
+
+    public void deletePrevUnfinished() {
+        taskRepository.deletePrevUnfinished();
     }
 
 

@@ -23,4 +23,6 @@ public interface TaskRepository {
 
     void resetFutureTasks();
 
+    void deletePrevUnfinished();
+
 }

@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.successorator;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,7 +12,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import edu.ucsd.cse110.successorator.data.db.SuccessoratorDatabase;
@@ -28,10 +31,14 @@ public class MainActivity extends AppCompatActivity {
 
     private TaskDao taskDao;
 
+    public static LocalDateTime lastOpened;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
 
 
         DateManager.initializeGlobalDate(this);
@@ -44,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
             if (localDate == null) return;
             setTitle(DateManager.getFormattedDate());
         });
+
+        // Retrieve and save last opened datetime
+        LocalDateTime lastOpenedDateTime = getLastOpenedDateTime(sharedPreferences);
+        if (lastOpenedDateTime == null) {
+            lastOpenedDateTime = LocalDateTime.now();
+            saveLastOpenedDateTime(sharedPreferences, lastOpenedDateTime);
+        }
+
+        lastOpened = lastOpenedDateTime;
 
 
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
@@ -76,4 +92,45 @@ public class MainActivity extends AppCompatActivity {
     private void addTask(String input) {
         System.out.println("add task: " + input);
     }
+
+    // Save LocalDateTime to SharedPreferences
+    private void saveLastOpenedDateTime(SharedPreferences sharedPreferences, LocalDateTime dateTime) {
+        String dateTimeString = dateTime.toString();
+        sharedPreferences.edit().putString("last_opened_datetime", dateTimeString).apply();
+    }
+
+    // Retrieve LocalDateTime from SharedPreferences
+    private LocalDateTime getLastOpenedDateTime(SharedPreferences sharedPreferences) {
+        String dateTimeString = sharedPreferences.getString("last_opened_datetime", null);
+        if (dateTimeString != null) {
+            return LocalDateTime.parse(dateTimeString);
+        }
+        return null;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("MainActivity", "onStart");
+        Log.d("Last opened datetime: ", lastOpened.toString());
+        SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
+        // Save current time to SharedPreferences
+        LocalDateTime currentTime = LocalDateTime.now();
+        saveLastOpenedDateTime(sharedPreferences, currentTime);
+
+        Log.d("App started at: ", currentTime.toString());
+
+        MainViewModel mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        LocalDateTime rolloverDeadline = lastOpened.toLocalDate().plusDays(1).atTime(2, 0);
+        if (currentTime.isAfter(rolloverDeadline)){
+            mainActivityViewModel.updateTasks();
+            mainActivityViewModel.updateActiveTasks();
+            mainActivityViewModel.deletePrevUnfinished();
+        }
+
+
+    }
+
+
 }

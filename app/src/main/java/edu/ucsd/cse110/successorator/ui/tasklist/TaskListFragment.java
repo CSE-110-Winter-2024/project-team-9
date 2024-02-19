@@ -75,7 +75,6 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = FragmentTaskListBinding.inflate(inflater, container, false);
 
-
         view.moveDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +83,7 @@ public class TaskListFragment extends Fragment {
                 Log.d("onClick", "Date Incremented");
                 activityModel.updateTasks();
                 activityModel.updateActiveTasks();
-
+                activityModel.deletePrevUnfinished();
             }
         });
 
