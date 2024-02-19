@@ -15,8 +15,9 @@ public class DateManager {
 
     private static DateTracker globalDate;
 
-    public static void initializeGlobalDate(Context context) {
-        globalDate = new DateTracker(LocalDate.now());
+
+    public static void initializeGlobalDate(DateTracker dateTracker) {
+        globalDate = new DateTracker(dateTracker.getDate());
     }
 
     public static void incrementDate() {

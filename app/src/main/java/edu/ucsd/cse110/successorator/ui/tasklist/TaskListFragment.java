@@ -22,6 +22,7 @@ import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentTaskListBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.util.DateManager;
+import edu.ucsd.cse110.successorator.lib.domain.Task;
 
 public class TaskListFragment extends Fragment {
 
@@ -54,7 +55,7 @@ public class TaskListFragment extends Fragment {
 
         // Initialize the Adapter (with an empty list for now)
         this.adapter = new TaskListAdapter(requireContext(), List.of(), task -> {
-            activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), LocalDate.now()));
+            activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), task.activeDate()));
             activityModel.remove(task.id());
         });
         activityModel.getTaskList().observe(tasks -> {
@@ -75,13 +76,15 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = FragmentTaskListBinding.inflate(inflater, container, false);
 
-
         view.moveDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("onClick", "Button Clicked");
                 DateManager.incrementDate();
                 Log.d("onClick", "Date Incremented");
+                activityModel.updateTasks();
+                activityModel.updateActiveTasks();
+                activityModel.deletePrevFinished();
             }
         });
 

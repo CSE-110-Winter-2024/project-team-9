@@ -46,6 +46,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             binding = GoalItemCardBinding.inflate(layoutInflater, parent, false);
         }
 
+
         // Populate the view with the flashcard's data.
         binding.taskText.setText(task.text());
 
