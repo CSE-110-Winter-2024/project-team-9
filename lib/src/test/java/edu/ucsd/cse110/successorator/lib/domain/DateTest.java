@@ -38,7 +38,7 @@ public class DateTest {
         assertEquals(LocalDate.now().plusDays(1), DateTracker.getDate());
 
         //test setDate
-        LocalDate newDate = LocalDate.of(2020, 2, 24);
+        LocalDate newDate = LocalDate.now();
         DateTracker.setDate(newDate);
         assertEquals(newDate, DateTracker.getDate());
     }
@@ -55,7 +55,7 @@ public class DateTest {
         dateTracker.getDateSubject().observe(observer);
 
         // Set a new date on the DateTracker
-        LocalDate newDate = LocalDate.of(2022, 2, 16);
+        LocalDate newDate = LocalDate.now();
         dateTracker.setDate(newDate);
         dateTracker.incrementDate();
 
@@ -63,6 +63,8 @@ public class DateTest {
         verify(observer).onChanged(eq(newDate));
 
     }
+
+
 
     @Test
     public void testObserverRandomDate() {
@@ -77,7 +79,7 @@ public class DateTest {
         dateTracker.getDateSubject().observe(observer);
 
         // Set a new date on the DateTracker
-        LocalDate newDate = LocalDate.of(2022, 2, 16);
+        LocalDate newDate = LocalDate.of(2004, 06, 28);
         dateTracker.setDate(newDate);
         dateTracker.incrementDate();
 

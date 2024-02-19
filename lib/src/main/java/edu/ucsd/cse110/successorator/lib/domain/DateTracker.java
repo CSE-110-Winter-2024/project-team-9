@@ -32,7 +32,6 @@ public class DateTracker {
     }
 
     public MutableSubject<LocalDate> getDateSubject() {
-        dateSubject.setValue(getDate());
         return dateSubject;
     }
 
