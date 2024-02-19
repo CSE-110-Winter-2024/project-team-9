@@ -25,11 +25,14 @@ import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.data.db.LocalDateConverter;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
+import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class AddTaskDialogFragment extends DialogFragment {
 
     private MainViewModel activityModel;
     private EditText editTextTask;
+
+    private DateManager dateManager;
 
     public AddTaskDialogFragment() {
         // Required empty constructor
@@ -79,7 +82,7 @@ public class AddTaskDialogFragment extends DialogFragment {
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
         // in final product, change date to LocalDate.now()
-        LocalDate date = LocalDate.of(2004, 2, 5);
+        LocalDate date = dateManager.getGlobalDate().getDate();
         Task newTask = new Task(null, taskText, -1, false, date);
         activityModel.append(newTask);
 

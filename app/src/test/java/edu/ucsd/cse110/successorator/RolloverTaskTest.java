@@ -21,7 +21,7 @@ import edu.ucsd.cse110.successorator.lib.util.Observer;
 import edu.ucsd.cse110.successorator.lib.util.Subject;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-public class DisplayTaskListTest {
+public class RolloverTaskTest {
 
     @Mock
     private TaskRepository mockTaskRep;
@@ -69,15 +69,18 @@ public class DisplayTaskListTest {
     }
 
     @Test
-    public void testTaskListMatchesRepository() {
+    public void testNoFinishedTasks() {
+        DateManager.incrementDate();
+        mainViewModel.updateTasks();
+
         // When
         List<Task> tasksFromViewModel = mainViewModel.getTaskList().getValue();
 
         // Then
         List<Task> tasksFromRepository = Arrays.asList(
-                new Task(1, "Task 1", 1, false, LocalDate.of(2004, 2, 5)),
-                new Task(2, "Task 2", 2, false, LocalDate.of(2004, 2, 5)),
-                new Task(3, "Task 3", 3, false, LocalDate.of(2004, 2, 5))
+                new Task(1, "Task 1", 1, false, DateManager.getGlobalDate().getDate()),
+                new Task(2, "Task 2", 2, false, DateManager.getGlobalDate().getDate()),
+                new Task(3, "Task 3", 3, false, DateManager.getGlobalDate().getDate())
         );
 
         assertEquals(tasksFromRepository.size(), tasksFromViewModel.size());

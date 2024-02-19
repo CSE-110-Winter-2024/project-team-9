@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.successorator.ui.tasklist;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,8 @@ import edu.ucsd.cse110.successorator.databinding.GoalItemCardBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
-    Consumer<Integer> onDeleteClick;
-    public TaskListAdapter(Context context, List<Task> tasks, Consumer<Integer> onDeleteClick) {
+    Consumer<Task> onDeleteClick;
+    public TaskListAdapter(Context context, List<Task> tasks, Consumer<Task> onDeleteClick) {
         // This sets a bunch of stuff internally, which we can access
         // with getContext() and getItem() for example.
         //
@@ -45,14 +46,20 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             binding = GoalItemCardBinding.inflate(layoutInflater, parent, false);
         }
 
+
         // Populate the view with the flashcard's data.
         binding.taskText.setText(task.text());
 
-//        binding.cardDeleteButton.setOnClickListener(v -> {
-//            var id = flashcard.id();
-//            assert id != null;
-//            onDeleteClick.accept(id);
-//        });
+        binding.taskLayout.setOnClickListener(v -> {
+            assert task != null;
+            onDeleteClick.accept(task);
+        });
+
+        if (task.isFinished()) {
+            binding.taskText.setPaintFlags(binding.taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            binding.taskText.setPaintFlags(binding.taskText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
 
         return binding.getRoot();
     }
