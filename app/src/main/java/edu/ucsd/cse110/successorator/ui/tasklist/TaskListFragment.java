@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,6 +59,17 @@ public class TaskListFragment extends Fragment {
             activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), task.activeDate()));
             activityModel.remove(task.id());
         });
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        this.view = FragmentTaskListBinding.inflate(inflater, container, false);
+        activityModel.updateTasks();
+        activityModel.updateActiveTasks();
+        activityModel.deletePrevFinished();
+
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
@@ -69,12 +81,6 @@ public class TaskListFragment extends Fragment {
                 view.placeholderText.setText("");
             }
         });
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.view = FragmentTaskListBinding.inflate(inflater, container, false);
 
         view.moveDateButton.setOnClickListener(new View.OnClickListener() {
             @Override

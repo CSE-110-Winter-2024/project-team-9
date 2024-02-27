@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import androidx.annotation.NonNull;
@@ -21,10 +23,12 @@ import java.time.LocalTime;
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
+import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
 
     private ActivityMainBinding view;
 
@@ -77,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var itemId = item.getItemId();
+
+        if (itemId == R.id.header_bar_dropdown) {
+            var dialogFragment = SwitchViewDialogFragment.newInstance();
+            FragmentManager fm = getSupportFragmentManager();
+            dialogFragment.show(fm, "SwitchViewDialogFragment");
+        }
 
         //if item is the add task button, run initiateAddTask()
         if (itemId == R.id.header_bar_add_task) {
@@ -136,6 +146,40 @@ public class MainActivity extends AppCompatActivity {
             mainActivityViewModel.updateActiveTasks();
             mainActivityViewModel.deletePrevFinished();
         }
+    }
+
+    @Override
+    public void sendInput(String input) {
+        Log.d("MainActivity", "input " + input + " received");
+
+        Fragment fragment = TaskListFragment.newInstance();
+
+        switch (input) {
+            case "today":
+                Log.d("MainActivity", "Switch to today list");
+                fragment = TaskListFragment.newInstance();
+                break;
+            case "tomorrow":
+                Log.d("MainActivity", "Switch to tomorrow list");
+                fragment = TaskListFragment.newInstance();
+                break;
+            case "pending":
+                Log.d("MainActivity", "Switch to pending list");
+                fragment = TaskListFragment.newInstance();
+                break;
+            case "recurring":
+                Log.d("MainActivity", "Switch to recurring list");
+                fragment = AddTaskDialogFragment.newInstance();
+                break;
+            default:
+                Log.e("MainActivity", "No Valid View Found");
+                fragment = TaskListFragment.newInstance();
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
 
