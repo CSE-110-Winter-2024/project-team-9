@@ -31,11 +31,8 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
 
     private ActivityMainBinding view;
-
-    private boolean isShowingList = true;
-
+    private String currentFragment;
     private TaskDao taskDao;
-
     public static LocalDateTime lastOpened;
 
 
@@ -66,9 +63,10 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
         lastOpened = lastOpenedDateTime;
 
-
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());
+
+        currentFragment = "today";
     }
 
     @Override
@@ -157,19 +155,31 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         switch (input) {
             case "today":
                 Log.d("MainActivity", "Switch to today list");
+
+                //Change to Today List View Fragment
                 fragment = TaskListFragment.newInstance();
+                currentFragment = "today";
                 break;
             case "tomorrow":
                 Log.d("MainActivity", "Switch to tomorrow list");
+
+                //Change to Tomorrow List View Fragment
                 fragment = TaskListFragment.newInstance();
+                currentFragment = "tomorrow";
                 break;
             case "pending":
                 Log.d("MainActivity", "Switch to pending list");
+
+                //Change to Pending List View Fragment
                 fragment = TaskListFragment.newInstance();
+                currentFragment = "pending";
                 break;
             case "recurring":
                 Log.d("MainActivity", "Switch to recurring list");
+
+                //Change to Recurring List View Fragment
                 fragment = AddTaskDialogFragment.newInstance();
+                currentFragment = "recurring";
                 break;
             default:
                 Log.e("MainActivity", "No Valid View Found");
