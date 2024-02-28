@@ -154,37 +154,49 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
         switch (input) {
             case "today":
-                Log.d("MainActivity", "Switch to today list");
+                // Log.d("MainActivity", "Switch to today list");
+                // currentFragment = "today";
 
-                //Change to Today List View Fragment
+                // Change to Today List View Fragment
                 fragment = TaskListFragment.newInstance();
-                currentFragment = "today";
+                // fragment = TodayListFragment.newInstance();
+                setTitle(DateManager.getFormattedDate());
+
                 break;
             case "tomorrow":
-                Log.d("MainActivity", "Switch to tomorrow list");
+                // Log.d("MainActivity", "Switch to tomorrow list");
+                // currentFragment = "tomorrow";
 
-                //Change to Tomorrow List View Fragment
+                // Change to Tomorrow List View Fragment
                 fragment = TaskListFragment.newInstance();
-                currentFragment = "tomorrow";
+                // fragment = TomorrowListFragment.newInstance();
+                setTitle(DateManager.getTomorrowFormattedDate());
                 break;
             case "pending":
-                Log.d("MainActivity", "Switch to pending list");
+                // Log.d("MainActivity", "Switch to pending list");
+                // currentFragment = "pending";
 
-                //Change to Pending List View Fragment
+                // Change to Pending List View Fragment
                 fragment = TaskListFragment.newInstance();
-                currentFragment = "pending";
+                // fragment = PendingListFragment.newInstance();
+                setTitle("Pending");
                 break;
             case "recurring":
-                Log.d("MainActivity", "Switch to recurring list");
+                // Log.d("MainActivity", "Switch to recurring list");
+                // currentFragment = "recurring";
 
                 //Change to Recurring List View Fragment
                 fragment = AddTaskDialogFragment.newInstance();
-                currentFragment = "recurring";
+                // fragment = RecurringListFragment.newInstance();
+                setTitle("Recurring");
+
                 break;
             default:
                 Log.e("MainActivity", "No Valid View Found");
-                fragment = TaskListFragment.newInstance();
+                return;
         }
+
+        currentFragment = input;
 
         getSupportFragmentManager()
                 .beginTransaction()
