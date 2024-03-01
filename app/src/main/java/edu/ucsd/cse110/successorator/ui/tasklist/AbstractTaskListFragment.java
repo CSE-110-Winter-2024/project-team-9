@@ -28,8 +28,6 @@ abstract class AbstractTaskListFragment extends Fragment {
     private FragmentTaskListBinding view;
     private TaskListAdapter adapter;
 
-    private DateManager globalDate;
-
     public AbstractTaskListFragment() {
         // Required empty public constructor
     }

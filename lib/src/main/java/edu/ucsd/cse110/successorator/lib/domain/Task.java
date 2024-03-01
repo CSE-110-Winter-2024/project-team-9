@@ -22,6 +22,17 @@ public class Task implements Serializable {
     private final String category;
     private final String type;
 
+    public Task(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate, LocalDate dateCreated, String category, String type) {
+        this.id = id;
+        this.text = text;
+        this.sortOrder = sortOrder;
+        this.isFinished = isFinished;
+        this.activeDate = activeDate;
+        this.dateCreated = dateCreated;
+        this.category = category;
+        this.type = type;
+    }
+
     public Task(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate, String category, String type) {
         this.id = id;
         this.text = text;

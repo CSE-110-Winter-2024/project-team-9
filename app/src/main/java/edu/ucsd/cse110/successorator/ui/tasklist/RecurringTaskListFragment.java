@@ -9,9 +9,9 @@ import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 
-public class PendingTaskListFragment extends AbstractTaskListFragment {
-    public static TomorrowTaskListFragment newInstance() {
-        TomorrowTaskListFragment fragment = new TomorrowTaskListFragment();
+public class RecurringTaskListFragment extends AbstractTaskListFragment {
+    public static RecurringTaskListFragment newInstance() {
+        RecurringTaskListFragment fragment = new RecurringTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -20,19 +20,19 @@ public class PendingTaskListFragment extends AbstractTaskListFragment {
     @Override
     public void onDeleteClick(Task task) {
         //Add call to dialog fragment here
-        System.out.println("Pending long hold");
+        System.out.println("Recurring long hold");
     }
 
     @Nullable
     @Override
     public ArrayList<Task> filterTasks(List<Task> tasks) {
-        ArrayList<Task> pendingTasks = new ArrayList<>();
+        ArrayList<Task> recurringTasks = new ArrayList<>();
         for (Task task: tasks) {
-            System.out.println(task.text());
-            if (task.type().equals("pending")) {
-                pendingTasks.add(task);
+            if (task.type().equals("daily") || task.type().equals("weekly") || task.type().equals("monthly") || task.type().equals("yearly")) {
+                recurringTasks.add(task);
             }
+            System.out.println(task.dateCreated());
         }
-        return pendingTasks;
+        return recurringTasks;
     }
 }

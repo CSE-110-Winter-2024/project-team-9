@@ -24,6 +24,7 @@ import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
 import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.RecurringTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TodayTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TomorrowTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 // currentFragment = "recurring";
 
                 //Change to Recurring List View Fragment
-                fragment = AddTaskDialogFragment.newInstance();
+                fragment = RecurringTaskListFragment.newInstance();
                 // fragment = RecurringListFragment.newInstance();
                 setTitle("Recurring");
                 currentViewName = "recurring";

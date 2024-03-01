@@ -44,4 +44,13 @@ public class DateManager {
     public static DateTracker getGlobalDate() {
         return globalDate;
     }
+    public static String getDayOfWeek(LocalDate date) {
+        String dayOfWeek = date.getDayOfWeek().name();
+        return dayOfWeek.charAt(0) + dayOfWeek.substring(1).toLowerCase();
+    }
+    public static String getDateNoYear(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd"); // Use "dd-MM" for day-month format
+
+        return date.format(formatter);
+    }
 }
