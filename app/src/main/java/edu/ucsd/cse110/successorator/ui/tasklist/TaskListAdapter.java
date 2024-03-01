@@ -18,7 +18,8 @@ import edu.ucsd.cse110.successorator.lib.domain.Task;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
     Consumer<Task> onDeleteClick;
-    public TaskListAdapter(Context context, List<Task> tasks, Consumer<Task> onDeleteClick) {
+    boolean holdClick;
+    public TaskListAdapter(Context context, List<Task> tasks, Consumer<Task> onDeleteClick, boolean holdClick) {
         // This sets a bunch of stuff internally, which we can access
         // with getContext() and getItem() for example.
         //
@@ -26,6 +27,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         // or it will crash!
         super(context, 0, new ArrayList<>(tasks));
         this.onDeleteClick = onDeleteClick;
+        this.holdClick = holdClick;
     }
 
     @NonNull
@@ -50,10 +52,18 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         // Populate the view with the flashcard's data.
         binding.taskText.setText(task.text());
 
-        binding.taskLayout.setOnClickListener(v -> {
-            assert task != null;
-            onDeleteClick.accept(task);
-        });
+        if (this.holdClick) {
+            binding.taskLayout.setOnLongClickListener(v -> {
+                assert task != null;
+                onDeleteClick.accept(task);
+                return false;
+            });
+        } else {
+            binding.taskLayout.setOnClickListener(v -> {
+                assert task != null;
+                onDeleteClick.accept(task);
+            });
+        }
 
         /*
         Sets strikethrough if the task is finished: https://stackoverflow.com/questions/9786544/creating-a-strikethrough-text

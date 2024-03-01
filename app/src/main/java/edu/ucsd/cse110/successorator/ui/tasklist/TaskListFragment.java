@@ -56,10 +56,12 @@ public class TaskListFragment extends Fragment {
 
         // Initialize the Adapter (with an empty list for now)
         this.adapter = new TaskListAdapter(requireContext(), List.of(), task -> {
-            activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), task.activeDate()));
-            activityModel.remove(task.id());
-        });
+            onDeleteClick(task);
+        }, clickHold());
+    }
 
+    public boolean clickHold() {
+        return false;
     }
 
     @Nullable
