@@ -24,7 +24,7 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 
 abstract class AbstractTaskListFragment extends Fragment {
 
-    private MainViewModel activityModel;
+    public MainViewModel activityModel;
     private FragmentTaskListBinding view;
     private TaskListAdapter adapter;
 
@@ -53,15 +53,14 @@ abstract class AbstractTaskListFragment extends Fragment {
 
         // Initialize the Adapter (with an empty list for now)
         this.adapter = new TaskListAdapter(requireContext(), List.of(), task -> {
-            this.onDeleteClick(task);
+            onDeleteClick(task);
         });
 
     }
 
     @Nullable
     public void onDeleteClick(Task task) {
-        activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), task.activeDate()));
-        activityModel.remove(task.id());
+        return;
     }
 
     @Nullable
