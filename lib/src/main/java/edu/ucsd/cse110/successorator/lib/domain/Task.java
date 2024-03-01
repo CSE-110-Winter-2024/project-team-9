@@ -17,12 +17,25 @@ public class Task implements Serializable {
 
     private final LocalDate activeDate;
 
-    public Task(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate) {
+    private final LocalDate dateCreated;
+
+    private final String category;
+    private final String type;
+
+    public Task(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate, String category, String type) {
         this.id = id;
         this.text = text;
         this.sortOrder = sortOrder;
         this.isFinished = isFinished;
         this.activeDate = activeDate;
+        this.dateCreated = activeDate;
+        this.category = category;
+        this.type = type;
+    }
+
+    // Constructor with default values for category and type
+    public Task(@Nullable Integer id, @NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate) {
+        this(id, text, sortOrder, isFinished, activeDate, "defaultCategory", "defaultType");
     }
 
     public @Nullable Integer id() {
@@ -41,12 +54,25 @@ public class Task implements Serializable {
 
     public LocalDate activeDate() {return activeDate;}
 
+    public LocalDate dateCreated() {return dateCreated;}
+
+    public String category() {return category;}
+
+    public String type() {return type;}
+
+
+
+
     public Task withId(int id) {
-        return new Task(id, text, this.sortOrder, isFinished, activeDate);
+        return new Task(id, text, this.sortOrder, isFinished, activeDate, category, type);
     }
 
     public Task withSortOrder(int sortOrder) {
-        return new Task(this.id, text, sortOrder, isFinished, activeDate);
+        return new Task(this.id, text, sortOrder, isFinished, activeDate, category, type);
+    }
+
+    public Task withType(String type){
+        return new Task(this.id, text, sortOrder, isFinished, activeDate, category, type);
     }
 
     @Override

@@ -27,20 +27,33 @@ public class TaskEntity {
     @ColumnInfo(name = "active_date")
     public LocalDate activeDate;
 
-    TaskEntity(@NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate) {
+    @ColumnInfo(name = "date_created")
+    public LocalDate dateCreated;
+
+    @ColumnInfo(name = "category")
+    public String category;
+
+    @ColumnInfo(name = "type")
+    public String type;
+
+    TaskEntity(@NonNull String text, int sortOrder, boolean isFinished, LocalDate activeDate, String category, String type) {
         this.text = text;
         this.sortOrder = sortOrder;
         this.isFinished = isFinished;
         this.activeDate = activeDate;
+        this.dateCreated = activeDate;
+        this.category = category;
+        this.type = type;
     }
 
     public static TaskEntity fromTask(@NonNull Task task) {
-        var card = new TaskEntity(task.text(), task.sortOrder(), task.isFinished(), task.activeDate());
+        var card = new TaskEntity(task.text(), task.sortOrder(), task.isFinished(),
+                task.activeDate(), task.category(), task.type() );
         card.id = task.id();
         return card;
     }
 
     public @NonNull Task toTask() {
-        return new Task(id, text, sortOrder, isFinished, activeDate);
+        return new Task(id, text, sortOrder, isFinished, activeDate, category, type);
     }
 }

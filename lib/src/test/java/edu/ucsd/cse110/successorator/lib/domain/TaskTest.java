@@ -16,6 +16,22 @@ public class TaskTest {
         assertEquals(0, task.sortOrder());
         assertFalse(task.isFinished());
         assertEquals(LocalDate.now(), task.activeDate());
+        assertEquals(LocalDate.now(), task.dateCreated());
+        assertEquals("defaultCategory", task.category());
+        assertEquals("defaultType", task.type());
+    }
+
+    @Test
+    public void testGettersOverloadedConstructor() {
+        var task = new Task(1, "Task Title", 0, false, LocalDate.now(), "Home", "Recurring");
+        assertEquals(Integer.valueOf(1), task.id());
+        assertEquals("Task Title", task.text());
+        assertEquals(0, task.sortOrder());
+        assertFalse(task.isFinished());
+        assertEquals(LocalDate.now(), task.activeDate());
+        assertEquals(LocalDate.now(), task.dateCreated());
+        assertEquals("Home", task.category());
+        assertEquals("Recurring", task.type());
     }
 
     @Test
