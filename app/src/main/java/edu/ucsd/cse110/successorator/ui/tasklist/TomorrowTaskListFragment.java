@@ -36,9 +36,4 @@ public class TomorrowTaskListFragment extends AbstractTaskListFragment{
         }
         return tomorrowTasks;
     }
-
-    @Override
-    public boolean clickHold() {
-        return false;
-    }
 }

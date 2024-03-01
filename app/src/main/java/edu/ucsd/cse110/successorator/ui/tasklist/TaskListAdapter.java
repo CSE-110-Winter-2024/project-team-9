@@ -18,8 +18,8 @@ import edu.ucsd.cse110.successorator.lib.domain.Task;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
     Consumer<Task> onDeleteClick;
-    boolean holdClick;
-    public TaskListAdapter(Context context, List<Task> tasks, Consumer<Task> onDeleteClick, boolean holdClick) {
+
+    public TaskListAdapter(Context context, List<Task> tasks, Consumer<Task> onDeleteClick) {
         // This sets a bunch of stuff internally, which we can access
         // with getContext() and getItem() for example.
         //
@@ -27,7 +27,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         // or it will crash!
         super(context, 0, new ArrayList<>(tasks));
         this.onDeleteClick = onDeleteClick;
-        this.holdClick = holdClick;
     }
 
     @NonNull
@@ -52,7 +51,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         // Populate the view with the flashcard's data.
         binding.taskText.setText(task.text());
 
-        if (this.holdClick) {
+        if (!task.type().equals("single-time")) {
             binding.taskLayout.setOnLongClickListener(v -> {
                 assert task != null;
                 onDeleteClick.accept(task);

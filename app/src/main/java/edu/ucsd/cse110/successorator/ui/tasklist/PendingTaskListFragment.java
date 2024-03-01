@@ -34,9 +34,4 @@ public class PendingTaskListFragment extends AbstractTaskListFragment {
         }
         return pendingTasks;
     }
-
-    @Override
-    public boolean clickHold() {
-        return true;
-    }
 }
