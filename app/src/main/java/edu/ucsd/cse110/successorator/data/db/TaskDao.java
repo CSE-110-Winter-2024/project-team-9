@@ -46,8 +46,8 @@ public interface TaskDao {
     default int append(TaskEntity task) {
         var sortOrder = getMaxSortOrder() + 1;
         var newTask = new TaskEntity(
-                task.text, sortOrder, task.isFinished, task.activeDate
-        );
+                task.text, sortOrder, task.isFinished, task.activeDate, task.category
+                , task.type);
         return Math.toIntExact(insert(newTask));
     }
 
@@ -56,8 +56,8 @@ public interface TaskDao {
         shiftSortOrders(getMinSortOrder(), getMaxSortOrder(), 1);
         var sortOrder = getMinSortOrder() - 1;
         var newTask = new TaskEntity(
-                task.text, sortOrder, task.isFinished, task.activeDate
-        );
+                task.text, sortOrder, task.isFinished, task.activeDate, task.category
+                , task.type);
 
         return Math.toIntExact(insert(newTask));
     }
@@ -70,6 +70,18 @@ public interface TaskDao {
     @Query("UPDATE tasks SET is_finished = :isFinished WHERE id = :taskId")
     void setIsFinished(int taskId, boolean isFinished);
 
+    @Transaction
+    @Query("UPDATE tasks SET date_created = :newDate WHERE id = :taskId")
+    void setDateCreated(int taskId, LocalDate newDate);
+
+    @Transaction
+    @Query("UPDATE tasks SET category=:category WHERE id = :taskId")
+    void setCategory(int taskId, String category);
+
+    @Transaction
+    @Query("UPDATE tasks SET type = :type WHERE id = :taskId")
+    void setType(int taskId, String type);
+
     @Query("DELETE FROM tasks WHERE id = :id")
     void delete(int id);
 
@@ -78,6 +90,12 @@ public interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE is_finished = false")
     List<TaskEntity> getActiveTasks();
+
+    @Query("SELECT * FROM tasks WHERE category= :category")
+    List<TaskEntity> getCategory(String category);
+
+    @Query("SELECT * FROM tasks WHERE type= :type")
+    List<TaskEntity> getType(String type);
 
     @Query("DELETE FROM tasks")
     void deleteAllTasks();
