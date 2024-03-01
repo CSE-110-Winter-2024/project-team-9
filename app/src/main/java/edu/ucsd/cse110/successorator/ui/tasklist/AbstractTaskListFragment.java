@@ -11,9 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,26 +21,25 @@ import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.FragmentTaskListBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.util.DateManager;
-import edu.ucsd.cse110.successorator.lib.domain.Task;
 
-public class TaskListFragment extends Fragment {
+abstract class AbstractTaskListFragment extends Fragment {
 
-    private MainViewModel activityModel;
+    public MainViewModel activityModel;
     private FragmentTaskListBinding view;
     private TaskListAdapter adapter;
 
     private DateManager globalDate;
 
-    public TaskListFragment() {
+    public AbstractTaskListFragment() {
         // Required empty public constructor
     }
 
-    public static TaskListFragment newInstance() {
-        TaskListFragment fragment = new TaskListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static TaskListFragment newInstance() {
+//        TaskListFragment fragment = new TaskListFragment();
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +62,16 @@ public class TaskListFragment extends Fragment {
     }
 
     @Nullable
+    public void onDeleteClick(Task task) {
+        return;
+    }
+
+    @Nullable
+    public ArrayList<Task> filterTasks(List<Task> tasks) {
+        return new ArrayList<>(tasks);
+    }
+
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = FragmentTaskListBinding.inflate(inflater, container, false);
@@ -75,7 +82,8 @@ public class TaskListFragment extends Fragment {
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
-            adapter.addAll(new ArrayList<>(tasks)); // remember the mutable copy here!
+            ArrayList<Task> taskList = filterTasks(tasks);
+            adapter.addAll(taskList); // remember the mutable copy here!
             adapter.notifyDataSetChanged();
             if (tasks.isEmpty()) {
                 view.placeholderText.setText(R.string.no_goals);

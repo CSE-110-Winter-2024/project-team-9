@@ -77,7 +77,7 @@ public class RoomTaskRepository implements TaskRepository {
         List<TaskEntity> activeTasks = taskDao.getActiveTasks();
         for (int i = 0; i < activeTasks.size(); i++){
             TaskEntity currTask = activeTasks.get(i);
-            if (!currTask.activeDate.equals(DateManager.getGlobalDate().getDate())) {
+            if (!currTask.activeDate.isAfter(DateManager.getGlobalDate().getDate())) {
                 taskDao.setActiveDate(currTask.id, DateManager.getGlobalDate().getDate());
             }
             Log.d("Active Task: ", activeTasks.get(i).text + " " + activeTasks.get(i).activeDate.toString() + " " + DateManager.getGlobalDate());
@@ -109,5 +109,6 @@ public class RoomTaskRepository implements TaskRepository {
             }
         }
     }
+
 
 }
