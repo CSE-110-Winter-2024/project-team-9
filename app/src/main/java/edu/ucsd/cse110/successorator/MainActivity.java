@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
         switch (input) {
             case "today":
-                // Log.d("MainActivity", "Switch to today list");
                 // currentFragment = "today";
 
                 // Change to Today List View Fragment
@@ -164,7 +163,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
                 break;
             case "tomorrow":
-                // Log.d("MainActivity", "Switch to tomorrow list");
                 // currentFragment = "tomorrow";
 
                 // Change to Tomorrow List View Fragment
@@ -173,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 setTitle(DateManager.getTomorrowFormattedDate());
                 break;
             case "pending":
-                // Log.d("MainActivity", "Switch to pending list");
                 // currentFragment = "pending";
 
                 // Change to Pending List View Fragment
@@ -182,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 setTitle("Pending");
                 break;
             case "recurring":
-                // Log.d("MainActivity", "Switch to recurring list");
                 // currentFragment = "recurring";
 
                 //Change to Recurring List View Fragment
