@@ -23,7 +23,7 @@ import java.time.LocalTime;
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
-import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.TodayTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
     public void sendInput(String input) {
         Log.d("MainActivity", "input " + input + " received");
 
-        Fragment fragment = TaskListFragment.newInstance();
+        Fragment fragment = TodayTaskListFragment.newInstance();
 
         switch (input) {
             case "today":
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 // currentFragment = "today";
 
                 // Change to Today List View Fragment
-                fragment = TaskListFragment.newInstance();
+                fragment = TodayTaskListFragment.newInstance();
                 // fragment = TodayListFragment.newInstance();
                 setTitle(DateManager.getFormattedDate());
 
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 // currentFragment = "tomorrow";
 
                 // Change to Tomorrow List View Fragment
-                fragment = TaskListFragment.newInstance();
+                fragment = TodayTaskListFragment.newInstance();
                 // fragment = TomorrowListFragment.newInstance();
                 setTitle(DateManager.getTomorrowFormattedDate());
                 break;
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 // currentFragment = "pending";
 
                 // Change to Pending List View Fragment
-                fragment = TaskListFragment.newInstance();
+                fragment = TodayTaskListFragment.newInstance();
                 // fragment = PendingListFragment.newInstance();
                 setTitle("Pending");
                 break;
