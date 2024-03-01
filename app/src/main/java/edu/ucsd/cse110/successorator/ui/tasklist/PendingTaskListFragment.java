@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.domain.Task;
-import edu.ucsd.cse110.successorator.util.DateManager;
 
-public class TomorrowTaskListFragment extends AbstractTaskListFragment{
+public class PendingTaskListFragment extends AbstractTaskListFragment {
     public static TomorrowTaskListFragment newInstance() {
         TomorrowTaskListFragment fragment = new TomorrowTaskListFragment();
         Bundle args = new Bundle();
@@ -20,25 +19,24 @@ public class TomorrowTaskListFragment extends AbstractTaskListFragment{
     @Nullable
     @Override
     public void onDeleteClick(Task task) {
-        activityModel.remove(task.id());
-        activityModel.prepend(new Task(task.id(), task.text(), 1, !(task.isFinished()), task.activeDate(), task.category(),task.type()));
+        //Add call to dialog fragment here
     }
 
     @Nullable
     @Override
     public ArrayList<Task> filterTasks(List<Task> tasks) {
-        ArrayList<Task> tomorrowTasks = new ArrayList<>();
+        ArrayList<Task> pendingTasks = new ArrayList<>();
         for (Task task: tasks) {
             System.out.println(task.text());
-            if (task.type().equals("single-time") && task.activeDate().isEqual(DateManager.getGlobalDate().getTomorrow())) {
-                tomorrowTasks.add(task);
+            if (task.type().equals("pending")) {
+                pendingTasks.add(task);
             }
         }
-        return tomorrowTasks;
+        return pendingTasks;
     }
 
     @Override
     public boolean clickHold() {
-        return false;
+        return true;
     }
 }
