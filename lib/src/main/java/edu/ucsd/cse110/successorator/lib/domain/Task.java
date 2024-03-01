@@ -71,6 +71,10 @@ public class Task implements Serializable {
         return new Task(this.id, text, sortOrder, isFinished, activeDate, category, type);
     }
 
+    public Task withType(String type){
+        return new Task(this.id, text, sortOrder, isFinished, activeDate, category, type);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
