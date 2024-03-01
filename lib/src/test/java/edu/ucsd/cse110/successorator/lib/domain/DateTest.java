@@ -32,15 +32,18 @@ public class DateTest {
         //test getters
         var DateTracker = new DateTracker(LocalDate.now());
         assertEquals(LocalDate.now(), DateTracker.getDate());
+        assertEquals(LocalDate.now().plusDays(1), DateTracker.getTomorrow());
 
         //test incrementDate
         DateTracker.incrementDate();
         assertEquals(LocalDate.now().plusDays(1), DateTracker.getDate());
+        assertEquals(LocalDate.now().plusDays(2), DateTracker.getTomorrow());
 
         //test setDate
         LocalDate newDate = LocalDate.now();
         DateTracker.setDate(newDate);
         assertEquals(newDate, DateTracker.getDate());
+        assertEquals(newDate.plusDays(1), DateTracker.getTomorrow());
     }
 
     @Test
@@ -79,12 +82,12 @@ public class DateTest {
         dateTracker.getDateSubject().observe(observer);
 
         // Set a new date on the DateTracker
-        LocalDate newDate = LocalDate.of(2004, 06, 28);
+        LocalDate newDate = LocalDate.of(2004, 07, 28);
         dateTracker.setDate(newDate);
         dateTracker.incrementDate();
 
         // Verify that the observer's onChanged method was called with the new date
-        verify(observer).onChanged(eq(newDate));
+        verify(observer).onChanged(eq(newDate.plusDays(1)));
 
     }
 

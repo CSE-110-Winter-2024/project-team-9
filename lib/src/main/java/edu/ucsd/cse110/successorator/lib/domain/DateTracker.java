@@ -31,6 +31,10 @@ public class DateTracker {
         return this.date;
     }
 
+    public LocalDate getTomorrow() {
+        return date.plusDays(1);
+    }
+
     public MutableSubject<LocalDate> getDateSubject() {
         return dateSubject;
     }

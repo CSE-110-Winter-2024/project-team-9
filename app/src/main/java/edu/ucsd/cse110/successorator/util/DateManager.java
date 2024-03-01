@@ -32,6 +32,11 @@ public class DateManager {
         return dateFormatter.format(globalDate.getDate());
     }
 
+    public static String getTomorrowFormattedDate() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEEE M/dd");
+        return dateTimeFormatter.format(globalDate.getTomorrow());
+    }
+
     public static MutableSubject<LocalDate> getLocalDateSubject() {
         return globalDate.getDateSubject();
     }

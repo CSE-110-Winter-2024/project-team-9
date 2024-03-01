@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import androidx.annotation.NonNull;
@@ -21,17 +23,16 @@ import java.time.LocalTime;
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
+import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
 
     private ActivityMainBinding view;
-
-    private boolean isShowingList = true;
-
+    private String currentFragment;
     private TaskDao taskDao;
-
     public static LocalDateTime lastOpened;
 
 
@@ -62,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
         lastOpened = lastOpenedDateTime;
 
-
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());
+
+        currentFragment = "today";
     }
 
     @Override
@@ -77,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var itemId = item.getItemId();
+
+        if (itemId == R.id.header_bar_dropdown) {
+            var dialogFragment = SwitchViewDialogFragment.newInstance();
+            FragmentManager fm = getSupportFragmentManager();
+            dialogFragment.show(fm, "SwitchViewDialogFragment");
+        }
 
         //if item is the add task button, run initiateAddTask()
         if (itemId == R.id.header_bar_add_task) {
@@ -136,6 +144,60 @@ public class MainActivity extends AppCompatActivity {
             mainActivityViewModel.updateActiveTasks();
             mainActivityViewModel.deletePrevFinished();
         }
+    }
+
+    @Override
+    public void sendInput(String input) {
+        Log.d("MainActivity", "input " + input + " received");
+
+        Fragment fragment = TaskListFragment.newInstance();
+
+        switch (input) {
+            case "today":
+                // currentFragment = "today";
+
+                // Change to Today List View Fragment
+                fragment = TaskListFragment.newInstance();
+                // fragment = TodayListFragment.newInstance();
+                setTitle(DateManager.getFormattedDate());
+
+                break;
+            case "tomorrow":
+                // currentFragment = "tomorrow";
+
+                // Change to Tomorrow List View Fragment
+                fragment = TaskListFragment.newInstance();
+                // fragment = TomorrowListFragment.newInstance();
+                setTitle(DateManager.getTomorrowFormattedDate());
+                break;
+            case "pending":
+                // currentFragment = "pending";
+
+                // Change to Pending List View Fragment
+                fragment = TaskListFragment.newInstance();
+                // fragment = PendingListFragment.newInstance();
+                setTitle("Pending");
+                break;
+            case "recurring":
+                // currentFragment = "recurring";
+
+                //Change to Recurring List View Fragment
+                fragment = AddTaskDialogFragment.newInstance();
+                // fragment = RecurringListFragment.newInstance();
+                setTitle("Recurring");
+
+                break;
+            default:
+                Log.e("MainActivity", "No Valid View Found");
+                return;
+        }
+
+        currentFragment = input;
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
 
