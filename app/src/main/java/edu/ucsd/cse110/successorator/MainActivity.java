@@ -200,6 +200,30 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 .commit();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
+        // Save current time to SharedPreferences
+        LocalDateTime currentTime = LocalDateTime.now();
+        saveLastOpenedDateTime(sharedPreferences, currentTime);
 
+        MainViewModel mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        // Calculate the rollover deadline for the current day
+        LocalDateTime rolloverDeadline = lastOpened.toLocalDate().plusDays(1).atTime(2, 0);
+        if (lastOpened.toLocalTime().isBefore(LocalTime.of(2, 0))) {
+            // If lastOpened is between 12 am and 2 am, rollover should occur at 2 am of the same day
+            rolloverDeadline = rolloverDeadline.minusDays(1);
+        }
+
+        if (currentTime.isAfter(rolloverDeadline)){
+            mainActivityViewModel.updateTasks();
+            mainActivityViewModel.updateActiveTasks();
+            mainActivityViewModel.deletePrevFinished();
+        }
+
+        setTitle(DateManager.getFormattedDate());
+    }
 }

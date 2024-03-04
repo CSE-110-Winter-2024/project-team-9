@@ -66,6 +66,7 @@ public class TaskListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = FragmentTaskListBinding.inflate(inflater, container, false);
+
         activityModel.updateTasks();
         activityModel.updateActiveTasks();
         activityModel.deletePrevFinished();
