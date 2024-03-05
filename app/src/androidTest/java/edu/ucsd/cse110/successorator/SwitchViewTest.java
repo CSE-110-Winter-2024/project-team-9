@@ -55,7 +55,7 @@ public class SwitchViewTest {
         viewGroup.check(matches(isDisplayed()));
 
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.pending_button), withText("Pending List"),
+                allOf(withId(R.id.move_to_finish), withText("Pending List"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
@@ -82,7 +82,7 @@ public class SwitchViewTest {
         actionMenuItemView2.perform(click());
 
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.recurring_button), withText("Recurring List"),
+                allOf(withId(R.id.move_to_delete), withText("Recurring List"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),

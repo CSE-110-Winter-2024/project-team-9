@@ -3,11 +3,16 @@ package edu.ucsd.cse110.successorator.ui.tasklist;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.successorator.lib.domain.Task;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.DeleteTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 
 public class PendingTaskListFragment extends AbstractTaskListFragment {
     public static TomorrowTaskListFragment newInstance() {
@@ -19,8 +24,9 @@ public class PendingTaskListFragment extends AbstractTaskListFragment {
     @Nullable
     @Override
     public void onDeleteClick(Task task) {
-        //Add call to dialog fragment here
-        System.out.println("Pending long hold");
+        var dialogFragment = DeleteTaskDialogFragment.newInstance();
+//        FragmentManager fm = getSupportFragmentManager();
+//        dialogFragment.show(fm, "delete task dialog fragment");
     }
 
     @Nullable

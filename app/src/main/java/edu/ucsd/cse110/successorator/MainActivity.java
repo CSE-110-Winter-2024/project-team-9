@@ -34,7 +34,6 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
 
     private ActivityMainBinding view;
-    private String currentFragment;
     private String currentViewName = "today";
     private TaskDao taskDao;
     public static LocalDateTime lastOpened;
@@ -157,32 +156,19 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
         switch (input) {
             case "today":
-                // currentFragment = "today";
-
                 // Change to Today List View Fragment
                 fragment = TodayTaskListFragment.newInstance();
-                // fragment = TodayListFragment.newInstance();
                 setTitle("Today, " + DateManager.getFormattedDate());
-                currentViewName = "today";
-
                 break;
             case "tomorrow":
-                // currentFragment = "tomorrow";
-
                 // Change to Tomorrow List View Fragment
                 fragment = TomorrowTaskListFragment.newInstance();
-                // fragment = TomorrowListFragment.newInstance();
                 setTitle("Tomorrow, " + DateManager.getTomorrowFormattedDate());
-                currentViewName = "tomorrow";
                 break;
             case "pending":
-                // currentFragment = "pending";
-
                 // Change to Pending List View Fragment
                 fragment = PendingTaskListFragment.newInstance();
-                // fragment = PendingListFragment.newInstance();
                 setTitle("Pending");
-                currentViewName = "pending";
                 break;
             case "recurring":
                 // currentFragment = "recurring";
@@ -191,15 +177,13 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 fragment = RecurringTaskListFragment.newInstance();
                 // fragment = RecurringListFragment.newInstance();
                 setTitle("Recurring");
-                currentViewName = "recurring";
-
                 break;
             default:
                 Log.e("MainActivity", "No Valid View Found");
                 return;
         }
 
-        currentFragment = input;
+        currentViewName = input;
 
         getSupportFragmentManager()
                 .beginTransaction()
