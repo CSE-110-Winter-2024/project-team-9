@@ -41,8 +41,6 @@ public class MainViewModel extends ViewModel {
 
         this.taskList = new SimpleSubject<>();
 
-        resetFutureTasks();
-
         updateTasks();
     }
 
@@ -77,7 +75,8 @@ public class MainViewModel extends ViewModel {
                                     || task.activeDate().equals(DateManager.getGlobalDate().getDate());
                         } else {
                             // Otherwise, include tasks from the current day
-                            return task.activeDate().equals(DateManager.getGlobalDate().getDate());
+                            //return task.activeDate().equals(DateManager.getGlobalDate().getDate());
+                            return true;
                         }
                     })
                     .collect(Collectors.toList());
