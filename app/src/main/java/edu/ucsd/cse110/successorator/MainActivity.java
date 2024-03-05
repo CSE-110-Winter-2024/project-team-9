@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         setContentView(view.getRoot());
 
         currentFragment = "today";
+
+        sendInput(currentFragment);
     }
 
     @Override
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 // Change to Today List View Fragment
                 fragment = TaskListFragment.newInstance();
                 // fragment = TodayListFragment.newInstance();
-                setTitle(DateManager.getFormattedDate());
+                setTitle("Today, " + DateManager.getFormattedDate());
 
                 break;
             case "tomorrow":
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 // Change to Tomorrow List View Fragment
                 fragment = TaskListFragment.newInstance();
                 // fragment = TomorrowListFragment.newInstance();
-                setTitle(DateManager.getTomorrowFormattedDate());
+                setTitle("Tomorrow, " + DateManager.getTomorrowFormattedDate());
                 break;
             case "pending":
                 // currentFragment = "pending";
@@ -205,9 +207,30 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         super.onResume();
 
         SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
+
+        DateTracker dateTracker = new DateTracker(LocalDate.now());
+        DateManager.initializeGlobalDate(dateTracker);
+        setTitle(DateManager.getFormattedDate());
+
+
+        DateManager.getLocalDateSubject().observe(localDate -> {
+            if (localDate == null) return;
+            setTitle(DateManager.getFormattedDate());
+        });
+
+        // Retrieve and save last opened datetime
+        LocalDateTime lastOpenedDateTime = getLastOpenedDateTime(sharedPreferences);
+        if (lastOpenedDateTime == null) {
+            lastOpenedDateTime = LocalDateTime.now();
+            saveLastOpenedDateTime(sharedPreferences, lastOpenedDateTime);
+        }
+
+        lastOpened = lastOpenedDateTime;
+
+        SharedPreferences sharedPreferences2 = getSharedPreferences("task", MODE_PRIVATE);
         // Save current time to SharedPreferences
         LocalDateTime currentTime = LocalDateTime.now();
-        saveLastOpenedDateTime(sharedPreferences, currentTime);
+        saveLastOpenedDateTime(sharedPreferences2, currentTime);
 
         MainViewModel mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -219,11 +242,17 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         }
 
         if (currentTime.isAfter(rolloverDeadline)){
+            Log.d("MainActivity", "Rollover initiated");
             mainActivityViewModel.updateTasks();
             mainActivityViewModel.updateActiveTasks();
             mainActivityViewModel.deletePrevFinished();
         }
 
-        setTitle(DateManager.getFormattedDate());
+        setContentView(view.getRoot());
+
+        currentFragment = "today";
+
+        sendInput(currentFragment);
+
     }
 }
