@@ -17,22 +17,22 @@ import androidx.lifecycle.ViewModelProvider;
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.MovePendingTaskBinding;
+import edu.ucsd.cse110.successorator.lib.domain.Task;
+import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class DeleteTaskDialogFragment extends DialogFragment {
 
     private MainViewModel activityModel;
     private MovePendingTaskBinding view;
-    public interface OnInputListener {
-        void sendInput(String input);
-    }
-    private OnInputListener myListener;
+    private Task task;
 
-    DeleteTaskDialogFragment() {
 
+    DeleteTaskDialogFragment(Task task) {
+        this.task = task;
     }
 
-    public static DeleteTaskDialogFragment newInstance() {
-        return new DeleteTaskDialogFragment();
+    public static DeleteTaskDialogFragment newInstance(Task task) {
+        return new DeleteTaskDialogFragment(task);
     }
 
     @Override
@@ -43,12 +43,6 @@ public class DeleteTaskDialogFragment extends DialogFragment {
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
-
-        try {
-            myListener = (OnInputListener) getActivity();
-        } catch (ClassCastException error) {
-            Log.e("Error", "onCreate: ClassCastException: " + error.getMessage());
-        }
     }
 
     @NonNull
@@ -63,9 +57,7 @@ public class DeleteTaskDialogFragment extends DialogFragment {
                 .create();
 
         view.moveToToday.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                buttonClick(alertDialog, "today");
-            }
+            public void onClick(View v){buttonClick(alertDialog, "today");}
             //call some function to change task from pending to today
         });
 
@@ -96,6 +88,23 @@ public class DeleteTaskDialogFragment extends DialogFragment {
     public void buttonClick(AlertDialog alertDialog, String s) {
         alertDialog.dismiss();
         Log.d(s + "_button", s + " button pressed");
-        myListener.sendInput(s);
+        if (s.equals("today")) {
+            activityModel.remove(task.id());
+            activityModel.prepend(new Task(task.id(), task.text(), 1, task.isFinished(), DateManager.getGlobalDate().getDate(), task.category(),"single-time"));
+        }
+
+        if (s.equals("tomorrow")) {
+            activityModel.remove(task.id());
+            activityModel.prepend(new Task(task.id(), task.text(), 1, task.isFinished(), DateManager.getGlobalDate().getTomorrow(), task.category(),"single-time"));
+        }
+
+        if (s.equals("finish")) {
+            activityModel.remove(task.id());
+            activityModel.prepend(new Task(task.id(), task.text(), 1, true, DateManager.getGlobalDate().getDate(), task.category(),"single-time"));
+        }
+
+        if (s.equals("delete")) {
+            activityModel.remove(task.id());
+        }
     }
 }

@@ -15,8 +15,8 @@ import edu.ucsd.cse110.successorator.ui.tasklist.dialog.DeleteTaskDialogFragment
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 
 public class PendingTaskListFragment extends AbstractTaskListFragment {
-    public static TomorrowTaskListFragment newInstance() {
-        TomorrowTaskListFragment fragment = new TomorrowTaskListFragment();
+    public static PendingTaskListFragment newInstance() {
+        PendingTaskListFragment fragment = new PendingTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -24,9 +24,9 @@ public class PendingTaskListFragment extends AbstractTaskListFragment {
     @Nullable
     @Override
     public void onDeleteClick(Task task) {
-        var dialogFragment = DeleteTaskDialogFragment.newInstance();
-//        FragmentManager fm = getSupportFragmentManager();
-//        dialogFragment.show(fm, "delete task dialog fragment");
+        var dialogFragment = DeleteTaskDialogFragment.newInstance(task);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        dialogFragment.show(fm, "delete task dialog fragment");
     }
 
     @Nullable
@@ -34,7 +34,6 @@ public class PendingTaskListFragment extends AbstractTaskListFragment {
     public ArrayList<Task> filterTasks(List<Task> tasks) {
         ArrayList<Task> pendingTasks = new ArrayList<>();
         for (Task task: tasks) {
-            System.out.println(task.text());
             if (task.type().equals("pending")) {
                 pendingTasks.add(task);
             }
