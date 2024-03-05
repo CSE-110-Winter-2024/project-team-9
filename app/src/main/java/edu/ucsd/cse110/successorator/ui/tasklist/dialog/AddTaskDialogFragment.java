@@ -72,6 +72,9 @@ public class AddTaskDialogFragment extends DialogFragment {
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setView(view)
+                .setTitle("New Task")
+                .setMessage("Please enter the title of your task")
+//                .setPositiveButton("Save", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick);
 
         return builder.create();
@@ -81,6 +84,7 @@ public class AddTaskDialogFragment extends DialogFragment {
         // variable that stores the text input when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
+
         // in final product, change date to LocalDate.now()
         LocalDate date = dateManager.getGlobalDate().getDate();
         Task newTask = new Task(null, taskText, -1, false, date);
