@@ -165,11 +165,8 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 setTitle("Tomorrow, " + DateManager.getTomorrowFormattedDate());
                 break;
             case "pending":
-                // currentFragment = "pending";
-
                 // Change to Pending List View Fragment
                 fragment = PendingTaskListFragment.newInstance();
-                // fragment = PendingListFragment.newInstance();
                 setTitle("Pending");
                 break;
             case "recurring":
