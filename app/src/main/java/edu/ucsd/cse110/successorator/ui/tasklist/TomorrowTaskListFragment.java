@@ -32,7 +32,6 @@ public class TomorrowTaskListFragment extends AbstractTaskListFragment{
             System.out.println(task.text());
             if (task.type().equals("single-time") && task.activeDate().isEqual(DateManager.getGlobalDate().getTomorrow())) {
                 todayTasks.add(task);
-                System.out.println("here");
             }
         }
         return todayTasks;
