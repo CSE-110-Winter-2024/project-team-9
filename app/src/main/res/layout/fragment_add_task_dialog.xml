@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_text_task">
 
         <RadioButton
-            android:id="@+id/oneTime"
+            android:id="@+id/singleTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="One Time" />

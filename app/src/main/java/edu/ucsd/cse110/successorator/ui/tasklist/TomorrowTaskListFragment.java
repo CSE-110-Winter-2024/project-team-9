@@ -29,7 +29,7 @@ public class TomorrowTaskListFragment extends AbstractTaskListFragment{
     public ArrayList<Task> filterTasks(List<Task> tasks) {
         ArrayList<Task> todayTasks = new ArrayList<>();
         for (Task task: tasks) {
-            System.out.println(task.text());
+            //System.out.println(task.text());
             if (task.type().equals("single-time") && task.activeDate().isEqual(DateManager.getGlobalDate().getTomorrow())) {
                 todayTasks.add(task);
             }
