@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                     var dialogFragment = TodayAddTaskDialogFragment.newInstance();
                     FragmentManager fm = getSupportFragmentManager();
                     dialogFragment.show(fm, "AddTaskDialogFragment");
+                    break;
                 case "tomorrow":
                     var tomorrowDialogFragment = TomorrowAddTaskDialogFragment.newInstance();
                     FragmentManager tomorrowFm = getSupportFragmentManager();

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Locale;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -50,8 +54,31 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_add_task_dialog, null);
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_tomorrow_add_task_dialog, null);
         editTextTask = view.findViewById(R.id.edit_text_task);
+
+        LocalDate date = dateManager.getGlobalDate().getDate();
+        date = date.plusDays(1);
+        String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
+        int dayOfMonth = date.getDayOfMonth();
+        int month = date.getMonthValue();
+
+        int occurrences = 0;
+        while (date.getMonthValue() == month) {
+            if (date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US).equals(dayOfWeek)) {
+                occurrences++;
+            }
+            date = date.plusDays(1);
+        }
+
+        RadioButton weekly = view.findViewById(R.id.weekly);
+        weekly.setText(String.format("Weekly on %s", dayOfWeek));
+
+        RadioButton monthly = view.findViewById(R.id.monthly);
+        monthly.setText(String.format("Monthly on %s %s", formatNumberWithSuffix(occurrences), dayOfWeek));
+
+        RadioButton yearly = view.findViewById(R.id.yearly);
+        yearly.setText(String.format("Yearly on %d/%d", month, dayOfMonth));
 
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -68,9 +95,11 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
         // variable that stores the text input when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
+
+        String type = getType();
         // in final product, change date to LocalDate.now()
         LocalDate date = dateManager.getGlobalDate().getDate();
-        Task newTask = new Task(null, taskText, -1, false, date.plusDays(1), "", "single-time");
+        Task newTask = new Task(null, taskText, -1, false, date.plusDays(1), "", type);
         activityModel.append(newTask);
 
         dismiss();
@@ -79,5 +108,32 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
         Log.d("onNegativeButtonClick", "cancel");
         dialog.cancel();
+    }
+
+    private String getType() {
+        String type = "single-time";
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_today_add_task_dialog, null);
+        RadioButton singleBtn = view.findViewById(R.id.singleTime);
+        RadioButton dailyBtn = view.findViewById(R.id.daily);
+        RadioButton weeklyBtn = view.findViewById(R.id.weekly);
+        RadioButton yearlyBtn = view.findViewById(R.id.yearly);
+        if(singleBtn.isChecked()) {type = "single-time";}
+        else if(dailyBtn.isChecked()) {type = "daily";}
+        else if (weeklyBtn.isChecked()) { type = "weekly";}
+        else if (yearlyBtn.isChecked()) { type = "yearly";}
+
+        return type;
+    }
+    public static String formatNumberWithSuffix(int number) {
+        if (number >= 11 && number <= 13) {
+            return number + "th"; // Special case for 11th, 12th, and 13th
+        } else {
+            switch (number % 10) {
+                case 1: return number + "st";
+                case 2: return number + "nd";
+                case 3: return number + "rd";
+                default: return number + "th";
+            }
+        }
     }
 }
