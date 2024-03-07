@@ -23,7 +23,8 @@ import java.time.LocalTime;
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
-import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.TodayTaskListFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.TomorrowTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
@@ -31,7 +32,7 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
 
     private ActivityMainBinding view;
-    private String currentFragment;
+    private String currentViewName = "today";
     private TaskDao taskDao;
     public static LocalDateTime lastOpened;
 
@@ -44,14 +45,13 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
         DateTracker dateTracker = new DateTracker(LocalDate.now());
         DateManager.initializeGlobalDate(dateTracker);
-        setTitle(DateManager.getFormattedDate());
 
 
         DateManager.getLocalDateSubject().observe(localDate -> {
             //Log.d("main", "observer of local date changed");
             //Log.d("date manager date", DateManager.getFormattedDate());
             if (localDate == null) return;
-            setTitle(DateManager.getFormattedDate());
+            sendInput(currentViewName);
         });
 
         // Retrieve and save last opened datetime
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());
 
-        currentFragment = "today";
+        sendInput("today");
     }
 
     @Override
@@ -150,31 +150,24 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
     public void sendInput(String input) {
         Log.d("MainActivity", "input " + input + " received");
 
-        Fragment fragment = TaskListFragment.newInstance();
+        Fragment fragment = TodayTaskListFragment.newInstance();
 
         switch (input) {
             case "today":
-                // currentFragment = "today";
-
                 // Change to Today List View Fragment
-                fragment = TaskListFragment.newInstance();
-                // fragment = TodayListFragment.newInstance();
-                setTitle(DateManager.getFormattedDate());
-
+                fragment = TodayTaskListFragment.newInstance();
+                setTitle("Today, " + DateManager.getFormattedDate());
                 break;
             case "tomorrow":
-                // currentFragment = "tomorrow";
-
                 // Change to Tomorrow List View Fragment
-                fragment = TaskListFragment.newInstance();
-                // fragment = TomorrowListFragment.newInstance();
-                setTitle(DateManager.getTomorrowFormattedDate());
+                fragment = TomorrowTaskListFragment.newInstance();
+                setTitle("Tomorrow, " + DateManager.getTomorrowFormattedDate());
                 break;
             case "pending":
                 // currentFragment = "pending";
 
                 // Change to Pending List View Fragment
-                fragment = TaskListFragment.newInstance();
+                fragment = TodayTaskListFragment.newInstance();
                 // fragment = PendingListFragment.newInstance();
                 setTitle("Pending");
                 break;
@@ -185,14 +178,13 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 fragment = AddTaskDialogFragment.newInstance();
                 // fragment = RecurringListFragment.newInstance();
                 setTitle("Recurring");
-
                 break;
             default:
                 Log.e("MainActivity", "No Valid View Found");
                 return;
         }
 
-        currentFragment = input;
+        currentViewName = input;
 
         getSupportFragmentManager()
                 .beginTransaction()

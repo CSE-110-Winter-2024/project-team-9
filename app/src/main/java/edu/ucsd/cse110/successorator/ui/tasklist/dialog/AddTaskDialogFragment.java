@@ -87,7 +87,7 @@ public class AddTaskDialogFragment extends DialogFragment {
 
         // in final product, change date to LocalDate.now()
         LocalDate date = dateManager.getGlobalDate().getDate();
-        Task newTask = new Task(null, taskText, -1, false, date);
+        Task newTask = new Task(null, taskText, -1, false, date, "", "single-time");
         activityModel.append(newTask);
 
         dismiss();
