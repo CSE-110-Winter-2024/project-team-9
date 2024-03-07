@@ -50,32 +50,33 @@ public class DateManager {
         return dayOfWeek.charAt(0) + dayOfWeek.substring(1).toLowerCase();
     }
     public static String getDateNoYear(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd"); // Use "dd-MM" for day-month format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd"); // Use "dd-MM" for day-month format
 
         return date.format(formatter);
     }
 
     public static String getDayOfMonth(LocalDate date) {
         String dayOfWeek = date.getDayOfWeek().name();
-        int dayNum = date.getDayOfMonth() - 1;
-        int weekNum = ((int) Math.floor(dayNum / 7)) + 1;
+        String formattedDayOfWeek = dayOfWeek.charAt(0) + dayOfWeek.substring(1).toLowerCase();
+        int dayNum = date.getDayOfMonth();
+        int weekNum = (int) Math.ceil(dayNum / 7.0);
         String retString = "";
 
         switch (weekNum) {
             case 1:
-                retString += "1st " + dayOfWeek;
+                retString += "1st " + formattedDayOfWeek;
                 break;
             case 2:
-                retString += "2nd " + dayOfWeek;
+                retString += "2nd " + formattedDayOfWeek;
                 break;
             case 3:
-                retString += "3rd " + dayOfWeek;
+                retString += "3rd " + formattedDayOfWeek;
                 break;
             case 4:
-                retString += "4th " + dayOfWeek;
+                retString += "4th " + formattedDayOfWeek;
                 break;
             case 5:
-                retString += "5th " + dayOfWeek;
+                retString += "5th " + formattedDayOfWeek;
                 break;
             default:
                 retString += "Invalid week number";
