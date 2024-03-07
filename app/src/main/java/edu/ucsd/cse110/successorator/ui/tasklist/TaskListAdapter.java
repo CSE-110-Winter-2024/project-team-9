@@ -59,6 +59,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
                 String dayOfWeek = DateManager.getDayOfWeek(task.dateCreated());
                 text += " on " + dayOfWeek;
             }
+            if (task.type().equals("monthly")) {
+                String dayOfMonth = DateManager.getDayOfMonth(task.dateCreated());
+                text += " on " + dayOfMonth;
+            }
             if (task.type().equals("yearly")) {
                 String dayOfYear = DateManager.getDateNoYear(task.dateCreated());
                 text += " on " + dayOfYear;

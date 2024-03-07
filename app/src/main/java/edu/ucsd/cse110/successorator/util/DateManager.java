@@ -6,6 +6,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.lang.Math;
 
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
 import edu.ucsd.cse110.successorator.lib.util.MutableSubject;
@@ -53,4 +54,35 @@ public class DateManager {
 
         return date.format(formatter);
     }
+
+    public static String getDayOfMonth(LocalDate date) {
+        String dayOfWeek = date.getDayOfWeek().name();
+        int dayNum = date.getDayOfMonth() - 1;
+        int weekNum = ((int) Math.floor(dayNum / 7)) + 1;
+        String retString = "";
+
+        switch (weekNum) {
+            case 1:
+                retString += "1st " + dayOfWeek;
+                break;
+            case 2:
+                retString += "2nd " + dayOfWeek;
+                break;
+            case 3:
+                retString += "3rd " + dayOfWeek;
+                break;
+            case 4:
+                retString += "4th " + dayOfWeek;
+                break;
+            case 5:
+                retString += "5th " + dayOfWeek;
+                break;
+            default:
+                retString += "Invalid week number";
+                break;
+        }
+
+        return retString;
+    }
+
 }
