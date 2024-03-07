@@ -59,28 +59,28 @@ public class AddTaskDialogFragment extends DialogFragment {
         View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_add_task_dialog, null);
         editTextTask = view.findViewById(R.id.edit_text_task);
 
-        //Set the action listener for the EditText
-//        editTextTask.setOnEditorActionListener((v, actionId, event) -> {
-//            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                // Handle "done" action
-//                onPositiveButtonClick();
-//                return true;
-//            }
-//            return false;
-//        });
+        // Set the action listener for the EditText
+        editTextTask.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // Handle "done" action
+                onPositiveButtonClick();
+                return true;
+            }
+            return false;
+        });
 
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setView(view)
                 .setTitle("New Task")
                 .setMessage("Please enter the title of your task")
-                .setPositiveButton("Save", this::onPositiveButtonClick)
+//                .setPositiveButton("Save", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick);
 
         return builder.create();
     }
 
-    private void onPositiveButtonClick(DialogInterface dialog, int which) {
+    private void onPositiveButtonClick() {
         // variable that stores the text input when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");

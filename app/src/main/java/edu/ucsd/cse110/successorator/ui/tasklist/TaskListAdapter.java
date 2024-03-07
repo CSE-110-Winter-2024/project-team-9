@@ -31,7 +31,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the task for this position.
+        // Get the flashcard for this position.
         var task = getItem(position);
         assert task != null;
 
@@ -47,7 +47,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         }
 
 
-        // Populate the view with the task's data.
+        // Populate the view with the flashcard's data.
         binding.taskText.setText(task.text());
 
         binding.taskLayout.setOnClickListener(v -> {
