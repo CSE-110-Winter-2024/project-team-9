@@ -56,6 +56,8 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
         // Inflate the custom layout for the dialog
         View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_tomorrow_add_task_dialog, null);
         editTextTask = view.findViewById(R.id.edit_text_task);
+        RadioButton btn = view.findViewById(R.id.singleTime);
+        btn.setChecked(true);
 
         LocalDate date = dateManager.getGlobalDate().getDate();
         date = date.plusDays(1);
