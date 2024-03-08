@@ -6,13 +6,16 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,21 +35,21 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddTaskUITest {
+public class AddDailyRecurringFromTodayTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void addTaskUITest() {
+    public void addDailyRecurring() {
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.action_bar),
                                         1),
-                                0),
+                                1),
                         isDisplayed()));
         actionMenuItemView.perform(click());
 
@@ -56,30 +59,66 @@ public class AddTaskUITest {
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Task 1"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Daily"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.edit_text_task), withText("Task 1"),
+                allOf(withId(R.id.edit_text_task), withText("Daily"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
         appCompatEditText2.perform(pressImeActionButton());
 
-        ViewInteraction viewGroup = onView(
-                allOf(withId(R.id.task_layout), isDisplayed()));
-        viewGroup.check(matches(isDisplayed()));
+        ViewInteraction materialRadioButton = onView(
+                allOf(withId(R.id.daily), withText("Daily"),
+                        childAtPosition(
+                                allOf(withId(R.id.pending_options),
+                                        childAtPosition(
+                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                                1)),
+                                1),
+                        isDisplayed()));
+        materialRadioButton.perform(click());
+
+        ViewInteraction materialButton = onView(
+                allOf(withId(android.R.id.button1), withText("Save"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton.perform(scrollTo(), click());
+
+        ViewInteraction actionMenuItemView2 = onView(
+                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(com.google.android.material.R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        actionMenuItemView2.perform(click());
+
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.recurring_button), withText("Recurring List"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.custom),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton2.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.task_text), withText("Task 1"),
+                allOf(withId(R.id.task_text), withText("Daily, daily"),
                         withParent(allOf(withId(R.id.task_layout),
                                 withParent(withId(R.id.card_list)))),
                         isDisplayed()));
-        textView.check(matches(withText("Task 1")));
+        textView.check(matches(withText("Daily, daily")));
     }
 
     private static Matcher<View> childAtPosition(

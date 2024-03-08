@@ -4,32 +4,36 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.LocalDate;
+
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-public class DeleteRecurringTaskDialogFragment extends DialogFragment {
+public class PendingAddTaskDialogFragment extends DialogFragment {
+
     private MainViewModel activityModel;
-    private Task task;
+    private EditText editTextTask;
 
     private DateManager dateManager;
 
-    public DeleteRecurringTaskDialogFragment(Task task) {
+    public PendingAddTaskDialogFragment() {
         // Required empty constructor
-        this.task = task;
     }
 
-    public static DeleteRecurringTaskDialogFragment newInstance(Task task) {
-        return new DeleteRecurringTaskDialogFragment(task);
+    public static PendingAddTaskDialogFragment newInstance() {
+        return new PendingAddTaskDialogFragment();
     }
 
     @Override
@@ -46,27 +50,34 @@ public class DeleteRecurringTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_pending_add_task_dialog, null);
+        editTextTask = view.findViewById(R.id.edit_text_task);
 
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setMessage("Do you want to delete this Recurring Task?")
-                .setPositiveButton("Yes", this::onPositiveButtonClick)
-                .setNegativeButton("No", this::onNegativeButtonClick);
+        builder.setView(view)
+                .setTitle("New Task")
+                .setMessage("Please enter the title of your task")
+                .setPositiveButton("Save", this::onPositiveButtonClick)
+                .setNegativeButton("Cancel", this::onNegativeButtonClick);
 
         return builder.create();
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         // variable that stores the text input when check icon is pressed
-        activityModel.remove(task.id());
+        @NonNull String taskText = editTextTask.getText().toString();
+        Log.d("onPositiveButtonClick", "Button Pressed");
+        // in final product, change date to LocalDate.now()
+        LocalDate date = dateManager.getGlobalDate().getDate();
+        Task newTask = new Task(null, taskText, -1, false, date, "", "pending");
+        activityModel.append(newTask);
 
         dismiss();
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
+        Log.d("onNegativeButtonClick", "cancel");
         dialog.cancel();
     }
-
 }
-
-
