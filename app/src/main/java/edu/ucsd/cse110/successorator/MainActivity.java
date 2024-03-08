@@ -23,7 +23,6 @@ import java.time.LocalTime;
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
-import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.RecurringTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TodayTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TomorrowTaskListFragment;
@@ -167,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 break;
             case "pending":
                 // Change to Pending List View Fragment
-                fragment = PendingTaskListFragment.newInstance();
+                fragment = TodayTaskListFragment.newInstance();
                 setTitle("Pending");
                 break;
             case "recurring":
