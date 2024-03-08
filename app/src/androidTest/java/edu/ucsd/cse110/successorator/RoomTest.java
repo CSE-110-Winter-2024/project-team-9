@@ -41,32 +41,32 @@ public class RoomTest {
     @Test
     public void testUpdate() {
         LocalDate date1 = LocalDate.of(2012, 12, 25);
-        TaskEntity task1 = TaskEntity.fromTask(new Task(1, "Task 1", 1, false, date1));
+        TaskEntity task1 = TaskEntity.fromTask(new Task(1, "Task 1", 1, false, date1, "", "single-time"));
 
         successoratorDatabase.taskDao().prepend(task1);
 
         LocalDate date2 = LocalDate.of(2012, 12, 25);
-        TaskEntity task2 = TaskEntity.fromTask(new Task(2, "Task 2", 2, false, date2));
+        TaskEntity task2 = TaskEntity.fromTask(new Task(2, "Task 2", 2, false, date2,  "", "single-time"));
 
         successoratorDatabase.taskDao().append(task2);
 
-        task1 = TaskEntity.fromTask(new Task(3, "Task 1", 1, true, date1));
+        task1 = TaskEntity.fromTask(new Task(3, "Task 1", 1, true, date1,  "", "single-time"));
 
         successoratorDatabase.taskDao().append(task1);
         successoratorDatabase.taskDao().delete(1);
 
         Task retrievedTask1 = successoratorDatabase.taskDao().find(3).toTask();
-        Task expectedTask1 = new Task(3, "Task 1", 1, true, date1);
+        Task expectedTask1 = new Task(3, "Task 1", 1, true, date1, "", "single-time");
 
         assertEquals(retrievedTask1, expectedTask1);
 
-        task1 = TaskEntity.fromTask(new Task(4, "Task 1", 1, false, date1));
+        task1 = TaskEntity.fromTask(new Task(4, "Task 1", 1, false, date1, "", "single-time"));
 
         successoratorDatabase.taskDao().prepend(task1);
         successoratorDatabase.taskDao().delete(3);
 
         retrievedTask1 = successoratorDatabase.taskDao().find(4).toTask();
-        expectedTask1 = new Task(4, "Task 1", 0, false, date1);
+        expectedTask1 = new Task(4, "Task 1", 0, false, date1, "", "single-time");
 
         assertEquals(expectedTask1, retrievedTask1);
 
