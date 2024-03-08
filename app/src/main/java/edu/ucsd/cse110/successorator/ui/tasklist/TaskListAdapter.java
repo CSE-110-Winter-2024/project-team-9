@@ -33,7 +33,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the flashcard for this position.
+        // Get the task for this position.
         var task = getItem(position);
         assert task != null;
 
@@ -47,7 +47,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             var layoutInflater = LayoutInflater.from(getContext());
             binding = GoalItemCardBinding.inflate(layoutInflater, parent, false);
         }
-
 
         // Populate the view with the flashcard's data.
         if (task.type().equals("pending") || task.type().equals("single-time")) {
