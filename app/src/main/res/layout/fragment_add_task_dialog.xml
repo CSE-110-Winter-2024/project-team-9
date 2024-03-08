@@ -43,35 +43,35 @@
             android:id="@+id/contextWork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="W"
             android:background="@drawable/work_radio_button_background"
-            android:gravity="center"/>
+            android:button="@null"
+            android:gravity="center"
+            android:text="W" />
 
         <RadioButton
             android:id="@+id/contextSchool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="S"
             android:background="@drawable/school_radio_button_background"
-            android:gravity="center"/>
+            android:button="@null"
+            android:gravity="center"
+            android:text="S" />
 
         <RadioButton
             android:id="@+id/contextErrand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:text="E"
             android:background="@drawable/errand_radio_button_background"
-            android:gravity="center"/>
+            android:button="@null"
+            android:gravity="center"
+            android:text="E" />
     </RadioGroup>
 
     <RadioGroup
         android:id="@+id/pending_options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,19 +93,19 @@
             android:id="@+id/weekly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Weekly" />
+            android:text="Weekly on" />
 
         <RadioButton
             android:id="@+id/monthly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Monthly" />
+            android:text="Monthly, " />
 
         <RadioButton
             android:id="@+id/yearly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Yearly" />
+            android:text="Yearly on" />
 
     </RadioGroup>
 

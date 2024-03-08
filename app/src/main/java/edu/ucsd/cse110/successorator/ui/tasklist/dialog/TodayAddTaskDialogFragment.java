@@ -56,7 +56,7 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_today_add_task_dialog, null);
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_add_task_dialog, null);
 
         editTextTask = view.findViewById(R.id.edit_text_task);
         RadioButton btn = view.findViewById(R.id.singleTime);
