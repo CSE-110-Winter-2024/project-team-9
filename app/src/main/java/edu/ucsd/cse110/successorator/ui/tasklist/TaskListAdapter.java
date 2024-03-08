@@ -15,9 +15,11 @@ import java.util.function.Consumer;
 
 import edu.ucsd.cse110.successorator.databinding.GoalItemCardBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
+import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
     Consumer<Task> onDeleteClick;
+
     public TaskListAdapter(Context context, List<Task> tasks, Consumer<Task> onDeleteClick) {
         // This sets a bunch of stuff internally, which we can access
         // with getContext() and getItem() for example.
@@ -48,12 +50,38 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
 
         // Populate the view with the flashcard's data.
-        binding.taskText.setText(task.text());
+        if (task.type().equals("pending") || task.type().equals("single-time")) {
+            binding.taskText.setText(task.text());
+        } else {
+            String text = task.text() + ", " + task.type();
+            if (task.type().equals("weekly")) {
+                //get day of week
+                String dayOfWeek = DateManager.getDayOfWeek(task.dateCreated());
+                text += " on " + dayOfWeek;
+            }
+            if (task.type().equals("monthly")) {
+                String dayOfMonth = DateManager.getDayOfMonth(task.dateCreated());
+                text += " on " + dayOfMonth;
+            }
+            if (task.type().equals("yearly")) {
+                String dayOfYear = DateManager.getDateNoYear(task.dateCreated());
+                text += " on " + dayOfYear;
+            }
+            binding.taskText.setText(text);
+        }
 
-        binding.taskLayout.setOnClickListener(v -> {
-            assert task != null;
-            onDeleteClick.accept(task);
-        });
+        if (!task.type().equals("single-time")) {
+            binding.taskLayout.setOnLongClickListener(v -> {
+                assert task != null;
+                onDeleteClick.accept(task);
+                return false;
+            });
+        } else {
+            binding.taskLayout.setOnClickListener(v -> {
+                assert task != null;
+                onDeleteClick.accept(task);
+            });
+        }
 
         /*
         Sets strikethrough if the task is finished: https://stackoverflow.com/questions/9786544/creating-a-strikethrough-text
