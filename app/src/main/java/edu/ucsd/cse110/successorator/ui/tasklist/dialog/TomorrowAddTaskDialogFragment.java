@@ -74,13 +74,13 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
         }
 
         RadioButton weekly = view.findViewById(R.id.weekly);
-        weekly.setText(String.format("Weekly on %s", dayOfWeek));
+        weekly.setText(String.format("Weekly on %s", DateManager.getDayOfWeek(date)));
 
         RadioButton monthly = view.findViewById(R.id.monthly);
-        monthly.setText(String.format("Monthly on %s %s", formatNumberWithSuffix(occurrences), dayOfWeek));
+        monthly.setText(String.format("Monthly on %s", DateManager.getDayOfMonth(date)));
 
         RadioButton yearly = view.findViewById(R.id.yearly);
-        yearly.setText(String.format("Yearly on %d/%d", month, dayOfMonth));
+        yearly.setText(String.format("Yearly on %s", DateManager.getDateNoYear(date)));
 
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());

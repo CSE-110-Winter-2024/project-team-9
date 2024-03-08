@@ -75,13 +75,13 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
         }
 
         RadioButton weekly = view.findViewById(R.id.weekly);
-        weekly.setText(String.format("Weekly on %s", dayOfWeek));
+        weekly.setText(String.format("Weekly on %s", DateManager.getDayOfWeek(date)));
 
         RadioButton monthly = view.findViewById(R.id.monthly);
-        monthly.setText(String.format("Monthly on %s %s", formatNumberWithSuffix(occurrences), dayOfWeek));
+        monthly.setText(String.format("Monthly on %s", DateManager.getDayOfMonth(date)));
 
         RadioButton yearly = view.findViewById(R.id.yearly);
-        yearly.setText(String.format("Yearly on %d/%d", month, dayOfMonth));
+        yearly.setText(String.format("Yearly on %s", DateManager.getDateNoYear(date)));
 
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -128,25 +128,8 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
         else if (weeklyBtn.isChecked()) { type = "weekly";}
         else if (monthlyBtn.isChecked()) { type = "monthly";}
         else if (yearlyBtn.isChecked()) { type = "yearly";}
-        Log.d("statuses", "single " + singleBtn.isChecked());
-        Log.d("statuses", "daily " + dailyBtn.isChecked());
-        Log.d("statuses", "weekly " + weeklyBtn.isChecked());
-        Log.d("statuses", "monthly " + monthlyBtn.isChecked());
-        Log.d("statuses", "yearly " + yearlyBtn.isChecked());
 
         return type;
     }
 
-    public static String formatNumberWithSuffix(int number) {
-        if (number >= 11 && number <= 13) {
-            return number + "th"; // Special case for 11th, 12th, and 13th
-        } else {
-            switch (number % 10) {
-                case 1: return number + "st";
-                case 2: return number + "nd";
-                case 3: return number + "rd";
-                default: return number + "th";
-            }
-        }
-    }
 }
