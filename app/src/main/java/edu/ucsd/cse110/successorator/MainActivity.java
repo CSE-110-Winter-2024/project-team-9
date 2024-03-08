@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
                 //Change to Recurring List View Fragment
                 fragment = RecurringTaskListFragment.newInstance();
-                // fragment = RecurringListFragment.newInstance();
                 setTitle("Recurring");
                 break;
             default:
