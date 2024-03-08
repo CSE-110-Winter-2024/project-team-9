@@ -34,6 +34,7 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
     private String type;
 
     View view;
+
     public TodayAddTaskDialogFragment() {
         // Required empty constructor
     }

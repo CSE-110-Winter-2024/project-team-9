@@ -69,6 +69,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             binding.taskText.setText(text);
         }
 
+
         if (!task.type().equals("single-time")) {
             binding.taskLayout.setOnLongClickListener(v -> {
                 assert task != null;
