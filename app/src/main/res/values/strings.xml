@@ -11,4 +11,9 @@
     <string name="tomorrow_button">Tomorrow List</string>
     <string name="pending_button">Pending List</string>
     <string name="recurring_button">Recurring List</string>
+    <string name="home_filter">Home</string>
+    <string name="work_filter">Work</string>
+    <string name="school_filter">School</string>
+    <string name="errands_filter">Errands</string>
+    <string name="no_filter">No Filter</string>
 </resources>

@@ -2,11 +2,19 @@ package edu.ucsd.cse110.successorator;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,18 +30,22 @@ import java.time.LocalTime;
 
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.databinding.FragmentChangeFilterDialogBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
 import edu.ucsd.cse110.successorator.ui.tasklist.TaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.ChangeFilterDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
+public class MainActivity extends AppCompatActivity
+        implements SwitchViewDialogFragment.OnInputListener, ChangeFilterDialogFragment.OnInputListener {
 
     private ActivityMainBinding view;
     private String currentFragment;
     private TaskDao taskDao;
     public static LocalDateTime lastOpened;
+    private String contextFilter;
 
 
     @Override
@@ -67,11 +79,26 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         setContentView(view.getRoot());
 
         currentFragment = "today";
+
+        contextFilter = "";
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.header_bar, menu);
+
+        Drawable menuIcon = getDrawable(R.drawable.ic_menu);
+        menuIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        ShapeDrawable background = new ShapeDrawable(new RectShape());
+        background.getPaint().setColor(0x00000000);
+        background.setBounds(0, 0, 100, 100);
+
+        LayerDrawable homeAsUpDrawable = new LayerDrawable(new Drawable[] {background, menuIcon});
+
+        getSupportActionBar().setHomeAsUpIndicator(homeAsUpDrawable);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         return true;
     }
 
@@ -79,6 +106,13 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var itemId = item.getItemId();
+
+        if (itemId == android.R.id.home) {
+
+            var dialogFragment = ChangeFilterDialogFragment.newInstance();
+            FragmentManager fm = getSupportFragmentManager();
+            dialogFragment.show(fm, "ChangeFilterDialogFragment");
+        }
 
         if (itemId == R.id.header_bar_dropdown) {
             var dialogFragment = SwitchViewDialogFragment.newInstance();
@@ -144,6 +178,34 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
             mainActivityViewModel.updateActiveTasks();
             mainActivityViewModel.deletePrevFinished();
         }
+    }
+
+    public void updateFilter() {
+
+            Drawable menuIcon = getDrawable(R.drawable.ic_menu);
+            ShapeDrawable background = new ShapeDrawable(new RectShape());
+            background.setBounds(0, 0, 100, 100);
+
+            if (contextFilter.equals("home")) {
+                menuIcon.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+                background.getPaint().setColor(0xffffffff);
+            } else {
+                menuIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                background.getPaint().setColor(0x00000000);
+
+            }
+
+            LayerDrawable homeAsUpDrawable = new LayerDrawable(new Drawable[] {background, menuIcon});
+
+            getSupportActionBar().setHomeAsUpIndicator(homeAsUpDrawable);
+
+
+    }
+
+    @Override
+    public void sendFilterInput(String input) {
+        contextFilter = input;
+        updateFilter();
     }
 
     @Override
