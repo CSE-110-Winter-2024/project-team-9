@@ -77,7 +77,7 @@ public class DeleteTaskDialogFragment extends DialogFragment {
 
         view.moveToDelete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                buttonClick(alertDialog, "cancel");
+                buttonClick(alertDialog, "delete");
             }
             //call some function to delete task
         });
