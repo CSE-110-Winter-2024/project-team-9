@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +72,9 @@ abstract class AbstractTaskListFragment extends Fragment {
         activityModel.updateActiveTasks();
         activityModel.deletePrevFinished();
 
+        if (activityModel.getTaskList().getValue() != null) {
+            handleRecurrence(activityModel.getTaskList().getValue());
+        }
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;
             adapter.clear();
@@ -103,5 +107,39 @@ abstract class AbstractTaskListFragment extends Fragment {
         view.cardList.setAdapter(adapter);
 
         return view.getRoot();
+    }
+
+    public void handleRecurrence(List<Task> tasks) {
+        LocalDate today = DateManager.getGlobalDate().getDate();
+        LocalDate tomorrow = DateManager.getGlobalDate().getTomorrow();
+        for (Task task: tasks) {
+            if (task.type().equals("daily")) {
+                boolean addToday = true;
+                boolean addTomorrow = true;
+                for (Task checkTask: tasks) {
+                    if (checkTask.text().equals(task.text()) && checkTask.type().equals("single-time") && !checkTask.activeDate().isAfter(today)) {
+                        addToday = false;
+                    }
+                    if (checkTask.text().equals(task.text()) && checkTask.type().equals("single-time") && checkTask.activeDate().equals(tomorrow)) {
+                        addTomorrow = false;
+                    }
+                }
+                if (addToday) {
+                    activityModel.append(new Task(task.id(), task.text(), 1, false, today, task.category(),"single-time"));
+                }
+                if (addTomorrow) {
+                    activityModel.append(new Task(task.id(), task.text(), 1, false, tomorrow, task.category(),"single-time"));
+                }
+            }
+            if (!task.type().equals("single-time") && !task.type().equals("pending")) {
+                boolean shouldRecurToday = false;
+                if (task.type().equals("daily")) {
+                    shouldRecurToday = true;
+                } else {
+                    shouldRecurToday = DateManager.shouldRecur(task.dateCreated(), DateManager.getGlobalDate().getDate(), task.type());
+                }
+
+            }
+        }
     }
 }

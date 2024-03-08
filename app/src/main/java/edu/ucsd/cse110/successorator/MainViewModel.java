@@ -84,6 +84,7 @@ public class MainViewModel extends ViewModel {
             //Log.d("dateManager.getGlobalDate().getDate()", DateManager.getGlobalDate().getDate().toString());
             taskList.setValue(newTasks);
         });
+
     }
 
 

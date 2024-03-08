@@ -86,4 +86,23 @@ public class DateManager {
         return retString;
     }
 
+    public static boolean shouldRecur(LocalDate recurDate, LocalDate checkDate, String recurType) {
+        if (recurType.equals("weekly")) {
+            if (getDayOfWeek(checkDate).equals(getDayOfWeek(recurDate))) {
+                return true;
+            }
+        }
+        if (recurType.equals("yearly")) {
+            if (getDateNoYear(checkDate).equals(getDateNoYear(recurDate))) {
+                return true;
+            }
+        }
+        if (recurType.equals("monthly")) {
+            if (getDayOfMonth(recurDate).equals(getDayOfMonth(checkDate))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

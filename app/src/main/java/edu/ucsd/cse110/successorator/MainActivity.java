@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
     private String currentViewName = "today";
     private TaskDao taskDao;
     public static LocalDateTime lastOpened;
+    public MainViewModel mainActivityViewModel;
 
 
     @Override
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
             //Log.d("date manager date", DateManager.getFormattedDate());
             if (localDate == null) return;
             sendInput(currentViewName);
+
         });
 
         // Retrieve and save last opened datetime
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
         Log.d("App started at: ", currentTime.toString());
 
-        MainViewModel mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         // Calculate the rollover deadline for the current day
         LocalDateTime rolloverDeadline = lastOpened.toLocalDate().plusDays(1).atTime(2, 0);
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
             mainActivityViewModel.updateActiveTasks();
             mainActivityViewModel.deletePrevFinished();
         }
+        System.out.println("Here");
     }
 
     @Override
