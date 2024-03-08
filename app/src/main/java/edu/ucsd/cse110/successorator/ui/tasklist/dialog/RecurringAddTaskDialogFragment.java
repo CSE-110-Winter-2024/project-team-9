@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,11 +70,28 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
         // in final product, change date to LocalDate.now()
+
+        String type = getType();
         LocalDate date = dateManager.getGlobalDate().getDate();
-        Task newTask = new Task(null, taskText, -1, false, date, "", "daily");
+        Task newTask = new Task(null, taskText, -1, false, date, "", type);
         activityModel.append(newTask);
 
         dismiss();
+    }
+
+    private String getType() {
+        String type = "single-time";
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_today_add_task_dialog, null);
+        RadioButton singleBtn = view.findViewById(R.id.singleTime);
+        RadioButton dailyBtn = view.findViewById(R.id.daily);
+        RadioButton weeklyBtn = view.findViewById(R.id.weekly);
+        RadioButton yearlyBtn = view.findViewById(R.id.yearly);
+        if(singleBtn.isChecked()) {type = "single-time";}
+        else if(dailyBtn.isChecked()) {type = "daily";}
+        else if (weeklyBtn.isChecked()) { type = "weekly";}
+        else if (yearlyBtn.isChecked()) { type = "yearly";}
+
+        return type;
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
