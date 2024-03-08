@@ -32,6 +32,8 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
     private DateManager dateManager;
 
     private String type;
+
+    View view;
     public TodayAddTaskDialogFragment() {
         // Required empty constructor
     }
@@ -54,7 +56,7 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_today_add_task_dialog, null);
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_today_add_task_dialog, null);
         editTextTask = view.findViewById(R.id.edit_text_task);
         RadioButton btn = view.findViewById(R.id.singleTime);
         btn.setChecked(true);
@@ -101,6 +103,8 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
 
         String type = getType();
 
+        Log.d("created_task", taskText + " is " + type);
+
         Task newTask = new Task(null, taskText, -1, false, date, "", type);
         activityModel.append(newTask);
 
@@ -114,15 +118,21 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
 
     private String getType() {
         String type = "single-time";
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_today_add_task_dialog, null);
         RadioButton singleBtn = view.findViewById(R.id.singleTime);
         RadioButton dailyBtn = view.findViewById(R.id.daily);
         RadioButton weeklyBtn = view.findViewById(R.id.weekly);
+        RadioButton monthlyBtn = view.findViewById(R.id.monthly);
         RadioButton yearlyBtn = view.findViewById(R.id.yearly);
         if(singleBtn.isChecked()) {type = "single-time";}
         else if(dailyBtn.isChecked()) {type = "daily";}
         else if (weeklyBtn.isChecked()) { type = "weekly";}
+        else if (monthlyBtn.isChecked()) { type = "monthly";}
         else if (yearlyBtn.isChecked()) { type = "yearly";}
+        Log.d("statuses", "single " + singleBtn.isChecked());
+        Log.d("statuses", "daily " + dailyBtn.isChecked());
+        Log.d("statuses", "weekly " + weeklyBtn.isChecked());
+        Log.d("statuses", "monthly " + monthlyBtn.isChecked());
+        Log.d("statuses", "yearly " + yearlyBtn.isChecked());
 
         return type;
     }
