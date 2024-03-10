@@ -119,11 +119,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void addTask(String input) {
-        System.out.println("add task: " + input);
-    }
-
     // Save LocalDateTime to SharedPreferences
     private void saveLastOpenedDateTime(SharedPreferences sharedPreferences, LocalDateTime dateTime) {
         String dateTimeString = dateTime.toString();

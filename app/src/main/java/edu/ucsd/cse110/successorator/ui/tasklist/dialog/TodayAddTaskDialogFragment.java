@@ -103,8 +103,9 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
         LocalDate date = dateManager.getGlobalDate().getDate();
 
         String type = getType();
+        String context = getTaskContext();
 
-        Task newTask = new Task(null, taskText, -1, false, date, "", type);
+        Task newTask = new Task(null, taskText, -1, false, date, context, type);
         activityModel.append(newTask);
 
         dismiss();
@@ -129,6 +130,21 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
         else if (yearlyBtn.isChecked()) { type = "yearly";}
 
         return type;
+    }
+
+    private String getTaskContext() {
+        String context = "home";
+        RadioButton homeBtn = view.findViewById(R.id.contextHome);
+        RadioButton workBtn = view.findViewById(R.id.contextWork);
+        RadioButton schoolBtn = view.findViewById(R.id.contextSchool);
+        RadioButton errandBtn = view.findViewById(R.id.contextErrand);
+
+        if(homeBtn.isChecked()) {context = "single-time";}
+        else if(workBtn.isChecked()) {context = "daily";}
+        else if (schoolBtn.isChecked()) { context = "weekly";}
+        else if(errandBtn.isChecked()) {context = "monthly";}
+
+        return context;
     }
 
     public static String formatNumberWithSuffix(int number) {

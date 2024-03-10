@@ -100,9 +100,10 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
         Log.d("onPositiveButtonClick", "Button Pressed");
 
         String type = getType();
+        String context = getTaskContext();
         // in final product, change date to LocalDate.now()
         LocalDate date = dateManager.getGlobalDate().getDate();
-        Task newTask = new Task(null, taskText, -1, false, date.plusDays(1), "", type);
+        Task newTask = new Task(null, taskText, -1, false, date.plusDays(1), context, type);
         activityModel.append(newTask);
 
         dismiss();
@@ -128,6 +129,22 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
 
         return type;
     }
+
+    private String getTaskContext() {
+        String context = "home";
+        RadioButton homeBtn = view.findViewById(R.id.contextHome);
+        RadioButton workBtn = view.findViewById(R.id.contextWork);
+        RadioButton schoolBtn = view.findViewById(R.id.contextSchool);
+        RadioButton errandBtn = view.findViewById(R.id.contextErrand);
+
+        if(homeBtn.isChecked()) {context = "single-time";}
+        else if(workBtn.isChecked()) {context = "daily";}
+        else if (schoolBtn.isChecked()) { context = "weekly";}
+        else if(errandBtn.isChecked()) {context = "monthly";}
+
+        return context;
+    }
+
     public static String formatNumberWithSuffix(int number) {
         if (number >= 11 && number <= 13) {
             return number + "th"; // Special case for 11th, 12th, and 13th

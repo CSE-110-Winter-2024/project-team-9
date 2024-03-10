@@ -53,7 +53,7 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_add_task_dialog, null);
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_recurring_add_task_dialog, null);
         editTextTask = view.findViewById(R.id.edit_text_task);
 
         // Create the dialog using AlertDialog.Builder
@@ -74,9 +74,9 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         // in final product, change date to LocalDate.now()
 
         String type = getType();
-        Log.d("type:", type);
+        String context = getTaskContext();
         LocalDate date = dateManager.getGlobalDate().getDate();
-        Task newTask = new Task(null, taskText, -1, false, date, "", type);
+        Task newTask = new Task(null, taskText, -1, false, date, context, type);
         activityModel.append(newTask);
 
         dismiss();
@@ -96,6 +96,21 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         else if (yearlyBtn.isChecked()) { type = "yearly";}
 
         return type;
+    }
+
+    private String getTaskContext() {
+        String context = "home";
+        RadioButton homeBtn = view.findViewById(R.id.contextHome);
+        RadioButton workBtn = view.findViewById(R.id.contextWork);
+        RadioButton schoolBtn = view.findViewById(R.id.contextSchool);
+        RadioButton errandBtn = view.findViewById(R.id.contextErrand);
+
+        if(homeBtn.isChecked()) {context = "single-time";}
+        else if(workBtn.isChecked()) {context = "daily";}
+        else if (schoolBtn.isChecked()) { context = "weekly";}
+        else if(errandBtn.isChecked()) {context = "monthly";}
+
+        return context;
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
