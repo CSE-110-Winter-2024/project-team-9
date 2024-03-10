@@ -88,10 +88,10 @@ public class PendingAddTaskDialogFragment extends DialogFragment {
         RadioButton schoolBtn = view.findViewById(R.id.contextSchool);
         RadioButton errandBtn = view.findViewById(R.id.contextErrand);
 
-        if(homeBtn.isChecked()) {context = "single-time";}
-        else if(workBtn.isChecked()) {context = "daily";}
-        else if (schoolBtn.isChecked()) { context = "weekly";}
-        else if(errandBtn.isChecked()) {context = "monthly";}
+        if(homeBtn.isChecked()) {context = "home";}
+        else if(workBtn.isChecked()) {context = "work";}
+        else if (schoolBtn.isChecked()) { context = "school";}
+        else if(errandBtn.isChecked()) {context = "errand";}
 
         return context;
     }
