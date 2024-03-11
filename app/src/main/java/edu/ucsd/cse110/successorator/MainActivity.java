@@ -8,6 +8,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
@@ -183,22 +185,32 @@ public class MainActivity extends AppCompatActivity
     public void updateFilter() {
 
             Drawable menuIcon = getDrawable(R.drawable.ic_menu);
-            ShapeDrawable background = new ShapeDrawable(new RectShape());
+            ShapeDrawable background = new ShapeDrawable(new OvalShape());
             background.setBounds(0, 0, 100, 100);
 
-            if (contextFilter.equals("home")) {
-                menuIcon.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
-                background.getPaint().setColor(0xffffffff);
-            } else {
-                menuIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-                background.getPaint().setColor(0x00000000);
+            menuIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
+            switch (contextFilter) {
+                case "home":
+                    background.getPaint().setColor(getColor(R.color.home_color));
+                    break;
+                case "work":
+                    background.getPaint().setColor(getColor(R.color.work_color));
+                    break;
+                case "school":
+                    background.getPaint().setColor(getColor(R.color.school_color));
+                    break;
+                case "errands":
+                    background.getPaint().setColor(getColor(R.color.errands_color));
+                    break;
+                default:
+                    background.getPaint().setColor(0x00000000);
+                    break;
             }
 
             LayerDrawable homeAsUpDrawable = new LayerDrawable(new Drawable[] {background, menuIcon});
 
-            getSupportActionBar().setHomeAsUpIndicator(homeAsUpDrawable);
-
+            Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(homeAsUpDrawable);
 
     }
 
