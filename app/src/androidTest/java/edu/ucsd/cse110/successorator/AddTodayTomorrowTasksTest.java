@@ -4,15 +4,17 @@ package edu.ucsd.cse110.successorator;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,21 +34,21 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddManyTasksUITest {
+public class AddTodayTomorrowTasksTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void addManyTasksUITest() {
+    public void addTodayTomorrowTasksTest() {
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.action_bar),
                                         1),
-                                0),
+                                1),
                         isDisplayed()));
         actionMenuItemView.perform(click());
 
@@ -56,22 +58,21 @@ public class AddManyTasksUITest {
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Task 1"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("today"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.edit_text_task), withText("Task 1"),
+        ViewInteraction materialButton = onView(
+                allOf(withId(android.R.id.button1), withText("Save"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.custom),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(pressImeActionButton());
+                                3)));
+        materialButton.perform(scrollTo(), click());
 
         ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
+                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.action_bar),
@@ -80,25 +81,15 @@ public class AddManyTasksUITest {
                         isDisplayed()));
         actionMenuItemView2.perform(click());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.edit_text_task),
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.tomorrow_button), withText("Tomorrow List"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("Task 2"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.edit_text_task), withText("Task 2"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.custom),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText4.perform(pressImeActionButton());
+        materialButton2.perform(click());
 
         ViewInteraction actionMenuItemView3 = onView(
                 allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
@@ -106,50 +97,76 @@ public class AddManyTasksUITest {
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.action_bar),
                                         1),
-                                0),
+                                1),
                         isDisplayed()));
         actionMenuItemView3.perform(click());
 
-        ViewInteraction appCompatEditText5 = onView(
+        ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.edit_text_task),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("Task 3"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("tomorrow"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.edit_text_task), withText("Task 3"),
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(android.R.id.button1), withText("Save"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton3.perform(scrollTo(), click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.task_text), withText("tomorrow"),
+                        withParent(allOf(withId(R.id.task_layout),
+                                withParent(withId(R.id.card_list)))),
+                        isDisplayed()));
+        textView.check(matches(isDisplayed()));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.task_text), withText("tomorrow"),
+                        withParent(allOf(withId(R.id.task_layout),
+                                withParent(withId(R.id.card_list)))),
+                        isDisplayed()));
+        textView2.check(matches(isDisplayed()));
+
+        ViewInteraction actionMenuItemView4 = onView(
+                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(com.google.android.material.R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        actionMenuItemView4.perform(click());
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.today_button), withText("Today List"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
-        appCompatEditText6.perform(pressImeActionButton());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.task_text), withText("Task 1"),
-                        withParent(allOf(withId(R.id.task_layout),
-                                withParent(withId(R.id.card_list)))),
-                        isDisplayed()));
-        textView.check(matches(withText("Task 1")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.task_text), withText("Task 2"),
-                        withParent(allOf(withId(R.id.task_layout),
-                                withParent(withId(R.id.card_list)))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Task 2")));
+        materialButton4.perform(click());
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.task_text), withText("Task 3"),
+                allOf(withId(R.id.task_text), withText("today"),
                         withParent(allOf(withId(R.id.task_layout),
                                 withParent(withId(R.id.card_list)))),
                         isDisplayed()));
-        textView3.check(matches(withText("Task 3")));
+        textView3.check(matches(isDisplayed()));
+
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.task_text), withText("today"),
+                        withParent(allOf(withId(R.id.task_layout),
+                                withParent(withId(R.id.card_list)))),
+                        isDisplayed()));
+        textView4.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(
