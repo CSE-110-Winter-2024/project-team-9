@@ -15,7 +15,7 @@ import edu.ucsd.cse110.successorator.ui.tasklist.dialog.DeleteTaskDialogFragment
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
 
 public class PendingTaskListFragment extends AbstractTaskListFragment {
-    public static PendingTaskListFragment newInstance() {
+    public static PendingTaskListFragment newInstance(String filter) {
         PendingTaskListFragment fragment = new PendingTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);

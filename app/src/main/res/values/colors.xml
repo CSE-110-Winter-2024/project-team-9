@@ -9,6 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="home_color">#FFFF0000</color>
     <color name="work_color">#FF00FF00</color>
-    <color name="school_color">#FF0000FF</color>
+    <color name="school_color">#FFFF00FF</color>
     <color name="errands_color">#FFFFFF00</color>
 </resources>

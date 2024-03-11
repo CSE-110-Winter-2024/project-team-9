@@ -34,7 +34,7 @@ abstract class AbstractTaskListFragment extends Fragment {
         // Required empty public constructor
     }
 
-//    public static TaskListFragment newInstance() {
+//    public static TaskListFragment newInstance(String filter) {
 //        TaskListFragment fragment = new TaskListFragment();
 //        Bundle args = new Bundle();
 //        fragment.setArguments(args);

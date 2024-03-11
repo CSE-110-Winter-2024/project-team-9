@@ -14,7 +14,7 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TodayTaskListFragment extends AbstractTaskListFragment{
 
-    public static TodayTaskListFragment newInstance() {
+    public static TodayTaskListFragment newInstance(String filter) {
         TodayTaskListFragment fragment = new TodayTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);

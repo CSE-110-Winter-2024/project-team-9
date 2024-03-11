@@ -236,34 +236,36 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void sendFilterInput(String input) {
-        contextFilter = input;
-        updateFilter();
+
+        if (!contextFilter.equals(input)) {
+            contextFilter = input;
+            updateFilter();
+        }
     }
 
     @Override
     public void sendInput(String input) {
         Log.d("MainActivity", "input " + input + " received");
 
-        Fragment fragment = TodayTaskListFragment.newInstance();
+        Fragment fragment = TodayTaskListFragment.newInstance(contextFilter);
 
         switch (input) {
             case "today":
                 // Change to Today List View Fragment
-                fragment = TodayTaskListFragment.newInstance();
+                fragment = TodayTaskListFragment.newInstance(contextFilter);
                 setTitle("Today, " + DateManager.getFormattedDate());
                 break;
             case "tomorrow":
                 // Change to Tomorrow List View Fragment
-                fragment = TomorrowTaskListFragment.newInstance();
+                fragment = TomorrowTaskListFragment.newInstance(contextFilter);
                 setTitle("Tomorrow, " + DateManager.getTomorrowFormattedDate());
                 break;
             case "pending":
                 // Change to Pending List View Fragment
-                fragment = PendingTaskListFragment.newInstance();
+                fragment = PendingTaskListFragment.newInstance(contextFilter);
                 setTitle("Pending");
                 break;
             case "recurring":
-                // currentFragment = "recurring";
 
                 //Change to Recurring List View Fragment
                 fragment = TodayAddTaskDialogFragment.newInstance();
