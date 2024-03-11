@@ -35,6 +35,7 @@ abstract class AbstractTaskListFragment extends Fragment {
     }
 
 //    public static TaskListFragment newInstance(String filter) {
+//        filter will be "home", "work", "school", "errands", or "" for none
 //        TaskListFragment fragment = new TaskListFragment();
 //        Bundle args = new Bundle();
 //        fragment.setArguments(args);

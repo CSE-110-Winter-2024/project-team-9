@@ -12,6 +12,7 @@ import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TomorrowTaskListFragment extends AbstractTaskListFragment{
     public static TomorrowTaskListFragment newInstance(String filter) {
+        // filter will be "home", "work", "school", "errands", or "" for none
         TomorrowTaskListFragment fragment = new TomorrowTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);

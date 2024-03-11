@@ -16,6 +16,7 @@ import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment
 
 public class PendingTaskListFragment extends AbstractTaskListFragment {
     public static PendingTaskListFragment newInstance(String filter) {
+        // filter will be "home", "work", "school", "errands", or "" for none
         PendingTaskListFragment fragment = new PendingTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
