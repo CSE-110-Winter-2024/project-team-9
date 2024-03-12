@@ -52,10 +52,7 @@ abstract class AbstractTaskListFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
         // Initialize the Adapter (with an empty list for now)
-        this.adapter = new TaskListAdapter(requireContext(), List.of(), task -> {
-            onDeleteClick(task);
-        });
-
+        this.adapter = new TaskListAdapter(requireContext(), List.of(), this::onDeleteClick);
     }
 
     @Nullable

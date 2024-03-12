@@ -22,6 +22,7 @@ import edu.ucsd.cse110.successorator.lib.domain.Task;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
     Consumer<Task> onDeleteClick;
+
     public TaskListAdapter(Context context, List<Task> tasks, Consumer<Task> onDeleteClick) {
         // This sets a bunch of stuff internally, which we can access
         // with getContext() and getItem() for example.
@@ -54,10 +55,18 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         // Populate the view with the task's data.
         binding.taskText.setText(task.text());
 
-        binding.taskLayout.setOnClickListener(v -> {
-            assert task != null;
-            onDeleteClick.accept(task);
-        });
+        if (!task.type().equals("single-time")) {
+            binding.taskLayout.setOnLongClickListener(v -> {
+                assert task != null;
+                onDeleteClick.accept(task);
+                return false;
+            });
+        } else {
+            binding.taskLayout.setOnClickListener(v -> {
+                assert task != null;
+                onDeleteClick.accept(task);
+            });
+        }
 
         ImageView imageView = binding.imageView;
         TextView contextInitial = binding.contextInitial;
