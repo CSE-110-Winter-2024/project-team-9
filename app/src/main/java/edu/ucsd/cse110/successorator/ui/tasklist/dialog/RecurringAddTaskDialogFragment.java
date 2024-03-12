@@ -83,14 +83,12 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
     }
 
     private String getType() {
-        String type = "single-time";
-        RadioButton singleBtn = view.findViewById(R.id.singleTime);
+        String type = "daily";
         RadioButton dailyBtn = view.findViewById(R.id.daily);
         RadioButton weeklyBtn = view.findViewById(R.id.weekly);
         RadioButton monthlyBtn = view.findViewById(R.id.monthly);
         RadioButton yearlyBtn = view.findViewById(R.id.yearly);
-        if(singleBtn.isChecked()) {type = "single-time";}
-        else if(dailyBtn.isChecked()) {type = "daily";}
+        if(dailyBtn.isChecked()) {type = "daily";}
         else if (weeklyBtn.isChecked()) { type = "weekly";}
         else if(monthlyBtn.isChecked()) {type = "monthly";}
         else if (yearlyBtn.isChecked()) { type = "yearly";}
