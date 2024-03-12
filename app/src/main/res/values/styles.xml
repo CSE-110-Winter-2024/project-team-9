@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomRadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <!-- Customize the appearance of the RadioButton -->
+        <!-- For example, you can set background to null to remove the default background -->
+        <item name="android:background">@null</item>
+        <!-- Set other customizations as needed -->
+    </style>
+</resources>
