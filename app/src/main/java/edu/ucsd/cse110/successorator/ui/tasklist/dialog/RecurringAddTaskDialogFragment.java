@@ -53,7 +53,7 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_tomorrow_add_task_dialog, null);
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_recurring_add_task_dialog, null);
         editTextTask = view.findViewById(R.id.edit_text_task);
 
         // Create the dialog using AlertDialog.Builder
@@ -74,28 +74,41 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         // in final product, change date to LocalDate.now()
 
         String type = getType();
-        Log.d("type:", type);
+        String context = getTaskContext();
         LocalDate date = dateManager.getGlobalDate().getDate();
-        Task newTask = new Task(null, taskText, -1, false, date, "", type);
+        Task newTask = new Task(null, taskText, -1, false, date, context, type);
         activityModel.append(newTask);
 
         dismiss();
     }
 
     private String getType() {
-        String type = "single-time";
-        RadioButton singleBtn = view.findViewById(R.id.singleTime);
+        String type = "daily";
         RadioButton dailyBtn = view.findViewById(R.id.daily);
         RadioButton weeklyBtn = view.findViewById(R.id.weekly);
         RadioButton monthlyBtn = view.findViewById(R.id.monthly);
         RadioButton yearlyBtn = view.findViewById(R.id.yearly);
-        if(singleBtn.isChecked()) {type = "single-time";}
-        else if(dailyBtn.isChecked()) {type = "daily";}
+        if(dailyBtn.isChecked()) {type = "daily";}
         else if (weeklyBtn.isChecked()) { type = "weekly";}
         else if(monthlyBtn.isChecked()) {type = "monthly";}
         else if (yearlyBtn.isChecked()) { type = "yearly";}
 
         return type;
+    }
+
+    private String getTaskContext() {
+        String context = "home";
+        RadioButton homeBtn = view.findViewById(R.id.contextHome);
+        RadioButton workBtn = view.findViewById(R.id.contextWork);
+        RadioButton schoolBtn = view.findViewById(R.id.contextSchool);
+        RadioButton errandBtn = view.findViewById(R.id.contextErrand);
+
+        if(homeBtn.isChecked()) {context = "home";}
+        else if(workBtn.isChecked()) {context = "work";}
+        else if (schoolBtn.isChecked()) { context = "school";}
+        else if(errandBtn.isChecked()) {context = "errand";}
+
+        return context;
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {

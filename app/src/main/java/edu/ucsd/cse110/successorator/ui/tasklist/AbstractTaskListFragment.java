@@ -28,8 +28,6 @@ abstract class AbstractTaskListFragment extends Fragment {
     private FragmentTaskListBinding view;
     private TaskListAdapter adapter;
 
-    private DateManager globalDate;
-
     public AbstractTaskListFragment() {
         // Required empty public constructor
     }
@@ -70,6 +68,7 @@ abstract class AbstractTaskListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = FragmentTaskListBinding.inflate(inflater, container, false);
+
         activityModel.updateTasks();
         activityModel.updateActiveTasks();
         activityModel.deletePrevFinished();

@@ -33,6 +33,7 @@ import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.databinding.FragmentChangeFilterDialogBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.ChangeFilterDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.RecurringTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TodayTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TomorrowTaskListFragment;
@@ -57,6 +58,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        onCreateHelper();
+
+        this.view = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(view.getRoot());
+
+        sendInput(currentViewName);
+    }
+
+    private void onCreateHelper() {
         SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
 
         DateTracker dateTracker = new DateTracker(LocalDate.now());
@@ -64,8 +74,6 @@ public class MainActivity extends AppCompatActivity
 
 
         DateManager.getLocalDateSubject().observe(localDate -> {
-            //Log.d("main", "observer of local date changed");
-            //Log.d("date manager date", DateManager.getFormattedDate());
             if (localDate == null) return;
             sendInput(currentViewName);
         });
@@ -85,7 +93,6 @@ public class MainActivity extends AppCompatActivity
         contextFilter = "";
         sendInput("today");
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -151,11 +158,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    private void addTask(String input) {
-        System.out.println("add task: " + input);
     }
 
     // Save LocalDateTime to SharedPreferences
@@ -266,10 +268,10 @@ public class MainActivity extends AppCompatActivity
                 setTitle("Pending");
                 break;
             case "recurring":
+                // currentFragment = "recurring";
 
                 //Change to Recurring List View Fragment
-                fragment = TodayAddTaskDialogFragment.newInstance();
-                // fragment = RecurringListFragment.newInstance();
+                fragment = RecurringTaskListFragment.newInstance();
                 setTitle("Recurring");
                 break;
             default:
@@ -285,6 +287,19 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        onCreateHelper();
 
+        onStart();
+
+        setContentView(view.getRoot());
+
+        currentViewName = "today";
+
+        sendInput(currentViewName);
+
+    }
 }

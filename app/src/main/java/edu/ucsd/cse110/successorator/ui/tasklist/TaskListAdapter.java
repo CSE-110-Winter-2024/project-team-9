@@ -2,10 +2,13 @@ package edu.ucsd.cse110.successorator.ui.tasklist;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -13,8 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.databinding.GoalItemCardBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
+import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
     Consumer<Task> onDeleteClick;
@@ -47,9 +52,27 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             binding = GoalItemCardBinding.inflate(layoutInflater, parent, false);
         }
 
+        // Populate the view with the flashcard's data.
+        if (task.type().equals("pending") || task.type().equals("single-time")) {
+            binding.taskText.setText(task.text());
+        } else {
+            String text = task.text() + ", " + task.type();
+            if (task.type().equals("weekly")) {
+                //get day of week
+                String dayOfWeek = DateManager.getDayOfWeek(task.dateCreated());
+                text += " on " + dayOfWeek;
+            }
+            if (task.type().equals("monthly")) {
+                String dayOfMonth = DateManager.getDayOfMonth(task.dateCreated());
+                text += " on " + dayOfMonth;
+            }
+            if (task.type().equals("yearly")) {
+                String dayOfYear = DateManager.getDateNoYear(task.dateCreated());
+                text += " on " + dayOfYear;
+            }
+            binding.taskText.setText(text);
+        }
 
-        // Populate the view with the task's data.
-        binding.taskText.setText(task.text());
 
         if (!task.type().equals("single-time")) {
             binding.taskLayout.setOnLongClickListener(v -> {
@@ -64,11 +87,38 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             });
         }
 
+        ImageView imageView = binding.imageView;
+        TextView contextInitial = binding.contextInitial;
+        String context = task.category();
+
+        switch(context) {
+            case "home":
+                imageView.setImageResource(R.drawable.home_icon);
+                contextInitial.setText("H");
+                break;
+            case "work":
+                imageView.setImageResource(R.drawable.work_icon);
+                contextInitial.setText("W");
+                break;
+            case "school":
+                imageView.setImageResource(R.drawable.school_icon);
+                contextInitial.setText("S");
+                break;
+            case "errand":
+                imageView.setImageResource(R.drawable.errand_icon);
+                contextInitial.setText("E");
+                break;
+        }
+
+
+
+
         /*
         Sets strikethrough if the task is finished: https://stackoverflow.com/questions/9786544/creating-a-strikethrough-text
          */
         if (task.isFinished()) {
             binding.taskText.setPaintFlags(binding.taskText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            imageView.setImageResource(R.drawable.finished_icon);
         } else {
             binding.taskText.setPaintFlags(binding.taskText.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }

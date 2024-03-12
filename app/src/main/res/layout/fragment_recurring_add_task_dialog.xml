@@ -6,6 +6,18 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/starting_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Starting on..."
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pending_options" />
+
     <EditText
         android:id="@+id/edit_text_task"
         android:layout_width="0dp"
@@ -69,6 +81,43 @@
             android:textSize="20dp"
             android:background="@drawable/errand_radio_button_background"
             android:gravity="center"/>
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/pending_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/context_options">
+
+        <RadioButton
+            android:id="@+id/daily"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Daily" />
+
+        <RadioButton
+            android:id="@+id/weekly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Weekly" />
+
+        <RadioButton
+            android:id="@+id/monthly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monthly" />
+
+        <RadioButton
+            android:id="@+id/yearly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Yearly" />
+
     </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

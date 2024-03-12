@@ -33,7 +33,8 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
 
     private String type;
 
-    private View view;
+    View view;
+
     public TodayAddTaskDialogFragment() {
         // Required empty constructor
     }
@@ -56,33 +57,23 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_today_add_task_dialog, null);
 
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_add_task_dialog, null);
+      
         editTextTask = view.findViewById(R.id.edit_text_task);
         RadioButton btn = view.findViewById(R.id.singleTime);
         btn.setChecked(true);
 
         LocalDate date = dateManager.getGlobalDate().getDate();
-        String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
-        int dayOfMonth = date.getDayOfMonth();
-        int month = date.getMonthValue();
-
-        int occurrences = 0;
-        while (date.getMonthValue() == month) {
-            if (date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US).equals(dayOfWeek)) {
-                occurrences++;
-            }
-            date = date.plusDays(1);
-        }
-
+      
         RadioButton weekly = view.findViewById(R.id.weekly);
-        weekly.setText(String.format("Weekly on %s", dayOfWeek));
+        weekly.setText(String.format("Weekly on %s", DateManager.getDayOfWeek(date)));
 
         RadioButton monthly = view.findViewById(R.id.monthly);
-        monthly.setText(String.format("Monthly on %s %s", formatNumberWithSuffix(occurrences), dayOfWeek));
+        monthly.setText(String.format("Monthly on %s", DateManager.getDayOfMonth(date)));
 
         RadioButton yearly = view.findViewById(R.id.yearly);
-        yearly.setText(String.format("Yearly on %d/%d", month, dayOfMonth));
+        yearly.setText(String.format("Yearly on %s", DateManager.getDateNoYear(date)));
 
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
@@ -103,8 +94,11 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
         LocalDate date = dateManager.getGlobalDate().getDate();
 
         String type = getType();
+        String context = getTaskContext();
 
-        Task newTask = new Task(null, taskText, -1, false, date, "", type);
+
+        Task newTask = new Task(null, taskText, -1, false, date, context, type);
+
         activityModel.append(newTask);
 
         dismiss();
@@ -125,22 +119,26 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
         if(singleBtn.isChecked()) {type = "single-time";}
         else if(dailyBtn.isChecked()) {type = "daily";}
         else if (weeklyBtn.isChecked()) { type = "weekly";}
-        else if(monthlyBtn.isChecked()) {type = "monthly";}
+        else if (monthlyBtn.isChecked()) { type = "monthly";}
         else if (yearlyBtn.isChecked()) { type = "yearly";}
 
         return type;
     }
 
-    public static String formatNumberWithSuffix(int number) {
-        if (number >= 11 && number <= 13) {
-            return number + "th"; // Special case for 11th, 12th, and 13th
-        } else {
-            switch (number % 10) {
-                case 1: return number + "st";
-                case 2: return number + "nd";
-                case 3: return number + "rd";
-                default: return number + "th";
-            }
-        }
+
+    private String getTaskContext() {
+        String context = "home";
+        RadioButton homeBtn = view.findViewById(R.id.contextHome);
+        RadioButton workBtn = view.findViewById(R.id.contextWork);
+        RadioButton schoolBtn = view.findViewById(R.id.contextSchool);
+        RadioButton errandBtn = view.findViewById(R.id.contextErrand);
+
+        if(homeBtn.isChecked()) {context = "home";}
+        else if(workBtn.isChecked()) {context = "work";}
+        else if (schoolBtn.isChecked()) { context = "school";}
+        else if(errandBtn.isChecked()) {context = "errand";}
+
+        return context;
     }
+
 }

@@ -11,4 +11,9 @@
     <color name="work_color">#FF00FF00</color>
     <color name="school_color">#FFFF00FF</color>
     <color name="errands_color">#FFFFFF00</color>
+    <color name="teal">#48cae4</color>
+    <color name="yellow">#ffb703</color>
+    <color name="pink">#ff758f</color>
+    <color name="purple">#e0aaff</color>
+    <color name="gray">#d9d7d7</color>
 </resources>
