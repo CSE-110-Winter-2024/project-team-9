@@ -63,17 +63,6 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
 
         LocalDate date = dateManager.getGlobalDate().getDate();
         date = date.plusDays(1);
-        String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US);
-        int dayOfMonth = date.getDayOfMonth();
-        int month = date.getMonthValue();
-
-        int occurrences = 0;
-        while (date.getMonthValue() == month) {
-            if (date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US).equals(dayOfWeek)) {
-                occurrences++;
-            }
-            date = date.plusDays(1);
-        }
 
         RadioButton weekly = view.findViewById(R.id.weekly);
         weekly.setText(String.format("Weekly on %s", DateManager.getDayOfWeek(date)));
@@ -128,17 +117,5 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
         else if (yearlyBtn.isChecked()) { type = "yearly";}
 
         return type;
-    }
-    public static String formatNumberWithSuffix(int number) {
-        if (number >= 11 && number <= 13) {
-            return number + "th"; // Special case for 11th, 12th, and 13th
-        } else {
-            switch (number % 10) {
-                case 1: return number + "st";
-                case 2: return number + "nd";
-                case 3: return number + "rd";
-                default: return number + "th";
-            }
-        }
     }
 }
