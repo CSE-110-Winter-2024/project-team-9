@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,8 @@ public class PendingAddTaskDialogFragment extends DialogFragment {
     private EditText editTextTask;
 
     private DateManager dateManager;
+
+    private View view;
 
     public PendingAddTaskDialogFragment() {
         // Required empty constructor
@@ -50,7 +53,7 @@ public class PendingAddTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_pending_add_task_dialog, null);
+        view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_pending_add_task_dialog, null);
         editTextTask = view.findViewById(R.id.edit_text_task);
 
         // Create the dialog using AlertDialog.Builder
@@ -68,12 +71,29 @@ public class PendingAddTaskDialogFragment extends DialogFragment {
         // variable that stores the text input when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
+
+        String context = getTaskContext();
         // in final product, change date to LocalDate.now()
         LocalDate date = dateManager.getGlobalDate().getDate();
-        Task newTask = new Task(null, taskText, -1, false, date, "", "pending");
+        Task newTask = new Task(null, taskText, -1, false, date, context, "pending");
         activityModel.append(newTask);
 
         dismiss();
+    }
+
+    private String getTaskContext() {
+        String context = "home";
+        RadioButton homeBtn = view.findViewById(R.id.contextHome);
+        RadioButton workBtn = view.findViewById(R.id.contextWork);
+        RadioButton schoolBtn = view.findViewById(R.id.contextSchool);
+        RadioButton errandBtn = view.findViewById(R.id.contextErrand);
+
+        if(homeBtn.isChecked()) {context = "home";}
+        else if(workBtn.isChecked()) {context = "work";}
+        else if (schoolBtn.isChecked()) { context = "school";}
+        else if(errandBtn.isChecked()) {context = "errand";}
+
+        return context;
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
