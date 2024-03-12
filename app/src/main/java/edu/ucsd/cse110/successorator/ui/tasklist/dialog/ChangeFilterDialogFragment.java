@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
+import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
 
 public class ChangeFilterDialogFragment extends DialogFragment {
 
@@ -51,6 +52,7 @@ public class ChangeFilterDialogFragment extends DialogFragment {
 
         try {
             myListener = (ChangeFilterDialogFragment.OnInputListener) getActivity();
+
         } catch (ClassCastException error) {
             Log.e("Error", "onCreate: ClassCastException: " + error.getMessage());
         }
@@ -87,7 +89,7 @@ public class ChangeFilterDialogFragment extends DialogFragment {
         } else if (schoolBtn.isChecked()) {
             input = "school";
         } else if (errandsBtn.isChecked()) {
-            input = "errands";
+            input = "errand";
         } else if (otherBtn.isChecked()) {
             input = "";
         } else {

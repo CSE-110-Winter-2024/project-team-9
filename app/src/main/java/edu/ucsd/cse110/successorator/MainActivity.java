@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity
         if (!contextFilter.equals(input)) {
             contextFilter = input;
             updateFilter();
+            sendInput(currentViewName);
         }
     }
 
@@ -271,7 +272,7 @@ public class MainActivity extends AppCompatActivity
                 // currentFragment = "recurring";
 
                 //Change to Recurring List View Fragment
-                fragment = RecurringTaskListFragment.newInstance();
+                fragment = RecurringTaskListFragment.newInstance(contextFilter);
                 setTitle("Recurring");
                 break;
             default:
