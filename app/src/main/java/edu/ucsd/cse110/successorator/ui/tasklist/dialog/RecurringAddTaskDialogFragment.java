@@ -67,10 +67,10 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         startDateButton = view.findViewById(R.id.start_date_button);
 
         // Initialize Calendar instance to current date
-        final Calendar c = Calendar.getInstance();
-        startYear = c.get(Calendar.YEAR);
-        startMonth = c.get(Calendar.MONTH);
-        startDay = c.get(Calendar.DAY_OF_MONTH);
+        final LocalDate c = DateManager.getGlobalDate().getDate();
+        startYear = c.getYear();
+        startMonth = c.getMonthValue();
+        startDay = c.getDayOfMonth();
 
         // Display current date in the button
         startDateButton.setText((startMonth + 1) + "/" + startDay + "/" + startYear);
