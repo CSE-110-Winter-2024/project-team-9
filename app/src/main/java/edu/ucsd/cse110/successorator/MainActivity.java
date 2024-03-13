@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity
                 case "school":
                     background.getPaint().setColor(getColor(R.color.school_color));
                     break;
-                case "errands":
+                case "errand":
                     background.getPaint().setColor(getColor(R.color.errands_color));
                     break;
                 default:

@@ -60,7 +60,6 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setView(view)
                 .setTitle("New Task")
-                .setMessage("Please enter the title of your task")
                 .setPositiveButton("Save", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick);
 
