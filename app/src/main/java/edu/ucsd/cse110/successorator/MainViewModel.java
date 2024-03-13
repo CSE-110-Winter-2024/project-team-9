@@ -72,7 +72,7 @@ public class MainViewModel extends ViewModel {
                         // If it's between midnight and 2:00 AM, include tasks from both the current day and the previous day
                         if (isBetweenMidnightAnd2AM) {
                             return task.activeDate().equals(DateManager.getGlobalDate().getDate().minusDays(1))
-                                    || task.activeDate().equals(DateManager.getGlobalDate().getDate());
+                                    || task.activeDate().equals(DateManager.getGlobalDate().getDate()) || task.activeDate().isAfter(DateManager.getGlobalDate().getDate());
                         } else {
                             // Otherwise, include tasks from the current day
                             //return task.activeDate().equals(DateManager.getGlobalDate().getDate());
