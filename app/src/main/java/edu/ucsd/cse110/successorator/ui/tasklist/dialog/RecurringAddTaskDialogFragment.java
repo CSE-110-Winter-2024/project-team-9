@@ -66,6 +66,19 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         editTextTask = view.findViewById(R.id.edit_text_task);
         startDateButton = view.findViewById(R.id.start_date_button);
 
+        // Initialize Calendar instance to current date
+        final Calendar c = Calendar.getInstance();
+        startYear = c.get(Calendar.YEAR);
+        startMonth = c.get(Calendar.MONTH);
+        startDay = c.get(Calendar.DAY_OF_MONTH);
+
+        // Display current date in the button
+        startDateButton.setText((startMonth + 1) + "/" + startDay + "/" + startYear);
+
+        // Auto-check the daily button
+        RadioButton dailyBtn = view.findViewById(R.id.daily);
+        dailyBtn.setChecked(true); // Auto-check the daily button
+
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +96,7 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
 
         return builder.create();
     }
+
 
     public void showDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
@@ -122,7 +136,7 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
     }
 
     private String getType() {
-        String type = "single-time";
+        String type = "daily";
 
         RadioButton dailyBtn = view.findViewById(R.id.daily);
         RadioButton weeklyBtn = view.findViewById(R.id.weekly);
@@ -133,6 +147,7 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         else if (weeklyBtn.isChecked()) { type = "weekly";}
         else if(monthlyBtn.isChecked()) {type = "monthly";}
         else if (yearlyBtn.isChecked()) { type = "yearly";}
+
 
         return type;
     }
