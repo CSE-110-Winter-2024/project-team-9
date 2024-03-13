@@ -73,16 +73,17 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         startDay = c.getDayOfMonth();
 
         // Display current date in the button
-        startDateButton.setText((startMonth + 1) + "/" + startDay + "/" + startYear);
+        startDateButton.setText((startMonth) + "/" + startDay + "/" + startYear);
 
         // Auto-check the daily button
-        RadioButton dailyBtn = view.findViewById(R.id.daily);
-        dailyBtn.setChecked(true); // Auto-check the daily button
+        RadioButton btn = view.findViewById(R.id.weekly);
+        btn.setChecked(true); // Auto-check the weekly button
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
+                //setRecurringOptionText();
             }
         });
 
@@ -107,9 +108,9 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    public void onDateSet(DatePicker dateView, int year, int monthOfYear, int dayOfMonth) {
                         startYear = year;
-                        startMonth = monthOfYear;
+                        startMonth = monthOfYear + 1;
                         startDay = dayOfMonth;
 
                         // Display the selected date in the button
@@ -121,7 +122,7 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
-        // variable that stores the text input when check icon is pressed
+        // variable that stores the text input when save is pressed
         @NonNull String taskText = editTextTask.getText().toString();
         Log.d("onPositiveButtonClick", "Button Pressed");
         // in final product, change date to LocalDate.now()
