@@ -30,73 +30,54 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SwitchViewTest {
+/**
+ * Tests whether add dialogue displays all of the context options
+ */
+public class DisplayContextChoices {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void switchViewTest() {
+    public void displayContextChoices() {
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
+                allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.action_bar),
                                         1),
-                                0),
+                                1),
                         isDisplayed()));
         actionMenuItemView.perform(click());
 
-        ViewInteraction viewGroup = onView(
-                allOf(withParent(allOf(withId(android.R.id.custom),
-                                withParent(IsInstanceOf.<View>instanceOf(android.widget.FrameLayout.class)))),
+        ViewInteraction radioButton = onView(
+                allOf(withId(R.id.contextHome), withText("H"),
+                        withParent(allOf(withId(R.id.context_options),
+                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
                         isDisplayed()));
-        viewGroup.check(matches(isDisplayed()));
+        radioButton.check(matches(isDisplayed()));
 
-        ViewInteraction materialButton = onView(
-                allOf(withId(R.id.move_to_finish), withText("Pending List"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.custom),
-                                        0),
-                                2),
+        ViewInteraction radioButton2 = onView(
+                allOf(withId(R.id.contextWork), withText("W"),
+                        withParent(allOf(withId(R.id.context_options),
+                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
                         isDisplayed()));
-        materialButton.perform(click());
+        radioButton2.check(matches(isDisplayed()));
 
-        ViewInteraction textView = onView(
-                allOf(withText("Pending"),
-                        withParent(allOf(withId(com.google.android.material.R.id.action_bar),
-                                withParent(withId(com.google.android.material.R.id.action_bar_container)))),
+        ViewInteraction radioButton3 = onView(
+                allOf(withId(R.id.contextSchool), withText("S"),
+                        withParent(allOf(withId(R.id.context_options),
+                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
                         isDisplayed()));
-        textView.check(matches(withText("Pending")));
+        radioButton3.check(matches(isDisplayed()));
 
-        ViewInteraction actionMenuItemView2 = onView(
-                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
-                                        1),
-                                0),
+        ViewInteraction radioButton4 = onView(
+                allOf(withId(R.id.contextErrand), withText("E"),
+                        withParent(allOf(withId(R.id.context_options),
+                                withParent(IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class)))),
                         isDisplayed()));
-        actionMenuItemView2.perform(click());
-
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.move_to_delete), withText("Recurring List"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.custom),
-                                        0),
-                                3),
-                        isDisplayed()));
-        materialButton2.perform(click());
-
-        ViewInteraction textView2 = onView(
-                allOf(withText("Recurring"),
-                        withParent(allOf(withId(com.google.android.material.R.id.action_bar),
-                                withParent(withId(com.google.android.material.R.id.action_bar_container)))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Recurring")));
+        radioButton4.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(
