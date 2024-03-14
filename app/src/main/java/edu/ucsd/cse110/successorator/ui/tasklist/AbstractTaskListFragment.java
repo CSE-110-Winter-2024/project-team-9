@@ -139,8 +139,8 @@ public abstract class AbstractTaskListFragment extends Fragment {
         removeRepetition(tasks, activityModel);
         for (Task task: tasks) {
             if (!task.type().equals("single-time") && !task.type().equals("pending")) {
-                boolean shouldRecurToday = DateManager.shouldRecur(task.dateCreated(), DateManager.getGlobalDate().getDate(), task.type());
-                boolean shouldRecurTomorrow = DateManager.shouldRecur(task.dateCreated(), DateManager.getGlobalDate().getTomorrow(), task.type());
+                boolean shouldRecurToday = DateManager.shouldRecur(task.dateCreated(), today, task.type());
+                boolean shouldRecurTomorrow = DateManager.shouldRecur(task.dateCreated(), tomorrow, task.type());
                 Task toAddTomorrow = new Task(task.id(), task.text(), 1, false, tomorrow, task.category(),"single-time");
                 Task toAddToday = new Task(task.id(), task.text(), 1, false, today, task.category(),"single-time");
 
