@@ -107,7 +107,7 @@ public class RoomTaskRepository implements TaskRepository {
         for (int i = 0; i< allTasks.size(); i++){
             TaskEntity currTask = allTasks.get(i);
 
-            if(currTask.isFinished && currTask.activeDate.isBefore(dateManagerGlobalDate) && !isBetweenMidnightAnd2AM){
+            if(currTask.isFinished && (currTask.activeDate.isBefore(dateManagerGlobalDate.minusDays(1)) || (currTask.activeDate.isBefore(dateManagerGlobalDate) && !isBetweenMidnightAnd2AM))) {
                 taskDao.delete(currTask.id);
             }
         }
