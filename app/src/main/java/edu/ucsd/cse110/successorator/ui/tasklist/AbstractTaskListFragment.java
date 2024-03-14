@@ -23,7 +23,7 @@ import edu.ucsd.cse110.successorator.databinding.FragmentTaskListBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-abstract class AbstractTaskListFragment extends Fragment {
+public abstract class AbstractTaskListFragment extends Fragment {
 
     public MainViewModel activityModel;
     private FragmentTaskListBinding view;
@@ -77,11 +77,11 @@ abstract class AbstractTaskListFragment extends Fragment {
                 }
             }
             if (recurringCount != totalRecurring) {
-                handleRecurrence();
+                handleRecurrence(tasks, DateManager.getGlobalDate().getDate(), activityModel);
                 totalRecurring = recurringCount;
             }
             adapter.clear();
-            removeRepetition(tasks);
+            removeRepetition(tasks, activityModel);
             ArrayList<Task> taskList = filterTasks(tasks);
             adapter.addAll(taskList); // remember the mutable copy here!
             adapter.notifyDataSetChanged();
@@ -113,7 +113,10 @@ abstract class AbstractTaskListFragment extends Fragment {
         return view.getRoot();
     }
 
-    public void removeRepetition(List<Task> tasks) {
+    public static void removeRepetition(List<Task> tasks, MainViewModel activityModel) {
+        if (tasks == null) {
+            return;
+        }
         for (Task task: tasks) {
             boolean found = false;
             for (Task check: tasks) {
@@ -128,14 +131,12 @@ abstract class AbstractTaskListFragment extends Fragment {
         }
     }
 
-    public void handleRecurrence() {
-        List<Task> tasks = activityModel.getTaskList().getValue();
+    public static void handleRecurrence(List<Task> tasks, LocalDate today, MainViewModel activityModel) {
         if (tasks == null) {
             return;
         }
-        LocalDate today = DateManager.getGlobalDate().getDate();
-        LocalDate tomorrow = DateManager.getGlobalDate().getTomorrow();
-        removeRepetition(tasks);
+        LocalDate tomorrow = today.plusDays(1);
+        removeRepetition(tasks, activityModel);
         for (Task task: tasks) {
             if (!task.type().equals("single-time") && !task.type().equals("pending")) {
                 boolean shouldRecurToday = DateManager.shouldRecur(task.dateCreated(), DateManager.getGlobalDate().getDate(), task.type());
