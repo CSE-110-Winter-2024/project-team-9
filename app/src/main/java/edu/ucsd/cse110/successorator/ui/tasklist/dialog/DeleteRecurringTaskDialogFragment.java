@@ -46,12 +46,10 @@ public class DeleteRecurringTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         // Inflate the custom layout for the dialog
-        View view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_add_task_dialog, null);
 
         // Create the dialog using AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setView(view)
-                .setMessage("Do you want to delete this Recurring Task?")
+        builder.setMessage("Do you want to delete this Recurring Task?")
                 .setPositiveButton("Yes", this::onPositiveButtonClick)
                 .setNegativeButton("No", this::onNegativeButtonClick);
 

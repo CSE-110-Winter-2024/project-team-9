@@ -4,15 +4,15 @@ package edu.ucsd.cse110.successorator;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,16 +32,16 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddTaskUITest {
+public class AddTaskToPendingListTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void addTaskUITest() {
+    public void addTaskToPendingListTest() {
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
+                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(com.google.android.material.R.id.action_bar),
@@ -50,36 +50,44 @@ public class AddTaskUITest {
                         isDisplayed()));
         actionMenuItemView.perform(click());
 
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.pending_button), withText("Pending List"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.custom),
+                                        0),
+                                2),
+                        isDisplayed()));
+        materialButton.perform(click());
+
+        ViewInteraction actionMenuItemView2 = onView(
+                allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(com.google.android.material.R.id.action_bar),
+                                        1),
+                                1),
+                        isDisplayed()));
+        actionMenuItemView2.perform(click());
+
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.edit_text_task),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Task 1"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Test Task"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.edit_text_task), withText("Task 1"),
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(android.R.id.button1), withText("Save"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(android.R.id.custom),
+                                        withClassName(is("android.widget.ScrollView")),
                                         0),
-                                1),
-                        isDisplayed()));
-        appCompatEditText2.perform(pressImeActionButton());
-
-        ViewInteraction viewGroup = onView(
-                allOf(withId(R.id.task_layout), isDisplayed()));
-        viewGroup.check(matches(isDisplayed()));
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.task_text), withText("Task 1"),
-                        withParent(allOf(withId(R.id.task_layout),
-                                withParent(withId(R.id.card_list)))),
-                        isDisplayed()));
-        textView.check(matches(withText("Task 1")));
+                                3)));
+        materialButton2.perform(scrollTo(), click());
     }
 
     private static Matcher<View> childAtPosition(

@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -23,12 +22,15 @@ import java.time.LocalTime;
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
-import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.RecurringTaskListFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TodayTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TomorrowTaskListFragment;
-import edu.ucsd.cse110.successorator.ui.tasklist.dialog.AddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.PendingAddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.TodayAddTaskDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.RecurringAddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.TomorrowAddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
@@ -44,6 +46,15 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        onCreateHelper();
+
+        this.view = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(view.getRoot());
+
+        sendInput(currentViewName);
+    }
+
+    private void onCreateHelper() {
         SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
 
         DateTracker dateTracker = new DateTracker(LocalDate.now());
@@ -51,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
 
         DateManager.getLocalDateSubject().observe(localDate -> {
-            //Log.d("main", "observer of local date changed");
-            //Log.d("date manager date", DateManager.getFormattedDate());
             if (localDate == null) return;
             sendInput(currentViewName);
 
@@ -66,13 +75,7 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         }
 
         lastOpened = lastOpenedDateTime;
-
-        this.view = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(view.getRoot());
-
-        sendInput("today");
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.header_bar, menu);
@@ -93,17 +96,31 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         //if item is the add task button, run initiateAddTask()
         if (itemId == R.id.header_bar_add_task) {
             // shows the AddTaskDialogBox fragment when + button is clicked
-            var dialogFragment = AddTaskDialogFragment.newInstance();
-            FragmentManager fm = getSupportFragmentManager();
-            dialogFragment.show(fm, "AddTaskDialogFragment");
+            switch(currentViewName) {
+                case "today":
+                    var dialogFragment = TodayAddTaskDialogFragment.newInstance();
+                    FragmentManager fm = getSupportFragmentManager();
+                    dialogFragment.show(fm, "AddTaskDialogFragment");
+                    break;
+                case "tomorrow":
+                    var tomorrowDialogFragment = TomorrowAddTaskDialogFragment.newInstance();
+                    FragmentManager tomorrowFm = getSupportFragmentManager();
+                    tomorrowDialogFragment.show(tomorrowFm, "AddTaskDialogFragment");
+                    break;
+                case "pending":
+                    var pendingDialogFragment = PendingAddTaskDialogFragment.newInstance();
+                    FragmentManager pendingFm = getSupportFragmentManager();
+                    pendingDialogFragment.show(pendingFm, "AddTaskDialogFragment");
+                    break;
+                case "recurring":
+                    var recurringDialogFragment = RecurringAddTaskDialogFragment.newInstance();
+                    FragmentManager recurringFm = getSupportFragmentManager();
+                    recurringDialogFragment.show(recurringFm, "AddTaskDialogFragment");
+                    break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    private void addTask(String input) {
-        System.out.println("add task: " + input);
     }
 
     // Save LocalDateTime to SharedPreferences
@@ -178,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
 
                 //Change to Recurring List View Fragment
                 fragment = RecurringTaskListFragment.newInstance();
-                // fragment = RecurringListFragment.newInstance();
                 setTitle("Recurring");
                 break;
             default:
@@ -194,6 +210,19 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
                 .commit();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        onCreateHelper();
 
+        onStart();
+
+        setContentView(view.getRoot());
+
+        currentViewName = "today";
+
+        sendInput(currentViewName);
+
+    }
 }

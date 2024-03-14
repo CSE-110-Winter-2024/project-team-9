@@ -27,8 +27,8 @@ public class RecurringTaskListFragment extends AbstractTaskListFragment {
     public void onDeleteClick(Task task) {
         //Add call to dialog fragment here
         var dialogFragment = DeleteRecurringTaskDialogFragment.newInstance(task);
-        FragmentManager fm = getChildFragmentManager();
-        dialogFragment.show(fm, "DeleteRecurringTaskFragment");
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        dialogFragment.show(fm, "Delete Recurring Task Dialog Fragment");
         //System.out.println("Recurring long hold");
     }
 
