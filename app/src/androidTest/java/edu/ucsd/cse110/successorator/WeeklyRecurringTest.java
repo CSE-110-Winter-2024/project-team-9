@@ -33,6 +33,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class WeeklyRecurringTest {
@@ -63,8 +66,10 @@ public class WeeklyRecurringTest {
                         isDisplayed()));
         appCompatEditText.perform(replaceText("take out the trash"), closeSoftKeyboard());
 
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE");
+
         ViewInteraction materialRadioButton = onView(
-                allOf(withId(R.id.weekly), withText("Weekly on Sunday"),
+                allOf(withId(R.id.weekly), withText("Weekly on " + dateFormatter.format(LocalDate.now())),
                         childAtPosition(
                                 allOf(withId(R.id.pending_options),
                                         childAtPosition(
