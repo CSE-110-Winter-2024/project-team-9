@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity
 
         Log.d("App started at: ", currentTime.toString());
 
-        mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        MainViewModel mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         // Calculate the rollover deadline for the current day
         LocalDateTime rolloverDeadline = lastOpened.toLocalDate().plusDays(1).atTime(2, 0);

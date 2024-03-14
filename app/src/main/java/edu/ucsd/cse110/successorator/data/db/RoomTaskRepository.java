@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.Transformations;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -100,11 +101,13 @@ public class RoomTaskRepository implements TaskRepository {
     public void deletePrevFinished() {
         List<TaskEntity> allTasks = taskDao.findAll();
         LocalDate dateManagerGlobalDate = DateManager.getGlobalDate().getDate();
+        LocalDateTime currentTime = LocalDateTime.now();
+        boolean isBetweenMidnightAnd2AM = currentTime.getHour() >= 0 && currentTime.getHour() < 2;
 
         for (int i = 0; i< allTasks.size(); i++){
             TaskEntity currTask = allTasks.get(i);
 
-            if(currTask.isFinished && currTask.activeDate.isBefore(dateManagerGlobalDate)){
+            if(currTask.isFinished && currTask.activeDate.isBefore(dateManagerGlobalDate) && !isBetweenMidnightAnd2AM){
                 taskDao.delete(currTask.id);
             }
         }

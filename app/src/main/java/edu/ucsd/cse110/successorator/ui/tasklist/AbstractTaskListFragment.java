@@ -28,18 +28,12 @@ abstract class AbstractTaskListFragment extends Fragment {
     public MainViewModel activityModel;
     private FragmentTaskListBinding view;
     private TaskListAdapter adapter;
+    private int totalRecurring;
+
 
     public AbstractTaskListFragment() {
         // Required empty public constructor
     }
-
-//    public static TaskListFragment newInstance(String filter) {
-//        filter will be "home", "work", "school", "errands", or "" for none
-//        TaskListFragment fragment = new TaskListFragment();
-//        Bundle args = new Bundle();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,12 +68,20 @@ abstract class AbstractTaskListFragment extends Fragment {
         activityModel.updateActiveTasks();
         activityModel.deletePrevFinished();
 
-        if (activityModel.getTaskList().getValue() != null) {
-            handleRecurrence(activityModel.getTaskList().getValue());
-        }
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;
+            int recurringCount = 0;
+            for (Task task: tasks) {
+                if (!task.type().equals("single-time") && !task.type().equals("pending")) {
+                    recurringCount += 1;
+                }
+            }
+            if (recurringCount != totalRecurring) {
+                handleRecurrence();
+                totalRecurring = recurringCount;
+            }
             adapter.clear();
+            removeRepetition(tasks);
             ArrayList<Task> taskList = filterTasks(tasks);
             adapter.addAll(taskList); // remember the mutable copy here!
             adapter.notifyDataSetChanged();
@@ -111,36 +113,57 @@ abstract class AbstractTaskListFragment extends Fragment {
         return view.getRoot();
     }
 
-    public void handleRecurrence(List<Task> tasks) {
+    public void removeRepetition(List<Task> tasks) {
+        for (Task task: tasks) {
+            boolean found = false;
+            for (Task check: tasks) {
+                if (check.equals(task)) {
+                    if (found) {
+                        activityModel.remove(check.id());
+                    } else {
+                        found = true;
+                    }
+                }
+            }
+        }
+    }
+
+    public void handleRecurrence() {
+        List<Task> tasks = activityModel.getTaskList().getValue();
+        if (tasks == null) {
+            return;
+        }
         LocalDate today = DateManager.getGlobalDate().getDate();
         LocalDate tomorrow = DateManager.getGlobalDate().getTomorrow();
+        removeRepetition(tasks);
         for (Task task: tasks) {
-            if (task.type().equals("daily")) {
+            if (!task.type().equals("single-time") && !task.type().equals("pending")) {
+                boolean shouldRecurToday = DateManager.shouldRecur(task.dateCreated(), DateManager.getGlobalDate().getDate(), task.type());
+                boolean shouldRecurTomorrow = DateManager.shouldRecur(task.dateCreated(), DateManager.getGlobalDate().getTomorrow(), task.type());
+                Task toAddTomorrow = new Task(task.id(), task.text(), 1, false, tomorrow, task.category(),"single-time");
+                Task toAddToday = new Task(task.id(), task.text(), 1, false, today, task.category(),"single-time");
+
+                if (task.type().equals("daily")) {
+                    shouldRecurToday = true;
+                    shouldRecurTomorrow = true;
+                }
+
                 boolean addToday = true;
                 boolean addTomorrow = true;
-                for (Task checkTask: tasks) {
-                    if (checkTask.text().equals(task.text()) && checkTask.type().equals("single-time") && !checkTask.activeDate().isAfter(today)) {
+                for (Task check: tasks) {
+                    if (toAddToday.equals(check)) {
                         addToday = false;
                     }
-                    if (checkTask.text().equals(task.text()) && checkTask.type().equals("single-time") && checkTask.activeDate().equals(tomorrow)) {
+                    if (toAddTomorrow.equals(check)) {
                         addTomorrow = false;
                     }
                 }
-                if (addToday) {
-                    activityModel.append(new Task(task.id(), task.text(), 1, false, today, task.category(),"single-time"));
+                if (addToday && shouldRecurToday) {
+                    activityModel.append(toAddToday);
                 }
-                if (addTomorrow) {
-                    activityModel.append(new Task(task.id(), task.text(), 1, false, tomorrow, task.category(),"single-time"));
+                if (addTomorrow && shouldRecurTomorrow) {
+                    activityModel.append(toAddTomorrow);
                 }
-            }
-            if (!task.type().equals("single-time") && !task.type().equals("pending")) {
-                boolean shouldRecurToday = false;
-                if (task.type().equals("daily")) {
-                    shouldRecurToday = true;
-                } else {
-                    shouldRecurToday = DateManager.shouldRecur(task.dateCreated(), DateManager.getGlobalDate().getDate(), task.type());
-                }
-
             }
         }
     }
