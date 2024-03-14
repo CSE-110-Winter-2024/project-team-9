@@ -13,11 +13,14 @@ import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TodayTaskListFragment extends AbstractTaskListFragment{
+    private static String category = "";
 
-    public static TodayTaskListFragment newInstance() {
+    public static TodayTaskListFragment newInstance(String filter) {
+        // filter will be "home", "work", "school", "errands", or "" for none
         TodayTaskListFragment fragment = new TodayTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        category = filter;
         return fragment;
     }
     @Nullable
@@ -32,8 +35,15 @@ public class TodayTaskListFragment extends AbstractTaskListFragment{
     public ArrayList<Task> filterTasks(List<Task> tasks) {
         ArrayList<Task> todayTasks = new ArrayList<>();
         for (Task task: tasks) {
-            if (task.type().equals("single-time") && !task.activeDate().isAfter(DateManager.getGlobalDate().getDate())) {
-                todayTasks.add(task);
+            if (category.equals("")) {
+                if (task.type().equals("single-time") && !task.activeDate().isAfter(DateManager.getGlobalDate().getDate())) {
+                    todayTasks.add(task);
+                }
+            }
+            else{
+                if (task.type().equals("single-time") && !task.activeDate().isAfter(DateManager.getGlobalDate().getDate()) && task.category().equals(category)) {
+                    todayTasks.add(task);
+                }
             }
         }
         return todayTasks;

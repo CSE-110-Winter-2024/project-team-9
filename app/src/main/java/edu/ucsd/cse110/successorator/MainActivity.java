@@ -2,6 +2,14 @@ package edu.ucsd.cse110.successorator;
 
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,10 +26,13 @@ import androidx.lifecycle.ViewModelProvider;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
+import edu.ucsd.cse110.successorator.databinding.FragmentChangeFilterDialogBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
+import edu.ucsd.cse110.successorator.ui.tasklist.dialog.ChangeFilterDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.RecurringTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.TodayTaskListFragment;
@@ -33,13 +44,14 @@ import edu.ucsd.cse110.successorator.ui.tasklist.dialog.SwitchViewDialogFragment
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.TomorrowAddTaskDialogFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-public class MainActivity extends AppCompatActivity implements SwitchViewDialogFragment.OnInputListener {
+public class MainActivity extends AppCompatActivity
+        implements SwitchViewDialogFragment.OnInputListener, ChangeFilterDialogFragment.OnInputListener {
 
     private ActivityMainBinding view;
     private String currentViewName = "today";
     private TaskDao taskDao;
     public static LocalDateTime lastOpened;
-    public MainViewModel mainActivityViewModel;
+    private String contextFilter;
 
 
     @Override
@@ -75,10 +87,29 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         }
 
         lastOpened = lastOpenedDateTime;
+
+        this.view = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(view.getRoot());
+
+        contextFilter = "";
+        sendInput("today");
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.header_bar, menu);
+
+        Drawable menuIcon = getDrawable(R.drawable.ic_menu);
+        menuIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        ShapeDrawable background = new ShapeDrawable(new RectShape());
+        background.getPaint().setColor(0x00000000);
+        background.setBounds(0, 0, 100, 100);
+
+        LayerDrawable homeAsUpDrawable = new LayerDrawable(new Drawable[] {background, menuIcon});
+
+        getSupportActionBar().setHomeAsUpIndicator(homeAsUpDrawable);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         return true;
     }
 
@@ -86,6 +117,13 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var itemId = item.getItemId();
+
+        if (itemId == android.R.id.home) {
+
+            var dialogFragment = ChangeFilterDialogFragment.newInstance();
+            FragmentManager fm = getSupportFragmentManager();
+            dialogFragment.show(fm, "ChangeFilterDialogFragment");
+        }
 
         if (itemId == R.id.header_bar_dropdown) {
             var dialogFragment = SwitchViewDialogFragment.newInstance();
@@ -168,33 +206,75 @@ public class MainActivity extends AppCompatActivity implements SwitchViewDialogF
         System.out.println("Here");
     }
 
+    public void updateFilter() {
+
+            Drawable menuIcon = getDrawable(R.drawable.ic_menu);
+            ShapeDrawable background = new ShapeDrawable(new OvalShape());
+            background.setBounds(0, 0, 100, 100);
+
+            menuIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
+            switch (contextFilter) {
+                case "home":
+                    background.getPaint().setColor(getColor(R.color.home_color));
+                    break;
+                case "work":
+                    background.getPaint().setColor(getColor(R.color.work_color));
+                    break;
+                case "school":
+                    background.getPaint().setColor(getColor(R.color.school_color));
+                    break;
+                case "errand":
+                    background.getPaint().setColor(getColor(R.color.errands_color));
+                    break;
+                default:
+                    background.getPaint().setColor(0x00000000);
+                    break;
+            }
+
+            LayerDrawable homeAsUpDrawable = new LayerDrawable(new Drawable[] {background, menuIcon});
+
+            Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(homeAsUpDrawable);
+
+    }
+
+    @Override
+    public void sendFilterInput(String input) {
+
+        if (!contextFilter.equals(input)) {
+            contextFilter = input;
+            updateFilter();
+            sendInput(currentViewName);
+        }
+    }
+
     @Override
     public void sendInput(String input) {
         Log.d("MainActivity", "input " + input + " received");
 
-        Fragment fragment = TodayTaskListFragment.newInstance();
+        Fragment fragment = TodayTaskListFragment.newInstance(contextFilter);
 
         switch (input) {
             case "today":
                 // Change to Today List View Fragment
-                fragment = TodayTaskListFragment.newInstance();
+                fragment = TodayTaskListFragment.newInstance(contextFilter);
                 setTitle("Today, " + DateManager.getFormattedDate());
                 break;
             case "tomorrow":
                 // Change to Tomorrow List View Fragment
-                fragment = TomorrowTaskListFragment.newInstance();
+                fragment = TomorrowTaskListFragment.newInstance(contextFilter);
                 setTitle("Tomorrow, " + DateManager.getTomorrowFormattedDate());
                 break;
             case "pending":
                 // Change to Pending List View Fragment
-                fragment = PendingTaskListFragment.newInstance();
+                fragment = PendingTaskListFragment.newInstance(contextFilter);
                 setTitle("Pending");
                 break;
             case "recurring":
                 // currentFragment = "recurring";
 
                 //Change to Recurring List View Fragment
-                fragment = RecurringTaskListFragment.newInstance();
+                fragment = RecurringTaskListFragment.newInstance(contextFilter);
                 setTitle("Recurring");
                 break;
             default:
