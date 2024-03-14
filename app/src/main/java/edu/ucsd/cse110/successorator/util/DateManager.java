@@ -29,12 +29,12 @@ public class DateManager {
     }
 
     public static String getFormattedDate() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE M/dd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE M/dd");
         return dateFormatter.format(globalDate.getDate());
     }
 
     public static String getTomorrowFormattedDate() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEEE M/dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEE M/dd");
         return dateTimeFormatter.format(globalDate.getTomorrow());
     }
 
