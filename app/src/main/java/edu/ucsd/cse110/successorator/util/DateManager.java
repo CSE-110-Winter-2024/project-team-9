@@ -101,6 +101,11 @@ public class DateManager {
             if (getDayOfMonth(recurDate).equals(getDayOfMonth(checkDate))) {
                 return true;
             }
+            if (getDayOfWeek(checkDate).equals(getDayOfWeek(recurDate))
+                    && getDayOfMonth(checkDate).contains("1st")
+                    && getDayOfMonth(checkDate.minusWeeks(1)).compareTo(getDayOfMonth(recurDate)) < 0) {
+                return true;
+            }
         }
         return false;
     }
