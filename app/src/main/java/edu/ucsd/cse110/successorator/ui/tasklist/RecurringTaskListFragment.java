@@ -16,10 +16,12 @@ import edu.ucsd.cse110.successorator.ui.tasklist.dialog.DeleteRecurringTaskDialo
 
 
 public class RecurringTaskListFragment extends AbstractTaskListFragment {
-    public static RecurringTaskListFragment newInstance() {
+    private static String category = "";
+    public static RecurringTaskListFragment newInstance(String filter) {
         RecurringTaskListFragment fragment = new RecurringTaskListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        category = filter;
         return fragment;
     }
     @Nullable
@@ -37,10 +39,19 @@ public class RecurringTaskListFragment extends AbstractTaskListFragment {
     public ArrayList<Task> filterTasks(List<Task> tasks) {
         ArrayList<Task> recurringTasks = new ArrayList<>();
         for (Task task: tasks) {
-            if (task.type().equals("daily") || task.type().equals("weekly") || task.type().equals("monthly") || task.type().equals("yearly")) {
-                recurringTasks.add(task);
+            if (category.equals("")) {
+                if (task.type().equals("daily") || task.type().equals("weekly") || task.type().equals("monthly") || task.type().equals("yearly")) {
+                    recurringTasks.add(task);
+                }
+                System.out.println(task.dateCreated());
             }
-            System.out.println(task.dateCreated());
+            else{
+                if ((task.type().equals("daily") || task.type().equals("weekly") || task.type().equals("monthly")
+                        || task.type().equals("yearly")) && task.category().equals(category) ) {
+                    recurringTasks.add(task);
+                }
+                System.out.println(task.dateCreated());
+            }
         }
         return recurringTasks;
     }

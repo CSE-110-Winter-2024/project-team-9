@@ -7,6 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="home_color">#48cae4</color>
+    <color name="work_color">#ffb703</color>
+    <color name="school_color">#ff758f</color>
+    <color name="errands_color">#e0aaff</color>
     <color name="teal">#48cae4</color>
     <color name="yellow">#ffb703</color>
     <color name="pink">#ff758f</color>
