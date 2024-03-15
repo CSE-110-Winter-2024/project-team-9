@@ -93,12 +93,7 @@ public class Task implements Serializable {
         Task task = (Task) o;
         return (Objects.equals(text, task.text) && Objects.equals(category,task.category)
                 && Objects.equals(activeDate, task.activeDate)
-                && Objects.equals(type, task.type()))
-                || (
-                Objects.equals(text, task.text) && Objects.equals(category,task.category)
-                    && (activeDate.isAfter(task.activeDate()) && !activeDate.isAfter(DateManager)
-                    && Objects.equals(type, task.type())
-                );
+                && Objects.equals(type, task.type()));
 
 
     }

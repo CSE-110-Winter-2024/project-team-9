@@ -116,11 +116,10 @@ public abstract class AbstractTaskListFragment extends Fragment {
             boolean found = false;
             for (Task check: tasks) {
                 if (check.equals(task) ||
-                        (
-                                Objects.equals(task.text(), check.text()) && Objects.equals(task.category(),check.category())
+                        (Objects.equals(task.text(), check.text()) && Objects.equals(task.category(),check.category())
                                         && (task.activeDate().isAfter(check.activeDate()) && !task.activeDate().isAfter(DateManager.getGlobalDate().getDate())
-                                        && Objects.equals(task.type(), check.type()
-                                ) {
+                                        && Objects.equals(task.type(), check.type())
+                                ))) {
                     if (found) {
                         activityModel.remove(check.id());
                     } else {
