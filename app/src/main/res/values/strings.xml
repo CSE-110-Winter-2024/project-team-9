@@ -2,4 +2,18 @@
     <string name="app_name">Successorator</string>
     <string name="placeholder">Placeholder</string>
     <string name="hello_world">Hello, World!</string>
+    <string name="add_button_text">Add Task</string>
+    <string name="input_text">Task Name</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_goals">No goals for the Day.\nClick the + at the upper right to enter your Most Important Thing.</string>
+    <string name="dropdown">Dropdown</string>
+    <string name="today_button">Today List</string>
+    <string name="tomorrow_button">Tomorrow List</string>
+    <string name="pending_button">Pending List</string>
+    <string name="recurring_button">Recurring List</string>
+    <string name="home_filter">Home</string>
+    <string name="work_filter">Work</string>
+    <string name="school_filter">School</string>
+    <string name="errands_filter">Errands</string>
+    <string name="no_filter">No Filter</string>
 </resources>

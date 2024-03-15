@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edit_text_task"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Task name"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/context_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_task">
+
+        <RadioButton
+            android:id="@+id/contextHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:button="@null"
+            android:text="H"
+            android:textSize="20dp"
+            android:background="@drawable/home_radio_button_background"
+            android:gravity="center"/>
+
+        <RadioButton
+            android:id="@+id/contextWork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:text="W"
+            android:textSize="20dp"
+            android:background="@drawable/work_radio_button_background"
+            android:gravity="center"/>
+
+        <RadioButton
+            android:id="@+id/contextSchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:text="S"
+            android:textSize="20dp"
+            android:background="@drawable/school_radio_button_background"
+            android:gravity="center"/>
+
+        <RadioButton
+            android:id="@+id/contextErrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:text="E"
+            android:textSize="20dp"
+            android:background="@drawable/errand_radio_button_background"
+            android:gravity="center"/>
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
