@@ -73,15 +73,7 @@ public abstract class AbstractTaskListFragment extends Fragment {
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;
             int recurringCount = 0;
-            for (Task task: tasks) {
-                if (!task.type().equals("single-time") && !task.type().equals("pending")) {
-                    recurringCount += 1;
-                }
-            }
-            if (recurringCount != totalRecurring) {
-                handleRecurrence(tasks, DateManager.getGlobalDate().getDate(), activityModel);
-                totalRecurring = recurringCount;
-            }
+
             adapter.clear();
             removeRepetition(tasks, activityModel);
             ArrayList<Task> taskList = filterTasks(tasks);
