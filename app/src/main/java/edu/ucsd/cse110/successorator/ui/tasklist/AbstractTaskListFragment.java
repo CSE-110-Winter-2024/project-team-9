@@ -95,9 +95,7 @@ public abstract class AbstractTaskListFragment extends Fragment {
         view.moveDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("onClick", "Button Clicked");
                 DateManager.incrementDate();
-                Log.d("onClick", "Date Incremented");
                 activityModel.updateTasks();
                 activityModel.updateActiveTasks();
                 activityModel.deletePrevFinished();
