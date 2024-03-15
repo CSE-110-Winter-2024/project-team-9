@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.successorator;
 
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -15,12 +16,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -35,41 +38,15 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class Iter1_Test2 {
+public class Iter1_test3 {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void iter1_Test2() {
-        ViewInteraction button = onView(
-                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
-                        withParent(withParent(withId(com.google.android.material.R.id.action_bar))),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
-
+    public void iter1_Test3() {
         ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView.perform(click());
-
-        ViewInteraction materialButton = onView(
-                allOf(withId(R.id.pending_button), withText("Pending List"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.custom),
-                                        0),
-                                2),
-                        isDisplayed()));
-        materialButton.perform(click());
-
-        ViewInteraction actionMenuItemView2 = onView(
                 allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
                         childAtPosition(
                                 childAtPosition(
@@ -77,7 +54,7 @@ public class Iter1_Test2 {
                                         1),
                                 1),
                         isDisplayed()));
-        actionMenuItemView2.perform(click());
+        actionMenuItemView.perform(click());
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.edit_text_task),
@@ -87,10 +64,10 @@ public class Iter1_Test2 {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("pending task"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("breakfast wed"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.edit_text_task), withText("pending task"),
+                allOf(withId(R.id.edit_text_task), withText("breakfast wed"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
@@ -99,16 +76,16 @@ public class Iter1_Test2 {
                         isDisplayed()));
         appCompatEditText2.perform(pressImeActionButton());
 
-        ViewInteraction materialButton2 = onView(
+        ViewInteraction materialButton = onView(
                 allOf(withId(android.R.id.button1), withText("Save"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 3)));
-        materialButton2.perform(scrollTo(), click());
+        materialButton.perform(scrollTo(), click());
 
-        ViewInteraction actionMenuItemView3 = onView(
+        ViewInteraction actionMenuItemView2 = onView(
                 allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
                         childAtPosition(
                                 childAtPosition(
@@ -116,19 +93,19 @@ public class Iter1_Test2 {
                                         1),
                                 0),
                         isDisplayed()));
-        actionMenuItemView3.perform(click());
+        actionMenuItemView2.perform(click());
 
-        ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.today_button), withText("Today List"),
+        ViewInteraction materialButton2 = onView(
+                allOf(withId(R.id.tomorrow_button), withText("Tomorrow List"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
                                         0),
-                                0),
+                                1),
                         isDisplayed()));
-        materialButton3.perform(click());
+        materialButton2.perform(click());
 
-        ViewInteraction actionMenuItemView4 = onView(
+        ViewInteraction actionMenuItemView3 = onView(
                 allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
                         childAtPosition(
                                 childAtPosition(
@@ -136,7 +113,7 @@ public class Iter1_Test2 {
                                         1),
                                 1),
                         isDisplayed()));
-        actionMenuItemView4.perform(click());
+        actionMenuItemView3.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.edit_text_task),
@@ -146,10 +123,10 @@ public class Iter1_Test2 {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("lunch for wed"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("thurs task"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.edit_text_task), withText("lunch for wed"),
+                allOf(withId(R.id.edit_text_task), withText("thurs task"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.custom),
@@ -158,85 +135,26 @@ public class Iter1_Test2 {
                         isDisplayed()));
         appCompatEditText4.perform(pressImeActionButton());
 
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(android.R.id.button1), withText("Save"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                3)));
+        materialButton3.perform(scrollTo(), click());
+
+        ViewInteraction actionMenuItemView4 = onView(
+                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(com.google.android.material.R.id.action_bar),
+                                        1),
+                                0),
+                        isDisplayed()));
+        actionMenuItemView4.perform(click());
+
         ViewInteraction materialButton4 = onView(
-                allOf(withId(android.R.id.button1), withText("Save"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton4.perform(scrollTo(), click());
-
-        ViewInteraction actionMenuItemView5 = onView(
-                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView5.perform(click());
-
-        ViewInteraction materialButton5 = onView(
-                allOf(withId(R.id.tomorrow_button), withText("Tomorrow List"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.custom),
-                                        0),
-                                1),
-                        isDisplayed()));
-        materialButton5.perform(click());
-
-        ViewInteraction actionMenuItemView6 = onView(
-                allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
-                                        1),
-                                1),
-                        isDisplayed()));
-        actionMenuItemView6.perform(click());
-
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.edit_text_task),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.custom),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText5.perform(replaceText("lunch for dinner"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.edit_text_task), withText("lunch for dinner"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.custom),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText6.perform(pressImeActionButton());
-
-        ViewInteraction materialButton6 = onView(
-                allOf(withId(android.R.id.button1), withText("Save"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                3)));
-        materialButton6.perform(scrollTo(), click());
-
-        ViewInteraction actionMenuItemView7 = onView(
-                allOf(withId(R.id.header_bar_dropdown), withContentDescription("Dropdown"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(com.google.android.material.R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView7.perform(click());
-
-        ViewInteraction materialButton7 = onView(
                 allOf(withId(R.id.today_button), withText("Today List"),
                         childAtPosition(
                                 childAtPosition(
@@ -244,9 +162,17 @@ public class Iter1_Test2 {
                                         0),
                                 0),
                         isDisplayed()));
-        materialButton7.perform(click());
+        materialButton4.perform(click());
 
-        ViewInteraction materialButton8 = onView(
+        DataInteraction constraintLayout = onData(anything())
+                .inAdapterView(allOf(withId(R.id.card_list),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)))
+                .atPosition(0);
+        constraintLayout.perform(click());
+
+        ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.move_date_button), withText("Advance One Day"),
                         childAtPosition(
                                 childAtPosition(
@@ -254,7 +180,7 @@ public class Iter1_Test2 {
                                         0),
                                 2),
                         isDisplayed()));
-        materialButton8.perform(click());
+        materialButton5.perform(click());
 
         ViewInteraction listView = onView(
                 allOf(withId(R.id.card_list),
