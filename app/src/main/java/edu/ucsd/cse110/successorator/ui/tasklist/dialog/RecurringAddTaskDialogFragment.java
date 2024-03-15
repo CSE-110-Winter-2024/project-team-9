@@ -20,11 +20,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.data.db.LocalDateConverter;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
+import edu.ucsd.cse110.successorator.ui.tasklist.AbstractTaskListFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class RecurringAddTaskDialogFragment extends DialogFragment {
@@ -130,7 +132,12 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
         String context = getTaskContext();
         LocalDate date = LocalDate.of(startYear, startMonth, startDay);
         Task newTask = new Task(null, taskText, -1, false, date, context, type);
+
         activityModel.append(newTask);
+
+        List<Task> tasks = activityModel.getTaskList().getValue();
+        tasks.add(newTask);
+        AbstractTaskListFragment.handleRecurrence(tasks, DateManager.getGlobalDate().getDate(), activityModel);
 
         dismiss();
     }
