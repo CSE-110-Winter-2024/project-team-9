@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -114,7 +115,12 @@ public abstract class AbstractTaskListFragment extends Fragment {
         for (Task task: tasks) {
             boolean found = false;
             for (Task check: tasks) {
-                if (check.equals(task)) {
+                if (check.equals(task) ||
+                        (
+                                Objects.equals(task.text(), check.text()) && Objects.equals(task.category(),check.category())
+                                        && (task.activeDate().isAfter(check.activeDate()) && !task.activeDate().isAfter(DateManager.getGlobalDate().getDate())
+                                        && Objects.equals(task.type(), check.type()
+                                ) {
                     if (found) {
                         activityModel.remove(check.id());
                     } else {
