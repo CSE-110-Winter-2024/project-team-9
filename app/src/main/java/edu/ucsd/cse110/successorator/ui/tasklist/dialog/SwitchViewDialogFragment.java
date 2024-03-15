@@ -91,7 +91,6 @@ public class SwitchViewDialogFragment extends DialogFragment {
 
     public void buttonClick(AlertDialog alertDialog, String s) {
         alertDialog.dismiss();
-        Log.d(s + "_button", s + " button pressed");
         myListener.sendInput(s);
     }
 }

@@ -86,7 +86,6 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         // variable that stores the text input when check icon is pressed
         @NonNull String taskText = editTextTask.getText().toString();
-        Log.d("onPositiveButtonClick", "Button Pressed");
 
         String type = getType();
         String context = getTaskContext();
@@ -99,7 +98,6 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
-        Log.d("onNegativeButtonClick", "cancel");
         dialog.cancel();
     }
 
