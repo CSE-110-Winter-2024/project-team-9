@@ -112,7 +112,6 @@ public class TodayAddTaskDialogFragment extends DialogFragment {
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
-        Log.d("onNegativeButtonClick", "cancel");
         dialog.cancel();
     }
 

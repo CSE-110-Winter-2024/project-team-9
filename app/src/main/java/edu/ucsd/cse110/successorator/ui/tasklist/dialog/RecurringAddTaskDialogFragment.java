@@ -125,7 +125,6 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         // variable that stores the text input when save is pressed
         @NonNull String taskText = editTextTask.getText().toString();
-        Log.d("onPositiveButtonClick", "Button Pressed");
         // in final product, change date to LocalDate.now()
 
         String type = getType();
@@ -175,7 +174,6 @@ public class RecurringAddTaskDialogFragment extends DialogFragment {
     }
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
-        Log.d("onNegativeButtonClick", "cancel");
         dialog.cancel();
     }
 }

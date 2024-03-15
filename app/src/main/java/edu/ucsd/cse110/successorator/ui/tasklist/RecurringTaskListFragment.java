@@ -43,14 +43,12 @@ public class RecurringTaskListFragment extends AbstractTaskListFragment {
                 if (task.type().equals("daily") || task.type().equals("weekly") || task.type().equals("monthly") || task.type().equals("yearly")) {
                     recurringTasks.add(task);
                 }
-                System.out.println(task.dateCreated());
             }
             else{
                 if ((task.type().equals("daily") || task.type().equals("weekly") || task.type().equals("monthly")
                         || task.type().equals("yearly")) && task.category().equals(category) ) {
                     recurringTasks.add(task);
                 }
-                System.out.println(task.dateCreated());
             }
         }
         return recurringTasks;

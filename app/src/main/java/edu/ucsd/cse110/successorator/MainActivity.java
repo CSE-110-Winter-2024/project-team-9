@@ -181,14 +181,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("MainActivity", "onStart");
-        Log.d("Last opened datetime: ", lastOpened.toString());
+//        Log.d("MainActivity", "onStart");
+//        Log.d("Last opened datetime: ", lastOpened.toString());
         SharedPreferences sharedPreferences = getSharedPreferences("task", MODE_PRIVATE);
         // Save current time to SharedPreferences
         LocalDateTime currentTime = LocalDateTime.now();
         saveLastOpenedDateTime(sharedPreferences, currentTime);
 
-        Log.d("App started at: ", currentTime.toString());
+//        Log.d("App started at: ", currentTime.toString());
 
         MainViewModel mainActivityViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (currentTime.isAfter(rolloverDeadline)){
-            Log.d("MainActivity", "Rollover initiated");
+//            Log.d("MainActivity", "Rollover initiated");
             mainActivityViewModel.updateTasks();
             mainActivityViewModel.updateActiveTasks();
             mainActivityViewModel.deletePrevFinished();
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void sendInput(String input) {
-        Log.d("MainActivity", "input " + input + " received");
+//        Log.d("MainActivity", "input " + input + " received");
 
         Fragment fragment = TodayTaskListFragment.newInstance(contextFilter);
 

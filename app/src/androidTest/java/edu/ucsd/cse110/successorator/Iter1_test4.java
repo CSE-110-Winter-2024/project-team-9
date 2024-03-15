@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class iter1_test7 {
+public class Iter1_test4 {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
