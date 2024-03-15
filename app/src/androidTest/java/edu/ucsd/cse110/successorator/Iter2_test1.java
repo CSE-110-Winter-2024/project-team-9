@@ -36,6 +36,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.LocalDate;
+
+import edu.ucsd.cse110.successorator.util.DateManager;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class Iter2_test1 {
@@ -46,6 +50,8 @@ public class Iter2_test1 {
 
     @Test
     public void iter2_test1() {
+        LocalDate date = DateManager.getGlobalDate().getDate();
+
         ViewInteraction actionMenuItemView = onView(
                 allOf(withId(R.id.header_bar_add_task), withContentDescription("Add Task"),
                         childAtPosition(
@@ -127,7 +133,7 @@ public class Iter2_test1 {
         appCompatEditText4.perform(pressImeActionButton());
 
         ViewInteraction materialRadioButton2 = onView(
-                allOf(withId(R.id.weekly), withText("Weekly on Thursday"),
+                allOf(withId(R.id.weekly), withText("Weekly on " + DateManager.getDayOfWeek(date)),
                         childAtPosition(
                                 allOf(withId(R.id.pending_options),
                                         childAtPosition(
