@@ -29,12 +29,12 @@ public class DateManager {
     }
 
     public static String getFormattedDate() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE M/dd");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE M/dd");
         return dateFormatter.format(globalDate.getDate());
     }
 
     public static String getTomorrowFormattedDate() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEEE M/dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEE M/dd");
         return dateTimeFormatter.format(globalDate.getTomorrow());
     }
 
@@ -84,6 +84,30 @@ public class DateManager {
         }
 
         return retString;
+    }
+
+    public static boolean shouldRecur(LocalDate recurDate, LocalDate checkDate, String recurType) {
+        if (recurType.equals("weekly")) {
+            if (getDayOfWeek(checkDate).equals(getDayOfWeek(recurDate))) {
+                return true;
+            }
+        }
+        if (recurType.equals("yearly")) {
+            if (getDateNoYear(checkDate).equals(getDateNoYear(recurDate))) {
+                return true;
+            }
+        }
+        if (recurType.equals("monthly")) {
+            if (getDayOfMonth(recurDate).equals(getDayOfMonth(checkDate))) {
+                return true;
+            }
+            if (getDayOfWeek(checkDate).equals(getDayOfWeek(recurDate))
+                    && getDayOfMonth(checkDate).contains("1st")
+                    && getDayOfMonth(checkDate.minusWeeks(1)).compareTo(getDayOfMonth(recurDate)) < 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

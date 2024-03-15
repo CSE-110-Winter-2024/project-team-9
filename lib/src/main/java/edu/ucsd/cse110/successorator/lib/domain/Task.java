@@ -91,10 +91,9 @@ public class Task implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(text, task.text)
-                && Objects.equals(sortOrder, task.sortOrder)
-                && Objects.equals(isFinished, task.isFinished)
-                && Objects.equals(activeDate, task.activeDate);
+        return Objects.equals(text, task.text) && Objects.equals(category,task.category)
+                && Objects.equals(activeDate, task.activeDate)
+                && Objects.equals(type, task.type());
     }
 
     @Override

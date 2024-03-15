@@ -72,6 +72,7 @@ public class MainViewModel extends ViewModel {
 
             taskList.setValue(newTasks);
         });
+
     }
 
 

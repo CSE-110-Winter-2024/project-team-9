@@ -32,6 +32,7 @@ import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.databinding.FragmentChangeFilterDialogBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
+import edu.ucsd.cse110.successorator.ui.tasklist.AbstractTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.ChangeFilterDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.RecurringTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.PendingTaskListFragment;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity
         DateManager.getLocalDateSubject().observe(localDate -> {
             if (localDate == null) return;
             sendInput(currentViewName);
+
         });
 
         // Retrieve and save last opened datetime
@@ -194,6 +196,15 @@ public class MainActivity extends AppCompatActivity
         if (lastOpened.toLocalTime().isBefore(LocalTime.of(2, 0))) {
             // If lastOpened is between 12 am and 2 am, rollover should occur at 2 am of the same day
             rolloverDeadline = rolloverDeadline.minusDays(1);
+        }
+
+        if (lastOpened.toLocalDate().isBefore(currentTime.toLocalDate())) {
+            LocalDate counter = lastOpened.toLocalDate();
+            while (counter.isBefore(currentTime.toLocalDate())) {
+                AbstractTaskListFragment.handleRecurrence(mainActivityViewModel.getTaskList().getValue(), counter, mainActivityViewModel);
+                AbstractTaskListFragment.removeRepetition(mainActivityViewModel.getTaskList().getValue(), mainActivityViewModel);
+                counter = counter.plusDays(1);
+            }
         }
 
         if (currentTime.isAfter(rolloverDeadline)){
