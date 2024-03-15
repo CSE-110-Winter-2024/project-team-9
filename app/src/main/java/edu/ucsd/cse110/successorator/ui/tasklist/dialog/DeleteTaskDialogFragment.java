@@ -87,7 +87,6 @@ public class DeleteTaskDialogFragment extends DialogFragment {
 
     public void buttonClick(AlertDialog alertDialog, String s) {
         alertDialog.dismiss();
-        Log.d(s + "_button", s + " button pressed");
         if (s.equals("today")) {
             activityModel.remove(task.id());
             activityModel.prepend(new Task(task.id(), task.text(), 1, task.isFinished(), DateManager.getGlobalDate().getDate(), task.category(),"single-time"));
