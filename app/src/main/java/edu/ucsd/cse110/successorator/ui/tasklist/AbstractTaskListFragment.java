@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,23 +23,17 @@ import edu.ucsd.cse110.successorator.databinding.FragmentTaskListBinding;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
-abstract class AbstractTaskListFragment extends Fragment {
+public abstract class AbstractTaskListFragment extends Fragment {
 
     public MainViewModel activityModel;
     private FragmentTaskListBinding view;
     private TaskListAdapter adapter;
+    private int totalRecurring;
+
 
     public AbstractTaskListFragment() {
         // Required empty public constructor
     }
-
-//    public static TaskListFragment newInstance(String filter) {
-//        filter will be "home", "work", "school", "errands", or "" for none
-//        TaskListFragment fragment = new TaskListFragment();
-//        Bundle args = new Bundle();
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,7 +72,18 @@ abstract class AbstractTaskListFragment extends Fragment {
 
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;
+            int recurringCount = 0;
+            for (Task task: tasks) {
+                if (!task.type().equals("single-time") && !task.type().equals("pending")) {
+                    recurringCount += 1;
+                }
+            }
+            if (recurringCount != totalRecurring) {
+                handleRecurrence(tasks, DateManager.getGlobalDate().getDate(), activityModel);
+                totalRecurring = recurringCount;
+            }
             adapter.clear();
+            removeRepetition(tasks, activityModel);
             ArrayList<Task> taskList = filterTasks(tasks);
             adapter.addAll(taskList); // remember the mutable copy here!
             adapter.notifyDataSetChanged();

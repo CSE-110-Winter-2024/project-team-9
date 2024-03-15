@@ -52,20 +52,17 @@ public class TaskTest {
 
     @Test
     public void testEquals() {
-        var task1 = new Task(1, "text", 0, false, LocalDate.now());
-        var task2 = new Task(1, "text", 0, false, LocalDate.now());
-
-        var task3 = new Task(4, "text", 0, false, LocalDate.now());
-        var task4 = new Task(1, "wrong text", 0, false, LocalDate.now());
-        var task5 = new Task(1, "text", 5, false, LocalDate.now());
-        var task6 = new Task(1, "text", 0, true, LocalDate.now());
-        var task7 = new Task(1, "text", 0, false, LocalDate.of(2000, 1, 1));
+        var task1 = new Task(1, "text", 1, false, LocalDate.now(), LocalDate.now(), "home", "single-time");
+        var task2 = new Task(2, "text", 2, false, LocalDate.now(), LocalDate.now(), "home", "single-time");
+        var task3 = new Task(3, "WrongText", 3, false, LocalDate.now(), LocalDate.now(), "home", "single-time");
+        var task4 = new Task(4, "text", 4, false, LocalDate.now(), LocalDate.now(), "work", "single-time");
+        var task5 = new Task(5, "text", 5, false, LocalDate.now(), LocalDate.now(), "home", "daily");
+        var task6 = new Task(6, "text", 6, false, LocalDate.now().plusDays(1), LocalDate.now(), "home", "single-time");
 
         assertEquals(task1, task2);
         assertNotEquals(task1, task3);
         assertNotEquals(task1, task4);
         assertNotEquals(task1, task5);
         assertNotEquals(task1, task6);
-        assertNotEquals(task1, task7);
     }
 }

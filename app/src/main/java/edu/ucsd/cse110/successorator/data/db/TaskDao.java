@@ -28,8 +28,9 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     LiveData<TaskEntity> findAsLiveData(int id);
 
-    @Query("SELECT * FROM tasks ORDER BY is_finished,sort_order")
+    @Query("SELECT * FROM tasks ORDER BY is_finished ASC, CASE WHEN is_finished = 0 THEN CASE category WHEN 'home' THEN 1 WHEN 'work' THEN 2 WHEN 'school' THEN 3 WHEN 'errand' THEN 4 ELSE 5 END ELSE 0 END, sort_order")
     LiveData<List<TaskEntity>> findAllAsLiveData();
+
 
     @Query("SELECT COUNT(*) FROM tasks")
     int count();
