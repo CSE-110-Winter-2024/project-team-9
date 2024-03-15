@@ -17,11 +17,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
 import edu.ucsd.cse110.successorator.lib.domain.Task;
+import edu.ucsd.cse110.successorator.ui.tasklist.AbstractTaskListFragment;
 import edu.ucsd.cse110.successorator.util.DateManager;
 
 public class TomorrowAddTaskDialogFragment extends DialogFragment {
@@ -93,6 +95,11 @@ public class TomorrowAddTaskDialogFragment extends DialogFragment {
         LocalDate date = dateManager.getGlobalDate().getDate();
         Task newTask = new Task(null, taskText, -1, false, date.plusDays(1), context, type);
         activityModel.append(newTask);
+        if (!type.equals("single-time") && !type.equals("pending")) {
+            List<Task> tasks = activityModel.getTaskList().getValue();
+            tasks.add(newTask);
+            AbstractTaskListFragment.handleRecurrence(tasks, DateManager.getGlobalDate().getDate(), activityModel);
+        }
 
         dismiss();
     }

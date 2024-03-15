@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import edu.ucsd.cse110.successorator.MainViewModel;
 import edu.ucsd.cse110.successorator.R;
@@ -68,18 +69,12 @@ public abstract class AbstractTaskListFragment extends Fragment {
         activityModel.updateActiveTasks();
         activityModel.deletePrevFinished();
 
+        handleRecurrence(activityModel.getTaskList().getValue(), DateManager.getGlobalDate().getDate(), activityModel);
+
         activityModel.getTaskList().observe(tasks -> {
             if (tasks == null) return;
             int recurringCount = 0;
-            for (Task task: tasks) {
-                if (!task.type().equals("single-time") && !task.type().equals("pending")) {
-                    recurringCount += 1;
-                }
-            }
-            if (recurringCount != totalRecurring) {
-                handleRecurrence(tasks, DateManager.getGlobalDate().getDate(), activityModel);
-                totalRecurring = recurringCount;
-            }
+
             adapter.clear();
             removeRepetition(tasks, activityModel);
             ArrayList<Task> taskList = filterTasks(tasks);
@@ -118,7 +113,11 @@ public abstract class AbstractTaskListFragment extends Fragment {
         for (Task task: tasks) {
             boolean found = false;
             for (Task check: tasks) {
-                if (check.equals(task)) {
+                if (check.equals(task) ||
+                        (Objects.equals(task.text(), check.text()) && Objects.equals(task.category(),check.category())
+                                        && (task.activeDate().isAfter(check.activeDate()) && !task.activeDate().isAfter(DateManager.getGlobalDate().getDate())
+                                        && Objects.equals(task.type(), check.type())
+                                ))) {
                     if (found) {
                         activityModel.remove(check.id());
                     } else {
@@ -143,8 +142,12 @@ public abstract class AbstractTaskListFragment extends Fragment {
                 Task toAddToday = new Task(task.id(), task.text(), 1, false, today, task.category(),"single-time");
 
                 if (task.type().equals("daily")) {
-                    shouldRecurToday = true;
-                    shouldRecurTomorrow = true;
+                    if (!task.dateCreated().isAfter(today)) {
+                        shouldRecurToday = true;
+                    }
+                    if (!task.dateCreated().isAfter(tomorrow)) {
+                        shouldRecurTomorrow = true;
+                    }
                 }
 
                 boolean addToday = true;
