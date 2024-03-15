@@ -32,6 +32,7 @@ import edu.ucsd.cse110.successorator.data.db.TaskDao;
 import edu.ucsd.cse110.successorator.databinding.ActivityMainBinding;
 import edu.ucsd.cse110.successorator.databinding.FragmentChangeFilterDialogBinding;
 import edu.ucsd.cse110.successorator.lib.domain.DateTracker;
+import edu.ucsd.cse110.successorator.lib.domain.Task;
 import edu.ucsd.cse110.successorator.ui.tasklist.AbstractTaskListFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.dialog.ChangeFilterDialogFragment;
 import edu.ucsd.cse110.successorator.ui.tasklist.RecurringTaskListFragment;
@@ -199,12 +200,26 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (lastOpened.toLocalDate().isBefore(currentTime.toLocalDate())) {
-            LocalDate counter = lastOpened.toLocalDate();
-            while (counter.isBefore(currentTime.toLocalDate())) {
-                AbstractTaskListFragment.handleRecurrence(mainActivityViewModel.getTaskList().getValue(), counter, mainActivityViewModel);
-                AbstractTaskListFragment.removeRepetition(mainActivityViewModel.getTaskList().getValue(), mainActivityViewModel);
-                counter = counter.plusDays(1);
+            if (mainActivityViewModel.getTaskList().getValue() != null) {
+                for (Task task : mainActivityViewModel.getTaskList().getValue()) {
+                    if (task.type().equals("single-time") || task.type().equals("pending") || task.type().equals("daily")) {
+                        continue;
+                    }
+                    LocalDate counter = lastOpened.toLocalDate();
+                    boolean addTask = false;
+                    while (counter.isBefore(currentTime.toLocalDate())) {
+                        if (DateManager.shouldRecur(task.dateCreated(), counter, task.type())) {
+                            addTask = true;
+                            break;
+                        }
+                        counter = counter.plusDays(1);
+                    }
+                    if (addTask) {
+                        mainActivityViewModel.append(new Task(task.id(), task.text(), 1, false, currentTime.toLocalDate(), task.category(),"single-time"));
+                    }
+                }
             }
+
         }
 
         if (currentTime.isAfter(rolloverDeadline)){
